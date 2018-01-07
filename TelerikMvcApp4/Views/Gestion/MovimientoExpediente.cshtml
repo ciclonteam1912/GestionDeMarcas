@@ -1,0 +1,725 @@
+﻿@{
+    ViewBag.Title = "Movimiento de Expediente";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+
+</head>
+<body>
+    <div class="container body-content">
+        <div class="tab-pane fade active in" id="home">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <a class="alert-link" data-toggle="modal" data-target="#historiaExpediente">Historia Administrativa de la Marca</a>
+                        <section>
+                            <div class="modal fade" id="historiaExpediente" role="dialog" aria-labelledby="myModalLabel">
+                                <div class="modal-dialog" role="document" style="width:70%">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title" id="myModalLabel">Historia Administrativa de la Marca</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="form-group-sm">
+                                                    <div class="col-lg-12">
+                                                        @(Html.Kendo().Grid<TelerikMvcApp4.Models.PublicacionModel>()
+                                                                    .Name("Grid2")
+                                                                    .Columns(columns =>
+                                                                    {
+                                                                        columns.Bound(c => c.CodExpediente).Title("Nº Exp").Width(90).HtmlAttributes(new { style = "text-align:right" });
+                                                                        columns.Bound(c => c.FechaExpediente).Title("Fecha Exp.").Format("{0:dd/MM/yyyy}").Width(100);
+                                                                        columns.Bound(c => c.Institucion).Title("Institución").Width(100);
+                                                                        columns.Bound(c => c.TmovDesc).Title("Tipo Movimiento.").Width(200);
+                                                                        columns.Bound(c => c.EstadoDesc).Title("Estado").Width(200);
+                                                                        columns.Bound(c => c.Observacion).Title("Observación").Filterable(false).Width(300);
+                                                                        columns.Command(command => command.Destroy()).Width(110);
+                                                                    })
+                                                                    .AutoBind(false)
+                                                                    .ToolBar(toolbar =>
+                                                                    {
+                                                                        toolbar.Template(@<text>
+                                                                        <div class="toolbar">
+                                                                            <label class="category-label" for="category">Mostrar Historia del expediente por código:</label>
+                                                                            @(Html.Kendo().DropDownList()
+                                                                                            .Name("categories")
+                                                                                            .OptionLabel("Todos")
+                                                                                            //.DataTextField("CodExpediente")
+                                                                                            //.DataValueField("CodExpediente")
+                                                                                            .DataTextField("DescMarca")
+                                                                                            .DataValueField("DescMarca")
+                                                                                            .AutoBind(false)
+                                                                                            .Events(e => e.Change("categoriesChange"))
+                                                                                            .HtmlAttributes(new { style = "width: 150px;" })
+                                                                                            .DataSource(ds =>
+                                                                                            {
+                                                                                                ds.Read("GetExpediente", "Gestion");
+                                                                                            })
+                                                                            )
+                                                                        </div>
+                                                                        </text>);
+                                                                    })
+                                                                    .HtmlAttributes(new { style = "height:405px; width:100%" })
+                                                                    .Pageable(pageable => pageable
+                                                                    .Input(true)
+                                                                    .Numeric(false)
+                                                                    ).Events(e => e.DataBound("dataBound"))
+                                                                    .Sortable()
+                                                                    .Scrollable(scr => scr.Height(250))
+                                                                    .Filterable()
+                                                                    //.Filterable(ftb => ftb.Mode(GridFilterMode.Row))
+                                                                    .Selectable()
+                                                                    .Resizable(resize => resize.Columns(true))
+                                                                    .Reorderable(reorder => reorder.Columns(true))
+                                                                    .ColumnMenu()
+                                                                    .DataSource(dataSource => dataSource
+                                                                    .Ajax()
+                                                                    .Batch(true)
+                                                                    .PageSize(10)
+                                                                    .ServerOperation(false)
+                                                                    .Model(model =>
+                                                                    {
+                                                                        model.Id(p => p.CodExpediente);
+                                                                    })
+                                                                    .Read(read => read.Action("ToolbarTemplate_Read", "Gestion").Data("getParameter"))
+                                                                    .Destroy("Editing_Destroy", "Gestion")
+                                                                    ))
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+                <br />
+                <div class="panel panel-default" style="width:100%;margin:0 auto;">
+                    <div class="panel-heading">Datos del Expediente</div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-addon" id="sizing-addon2">Expediente</span>
+                                    <input type="text" class="form-control" placeholder="Buscar Nº de Expediente" aria-describedby="sizing-addon2" id="idExpediente" name="idExpediente" onkeypress="return pulsarExp(event)">
+                                </div>
+                                @*<input type="button" id="btnSearch" onclick="BindGrid();" value="Bind" />*@
+                            </div>
+                            @*<div class="col-md-6">
+                                <button type="button" class="btn btn-success" id="searchData" name="searchData">Buscar <span class="glyphicon glyphicon-search"></span></button>
+                            </div>*@
+                            <div class="col-md-2">
+                                <div>
+                                    <div class="alert alert-dismissible alert-danger errorDiv" id="kokotecheId" style="display:none;">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        <strong>Well done!</strong> You successfully read <a href="#" class="alert-link">this important alert message</a>.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row " style="margin-left:5px; margin-top:20px">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <div class="col-lg-10">
+                                        <span><strong>Solicitante:</strong></span>
+                                        <input class="form-control" id="solicitante" name="solicitante" type="text" autocomplete="off">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <div class="col-lg-10">
+                                        <span><strong>Poder:</strong></span>
+                                        <input class="form-control" id="poder" name="poder" type="text" autocomplete="off">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <div class="col-lg-10">
+                                        <span><strong>Estado Actual:</strong></span>
+                                        <input class="form-control" id="estado" name="estado" type="text" autocomplete="off">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row " style="margin-left:5px; margin-top:20px">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <div class="col-lg-10">
+                                        <span><strong>Fecha Solicitud:</strong></span>
+                                        <input class="form-control" id="fechaSolicitud" name="fechaSolicitud" type="text" autocomplete="off">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <div class="col-lg-10">
+                                        <span><strong>Marca:</strong></span>
+                                        <input class="form-control" id="marca" name="marca" type="text" autocomplete="off">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <div class="col-lg-10">
+                                        <span><strong>Agente:</strong></span>
+                                        <input class="form-control" id="agente" name="agente" type="text" autocomplete="off">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <br />
+
+
+                        <br />
+                        <div class="row">
+                            <div class="row">
+                                <div class="col-lg-4" style="margin-left:30px; margin-top:30px">
+                                    <button class="btn btn-success" type="button" id="btnLimpiar">Cancelar</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-default" style="width:100%;margin:20px auto;">
+                    <div class="panel-heading">Nuevo Movimiento</div>
+                    <div class="panel-body">
+                        <div class="row">
+                           
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <p><strong>Institución:</strong></p>
+                                <select id="tipoInstitucion" name="tipoInstitucion" style="width:90px;">
+                                    <option value="DINAPI">DINAPI</option>
+                                    <option value="AGENCIA">AGENCIA</option>
+                                </select>
+
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="input-group input-group">
+                                    <span class="input-group-addon" id="sizing-addon2">Tipo de Movimiento</span>
+                                    <input type="text" class="form-control" placeholder="Buscar Movimiento" aria-describedby="sizing-addon2" id="tipoMov" name="tipoMov" onkeypress="return pulsarTmov(event)">
+                                </div>
+
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <div class="col-lg-10">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><strong>Movimiento:</strong></span>
+                                            <input class="form-control" id="movimiento" name="movimiento" type="text" autocomplete="off">
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-2">
+                                <div>
+                                    <div class="alert alert-dismissible alert-danger errorDiv" id="kokotecheId" style="display:none;">
+                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                        <strong>Well done!</strong> You successfully read <a href="#" class="alert-link">this important alert message</a>.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row" id="DINAPI">
+                            <div class="row" style="margin-left:5px; margin-top:20px">
+                                <div class="row" style="margin-left:5px; margin-top:20px">
+
+                                    <div class="col-lg-4">
+                                        <div class="form-group-sm">
+                                            <div class="col-lg-10">
+                                                <p><strong>Fecha de Movimiento:</strong></p>
+                                                @(Html.Kendo().DateTimePicker()
+                                            .Name("fechaSol")
+                                            //.Value(DateTime.Now)
+                                            .HtmlAttributes(new { style = "width:100%;", required = "required" })
+                                                )
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="form-group-sm">
+                                            <div class="col-lg-10">
+                                                <p><strong>Estado:</strong></p>
+                                                @(Html.Kendo().DropDownList()
+                                                  .Name("Status")
+                                                  .OptionLabel("Seleccione un estado...")
+                                                  .DataTextField("DesStatus")
+                                                  .DataValueField("CodStatus")
+
+                                                  .HtmlAttributes(new { style = "width:100%" })
+                                                  .Filter("contains")
+                                                  .DataSource(source =>
+                                                  {
+                                                      source.Read(read =>
+                                                      {
+                                                          read.Action("GetStatus", "Gestion");
+                                                      });
+                                                      //.ServerFiltering(true);
+                                                  })
+                                                )
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-left:5px; margin-top:20px">
+
+
+                                </div>
+                            </div>
+
+                            <br />
+                            <div class="row" style="margin-left:5px; margin-top:20px">
+                                <div class="col-lg-4">
+                                    <div class="form-group-sm">
+                                        <div class="col-lg-10">
+                                            <span><strong>Registro:</strong></span>
+                                            <input class="form-control" id="registroMarca" name="registroMarca" type="text" autocomplete="off" input>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4">
+                                    <div class="form-group-sm">
+                                        <div class="col-lg-10">
+                                            <p><strong>Fecha Vencimiento:</strong></p>
+                                            @(Html.Kendo().DateTimePicker()
+                                            .Name("fechaVencimiento")
+                                            .Value(DateTime.Now)
+                                            .HtmlAttributes(new { style = "width:100%;" })
+                                            )
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <div class="col-lg-10">
+                                            <span><strong>Observación:</strong></span>
+                                            <textarea class="form-control" id="observacion" name="observacion" type="text" autocomplete="off"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+
+                        </div>
+                        <div class="row" id="AGENCIA">
+                            <div class="col-lg-4">
+                                <div class="form-group-sm">
+                                    <div class="col-lg-10">
+                                        <p><strong>Fecha de Movimiento:</strong></p>
+                                        @(Html.Kendo().DateTimePicker()
+                                            .Name("fechaSolAgencia")
+                                            //.Value(DateTime.Now)
+                                            .HtmlAttributes(new { style = "width:100%;", required = "required" })
+                                        )
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <div class="col-lg-10">
+                                        <span><strong>Observación:</strong></span>
+                                        <textarea class="form-control" id="observacionAgencia" name="observacionAgencia" type="text" autocomplete="off"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="row">
+                                <div class="col-lg-4" style="margin-left:30px; margin-top:30px">
+                                    <button class="btn btn-success" type="button" id="actualizarEstado">Actualizar</button>
+                                    <button class="btn btn-success" type="button" id="btnLimpiar2">Cancelar</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("#solicitante").prop("disabled", true);
+                $("#poder").prop("disabled", true);
+                $("#estado").prop("disabled", true);
+                $("#fechaSolicitud").prop("disabled", true);
+                $("#marca").prop("disabled", true);
+                $("#agente").prop("disabled", true);
+                $("#movimiento").prop("disabled", true);
+                $("#registroMarca").prop("disabled", true);
+
+                $('#AGENCIA').hide();
+                $('#DINAPI').show();
+                $('#tipoInstitucion').change(function () {
+                    if(this.value == 'AGENCIA'){
+                        $('#DINAPI').hide();
+                        $('#' + $(this).val()).show();
+                    } else {
+                        $('#AGENCIA').hide();
+                        $('#' + $(this).val()).show();
+                    }
+                    
+                })
+            });
+            function dataBound() {
+                //Selects all delete buttons
+                $("#Grid2 tbody tr .k-grid-delete").each(function () {
+                    var currentDataItem = $("#Grid2").data("kendoGrid").dataItem($(this).closest("tr"));
+                    //alert(currentDataItem.isDeletable)
+                    //Check in the current dataItem if the row is deletable
+                    if (currentDataItem.isDeletable == true) {
+                        $(this).remove();
+                    }
+                })
+            }
+
+            function categoriesChange() {
+                var value = this.value(),
+                     grid = $("#Grid2").data("kendoGrid");
+                $.ajax({
+                    url: '@Url.Action("ToolbarTemplate_Read", "Gestion")',
+                    data: { codExp: value },
+                    type: 'POST',
+                    dataType: "json",
+                    success: function () {
+                        if (value) {
+                            grid.dataSource.filter({ field: "CodExpediente", operator: "eq", value: parseInt(value) });
+                        } else {
+                            grid.dataSource.filter({});
+                        }
+                    }
+                });
+
+            }
+
+            function getParameter() {
+                return {
+                    param1: $("#idExpediente").val()
+                };
+            }
+
+            $('#Status').bind('change', function (e) {
+                var datetimepicker = $("#fechaVencimiento").data("kendoDateTimePicker");
+                var fechaVencimiento = document.getElementById('fechaVencimiento');
+                //if (this.value == 1) {
+                //    $("#registroMarca").prop("disabled", false);
+                //    datetimepicker.enable();
+                //} else {
+                //    $("#registroMarca").prop("disabled", true);
+                //    document.getElementById('registroMarca').value = "";
+                //    fechaVencimiento.value = "";
+                //    datetimepicker.enable(false);
+                //}
+                $.ajax({
+                        url: "@Url.Action("NuevoMetodo", "Gestion")",
+                        data: JSON.stringify({ Estado: this.value }),
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            alert(data[0].CheckStatus)
+                            if (data[0].CheckStatus == 'S') {
+                                $("#registroMarca").prop("disabled", false);
+                                datetimepicker.enable();
+                            }
+                            else {
+                                $("#registroMarca").prop("disabled", true);
+                                document.getElementById('registroMarca').value = "";
+                                fechaVencimiento.value = "";
+                                datetimepicker.enable(false);
+                            }
+                        },
+                        error: function (request, status, error) {
+                            //alert(request + " " + status + " " + error);
+                        },
+                        failure: function (response) {
+                            alert("arriva al failure");
+                        }
+                    });
+
+            });
+
+            function pulsarExp(e) {
+                tecla = (document.all) ? e.keyCode : e.which;
+
+                return (tecla != 13);
+            }
+
+            function pulsarTmov(e) {
+                tecla = (document.all) ? e.keyCode : e.which;
+
+                return (tecla != 13);
+            }
+
+            $("#idExpediente").keypress(function (e) {
+               
+                var Expediente = $("#idExpediente").val();
+                var Solicitante = document.getElementById('solicitante');
+                var Poder = document.getElementById('poder');
+                var Estado = document.getElementById('estado');
+                var FechaSolicitudActual = document.getElementById('fechaSolicitud');
+                var Marca = document.getElementById('marca');
+                var Agente = document.getElementById('agente');
+                var NuevoEstado = document.getElementById('Status');
+                var Observacion = document.getElementById('observacion');
+                var registroMarca = document.getElementById('registroMarca');
+                var fechaVencimiento = document.getElementById('fechaVencimiento');
+                var fechaSolicitud = document.getElementById('fechaSol');
+                var codTipoMov = document.getElementById('tipoMov');
+                var tipoMov = document.getElementById('movimiento');
+                var fechaSolAgencia = document.getElementById('fechaSolAgencia');
+                var observacionAgencia = document.getElementById('observacionAgencia');
+                var tipoInstitucion = document.getElementById('tipoInstitucion');
+                var existe = false;
+
+                $("#Grid2").data("kendoGrid").dataSource.read();
+                $("#Grid2").data("kendoGrid").refresh();
+                tecla = (document.all) ? e.keyCode : e.which;
+                if (tecla == 13) {
+
+                    $.ajax({
+                        url: "@Url.Action("CargarExpMov", "Gestion")",
+                        data: JSON.stringify({ Expediente: Expediente }),
+                        //data: "{'Expediente':'"+Expediente+"' , 'Registro':'"+Registro+"', 'Marca':'" +Marca+ "' }",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            if (data != null) {
+                                $(data).each(function (i) {
+                                    existe = true;
+                                    Solicitante.value = data[i].Solicitante;
+                                    Poder.value = data[i].DescPoder;
+                                    Estado.value = data[i].DescEstado;
+                                    $("#Status").data("kendoDropDownList").value(data[i].CodEstado);
+                                    FechaSolicitudActual.value = data[i].FechaSolicitudActual;
+                                    Marca.value = data[i].DescMarca;
+                                    Agente.value = data[i].DescAgente;
+                                    fechaSolicitud.value = data[i].FechaSolicitud;
+                                    registroMarca.value = data[i].CodRegistro;
+                                    fechaVencimiento.value = data[i].FechaVencimiento;
+                                    codTipoMov.value = data[i].TipoMovimiento;
+                                    tipoMov.value = data[i].DescTipoMov;
+                                    Observacion.value = data[i].Observacion;
+                                    fechaSolAgencia.value = data[i].FechaSolicitud;
+                                    observacionAgencia.value = data[i].Observacion;
+                                    tipoInstitucion.value = data[i].Institucion;
+                                    if (tipoInstitucion.value == 'AGENCIA') {
+                                        $('#DINAPI').hide();
+                                        $('#AGENCIA').show();
+                                        fechaSolicitud.value = "";
+                                        Observacion.value = "";
+                                    } else {
+                                        $('#DINAPI').show();
+                                        $('#AGENCIA').hide();
+                                        fechaSolAgencia.value = "";
+                                        observacionAgencia.value = "";
+                                    }
+                                });
+                                if(!existe){
+                                    Solicitante.value = "";
+                                    Poder.value = "";
+                                    Estado.value = "";
+                                    $("#Status").data("kendoDropDownList").value("");
+                                    FechaSolicitudActual.value = "";
+                                    Marca.value = "";
+                                    Agente.value = "";
+                                    fechaSolicitud.value = "";
+                                    registroMarca.value = "";
+                                    fechaVencimiento.value = "";
+                                    codTipoMov.value = "";
+                                    tipoMov.value = "";
+                                    Observacion.value = "";
+                                    fechaSolAgencia.value = "";
+                                    observacionAgencia.value = "";
+                                    tipoInstitucion.value = "";
+                                }
+                            }
+
+
+                        },
+                        error: function (request, status, error) {
+                            //alert(request + " " + status + " " + error);
+                        },
+                        failure: function (response) {
+                            alert("arriva al failure");
+                        }
+                    });
+
+                    debugger
+                    if ('@Session["frontMessage"]' == 2) {
+                        $("#kokotecheId").html("Ingrese nuevemante");
+                        $("#kokotecheId").fadeIn(2000).delay(7000).fadeOut(1000);
+                    }
+                }
+            });
+
+            $("#btnLimpiar").click(function () {
+                var Solicitante = document.getElementById('solicitante');
+                var Poder = document.getElementById('poder');
+                var Estado = document.getElementById('estado');
+                var FechaSolicitud = document.getElementById('fechaSolicitud');
+                var Marca = document.getElementById('marca');
+                var Agente = document.getElementById('agente');
+
+                Solicitante.value = "";
+                Poder.value = "";
+                Estado.value = "";
+                FechaSolicitud.value = "";
+                Marca.value = "";
+                Agente.value = "";
+
+            });
+
+            $("#tipoMov").keypress(function (e) {
+                var tipoMovimiento = $("#tipoMov").val();
+                var MovimientoDesc = document.getElementById('movimiento');
+                var registroMarca = document.getElementById('registroMarca');
+
+
+                tecla = (document.all) ? e.keyCode : e.which;
+                if (tecla == 13) {
+                    $.ajax({
+                        url: "@Url.Action("RetornarTipoMov", "Gestion")",
+                        data: JSON.stringify({ tipoMovimiento: tipoMovimiento }),
+                        //data: "{'Expediente':'"+Expediente+"' , 'Registro':'"+Registro+"', 'Marca':'" +Marca+ "' }",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            //if (Estado.value == 'Concedido') {
+                            //    $("#registroMarca").prop("disabled", true);
+                            //}else{
+                            //    $("#registroMarca").prop("disabled", false);
+                            //}
+
+                            if (data != null) {
+                                $(data).each(function (i) {
+                                    MovimientoDesc.value = data[i].DescTipoMov;
+
+                                });
+                            }
+
+
+                        },
+                        error: function (request, status, error) {
+                            alert(request + " " + status + " " + error);
+                        },
+                        failure: function (response) {
+                            alert("arriva al failure");
+                        }
+                    });
+
+                    debugger
+                    if ('@Session["frontMessage"]' == 2) {
+                        $("#kokotecheId").html("Ingrese nuevemante");
+                        $("#kokotecheId").fadeIn(2000).delay(7000).fadeOut(1000);
+                    }
+                }
+            });
+
+            $("#actualizarEstado").click(function (e) {
+                var Expediente = $("#idExpediente").val();
+                var tipoMovimiento = $("#tipoMov").val();
+                var MovimientoDesc = $("#movimiento").val();
+                var NuevoEstado = $("#Status").val();
+                var Observacion = $("#observacion").val();
+                var FechaSolicitudActual = $('#fechaSolicitud').val();
+                var registroMarca = $('#registroMarca').val();
+                var fechaVencimiento = $('#fechaVencimiento').val();
+                var fechaSolicitud = $('#fechaSol').val();
+                var fechaDolicitudAgencia = $('#fechaSolAgencia').val();
+                var ObservacionAgencia = $("#observacionAgencia").val();
+                var select = $('#tipoInstitucion').val();
+                
+                if(select == 'DINAPI')
+                {
+                    $.ajax({
+                    url: "@Url.Action("ActualizarEstadoExp", "Gestion")",
+                    data: JSON.stringify({ Expediente: Expediente, Tmov: tipoMovimiento, Estado: NuevoEstado, Observacion: Observacion, Fecha:      FechaSolicitudActual, registro: registroMarca, fechaVen: fechaVencimiento, FechaSol: fechaSolicitud, Institucion: select }),
+                        //data: "{'Expediente':'"+Expediente+"' , 'Registro':'"+Registro+"', 'Marca':'" +Marca+ "' }",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            $('input[type="text"], textarea').val('');
+                            fechaSolicitud.value = "";
+                            //$(':selected').val('');
+                        },
+                        error: function (request, status, error) {
+                            alert(request + " " + status + " " + error);
+                        },
+                        failure: function (response) {
+                            alert("arriva al failure");
+                        }
+                    });
+                } else {
+                    $.ajax({
+                        url: "@Url.Action("ActualizarEstadoExp", "Gestion")",
+                        data: JSON.stringify({ Expediente: Expediente, Tmov: tipoMovimiento, Fecha: FechaSolicitudActual, FechaSolAgencia: fechaDolicitudAgencia, ObservacionAgencia: ObservacionAgencia, Institucion: select }),
+                    //data: "{'Expediente':'"+Expediente+"' , 'Registro':'"+Registro+"', 'Marca':'" +Marca+ "' }",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        $('input[type="text"], textarea').val('');
+                        fechaSolicitud.value = "";
+                        //$(':selected').val('');
+                    },
+                    error: function (request, status, error) {
+                        alert(request + " " + status + " " + error);
+                    },
+                    failure: function (response) {
+                        alert("arriva al failure");
+                    }
+                });
+                }
+                    
+            });
+
+            $("#btnLimpiar2").click(function () {
+                //var Solicitante = document.getElementById('solicitante');
+                //var Poder = document.getElementById('poder');
+                //var Estado = document.getElementById('estado');
+                //var FechaSolicitud = document.getElementById('fechaSolicitud');
+                //var Marca = document.getElementById('marca');
+                //var Agente = document.getElementById('agente');
+                var tipoMovimiento = document.getElementById('tipoMov');
+                var MovimientoDesc = document.getElementById('movimiento');
+                var registroMarca = document.getElementById('registroMarca');
+                var Observacion = document.getElementById('observacion');
+
+                tipoMovimiento.value = "";
+                MovimientoDesc.value = "";
+                registroMarca.value = "";
+                Observacion.value = "";
+            });
+        </script>
+</body>
+</html>
+

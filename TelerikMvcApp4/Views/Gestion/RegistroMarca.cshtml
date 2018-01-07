@@ -1,0 +1,998 @@
+﻿@model IEnumerable<TelerikMvcApp4.Models.PublicacionModel>
+@{
+
+    ViewBag.Title = "Registro de Marca";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+</head>
+<body>
+    <div class="container body-content">
+        <section>
+            <ul class="nav nav-tabs ul-Registro" id="myTab">
+                @*<li class="active"><a aria-expanded="true" href="#empresa" data-toggle="tab">Registro de Poder</a></li>*@
+                <li class="active"><a aria-expanded="true" href="#home" data-toggle="tab">Solicitudes</a></li>
+                <li><a aria-expanded="false" href="#publicacion" data-toggle="tab">Datos de Publicación</a></li>
+                @*<li><a aria-expanded="false" href="#profile" data-toggle="tab">Logotipo</a></li>*@
+            </ul>
+            <div class="tab-content Div-Registro" id="myTabContent">
+                <div class="tab-pane fade active in" id="home">
+                    <div class="container-fluid">
+                        @using (Html.BeginForm("GetSolictudMarca", "Gestion", FormMethod.Post, new { @id = "Frm-login", role = "form", @class = "form-horizontal" }))
+                        {
+                            <br />
+                            <div class="panel panel-default" style="width:80%;margin:0 auto;">
+                                <div class="panel-heading"></div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <br />
+                                            <div class="form-group-sm">
+                                                <div class="col-lg-10">
+                                                    <p> <strong>Nº Expediente:</strong></p>
+                                                    <input class="form-control" id="expedienteNro" name="expedienteNro" type="number" placeholder="Nº Expediente" required autocomplete="off" onkeypress="return pulsarExpediente(event)">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <br />
+                                            <div class="form-group-sm">
+                                                <div class="col-lg-10">
+                                                    <p> <strong>Titular/Solicitante:</strong></p>
+                                                    @(Html.Kendo().DropDownList()
+                                          .Name("EmpresasList")
+                                          .OptionLabel("Seleccione un titular...")
+                                          .DataTextField("DescripcionEmpresa")
+                                          .DataValueField("CodEmpresa")
+                                          .HtmlAttributes(new { style = "width:100%", required = "required", onkeydown = "javascript:return false;" })
+                                          .Filter("contains")
+                                          .DataSource(source =>
+                                          {
+                                              source.Read(read =>
+                                              {
+                                                  read.Action("GetApoderado", "Gestion");
+                                              });
+                                              //.ServerFiltering(true);
+                                          })
+                                                    )
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                          <div class="col-lg-6">
+                                              <br />
+                                              <div class="form-group-sm">
+                                                  <div class="col-lg-10">
+                                                      <p><strong>Poder:</strong></p>
+                                                      @(Html.Kendo().DropDownList()
+                                              .Name("poder")
+                                              .OptionLabel("Seleccione un poder...")
+                                              .DataTextField("DescPoder")
+                                              .DataValueField("Poder")
+                                              .HtmlAttributes(new { style = "width:100%", required = "required" })
+                                              .Filter("contains")
+
+                                              .DataSource(source =>
+                                              {
+                                                  source.Read(read =>
+                                                  {
+                                                      read.Action("GetPoderTitular", "Gestion")
+                                                      .Data("filterProducts6");
+                                                  })
+                                                  .ServerFiltering(true);
+                                              })
+                                                .Enable(false)
+                                              .AutoBind(false)
+                                              .CascadeFrom("EmpresasList")
+                                                      )
+                                                      <script>
+                                                        function filterProducts6() {
+                                                            return {
+                                                                CodEmp: $("#EmpresasList").val()
+                                                            };
+                                                        }
+                                                      </script>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                          <div class="col-lg-6">
+                                              <br />
+                                              <div class="form-group-sm">
+                                                  <div class="col-lg-10">
+                                                      <p><strong>Marca:</strong></p>
+                                                      @(Html.Kendo().DropDownList()
+                                              .Name("Marca")
+                                              .OptionLabel("Seleccione una marca...")
+                                              .DataTextField("MarcaDescripcion")
+                                              .DataValueField("MarcaCodigo")
+                                              .HtmlAttributes(new { style = "width:100%", required = "required" })
+                                              .Filter("contains")
+                                              .DataSource(source =>
+                                              {
+                                                  source.Read(read =>
+                                                  {
+                                                      read.Action("GetMarca", "Gestion")
+                                                      .Data("filterProducts7");
+                                                  })
+                                                  .ServerFiltering(true);
+                                              })
+                                              .Enable(false)
+                                              .AutoBind(false)
+                                              .CascadeFrom("poder")
+                                                      )
+                                                      <script>
+                                                        function filterProducts7() {
+                                                            return {
+                                                                CodPod: $("#poder").val()
+                                                            };
+                                                        }
+                                                      </script>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div> 
+                                    <br /> 
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-group-sm">
+                                                <div class="col-lg-10">
+                                                    <p><strong>Estado:</strong></p>
+                                                    @(Html.Kendo().DropDownList()
+                                                  .Name("Status")
+                                                  .OptionLabel("Seleccione un estado...")
+                                                  .DataTextField("DesStatus")
+                                                  .DataValueField("CodStatus")
+                                                  .HtmlAttributes(new { style = "width:100%", required = "required" })
+                                                  .Filter("contains")
+                                                  .DataSource(source =>
+                                                  {
+                                                      source.Read(read =>
+                                                      {
+                                                          read.Action("GetStatus", "Gestion");
+                                                      });
+                                                      //.ServerFiltering(true);
+                                                  })
+                                                    )
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group-sm">
+                                                <div class="col-lg-10">
+                                                    <p><strong>Firmante:</strong></p>
+                                                    @(Html.Kendo().DropDownList()
+                                                  .Name("Agente")
+                                                  .OptionLabel("Seleccione un agente...")
+                                                  .DataTextField("DescAgente")
+                                                  .DataValueField("CodAgente")
+                                                  .HtmlAttributes(new { style = "width:100%", required = "required" })
+                                                  .Filter("contains")
+                                                  .DataSource(source =>
+                                                  {
+                                                      source.Read(read =>
+                                                      {
+                                                          read.Action("GetAgentePoder", "Gestion")
+                                                          .Data("filterProducts8");
+                                                      })
+                                                      .ServerFiltering(true);
+                                                  })
+                                                  .Enable(false)
+                                                  .AutoBind(false)
+                                                  .CascadeFrom("poder")
+                                                        )
+                                                    <script>
+                                                        function filterProducts8() {
+                                                            return {
+                                                                CodPod: $("#poder").val()
+                                                            };
+                                                        }
+                                                    </script>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                    <br />  
+                                    <div class="row ">                                      
+                                        <div class="col-lg-6">
+                                            <div class="form-group-sm">
+                                                <div class="col-lg-10">
+                                                    <p><strong>Fecha Solicitud:</strong></p>
+                                                    @(Html.Kendo().DateTimePicker()
+                                            .Name("fechaSolicitud")
+                                            .Value(DateTime.Now)
+                                            .HtmlAttributes(new { style = "width:100%;", required = "required" })
+                                                    )
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @*<div class="col-lg-6">
+                                            <div class="form-group-sm">
+                                                <div class="col-lg-10">
+                                                    <p><strong>Fecha Estado:</strong></p>
+                                                    @(Html.Kendo().DateTimePicker()
+                                            .Name("fechaEstado")
+                                            .Value(DateTime.Now)
+                                            .HtmlAttributes(new { style = "width:100%;", required = "required" })
+                                                    )
+                                                </div>
+                                            </div>
+                                        </div>*@  
+                                        <div class="col-lg-6">
+                                            <div class="form-group-sm">
+                                                <div class="col-lg-10">
+                                                    <p><strong>Pais:</strong></p>
+                                                    @(Html.Kendo().ComboBox()
+                                                      .Name("pais2")
+                                                      .DataTextField("PaisDescripcion")
+                                                      .DataValueField("PaisCodigo")
+                                                      .HtmlAttributes(new { style = "width:100%", required = "required" })
+                                                      .Filter(FilterType.StartsWith)
+                                                      .IgnoreCase(true)
+                                                      .Placeholder("Seleccione un país...")
+                                                      .DataSource(source =>
+                                                      {
+                                                          source.Read(read =>
+                                                          {
+                                                              read.Action("GetPais", "Gestion");
+                                                          });
+                                                      })
+                                                    )
+
+                                                </div>
+                                            </div>
+                                        </div>                                 
+                                    </div>
+                                    <br /> 
+                                    <div class="row">
+                                        
+                                        <div class="col-lg-6">                                           
+                                            <div class="form-group-sm">
+                                                <div class="col-lg-10">
+                                                    <p><strong>Tipo:</strong></p>
+                                                    @(Html.Kendo().ComboBox()
+                                                      .Name("select")
+                                                      .DataTextField("AbrevTipoSolicitud")
+                                                      .DataValueField("CodTipoSolicitud")
+                                                      .Filter(FilterType.StartsWith)
+                                                      .HtmlAttributes(new { style = "width:100%", required = "required" })
+                                                      .IgnoreCase(true)
+                                                      .Placeholder("Seleccione un tipo de solicitud...")
+                                                      .DataSource(source =>
+                                                      {
+                                                          source.Read(read =>
+                                                          {
+                                                              read.Action("GetTipoSolicitud", "Gestion");
+                                                          });
+                                                      })
+                                                    )
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>  
+                                        
+                                    <div class="row">
+                                        <div class="col-lg-6" id="nuevoExpNro">
+                                            <br />
+                                            <div class="form-group-sm">
+                                                <div class="col-lg-10">
+                                                    <span> <strong>Nuevo Nº Expediente:</strong></span>
+                                                    <input class="form-control" id="nuevoExpediente" name="nuevoExpediente" type="number" placeholder="Nuevo Nº Expediente" autocomplete="off">
+                                                </div>
+                                            </div>
+                                        </div>
+                                            <div class="col-lg-4" style="margin-left:30px; margin-top:30px; width:100%">
+                                                <button class="btn btn-success" type="submit" id="btnRegistrar">Registrar</button>
+                                                <button class="btn btn-success" type="submit" id="btnRenovar">Renovar</button>
+                                                <button class="btn btn-success" type="button" id="btnAnular" onclick="getConfirmation()">Anular</button>
+                                                <button class="btn btn-success" type="reset">Cancelar</button>
+
+                                            </div>
+                                            
+
+                                        </div>
+                                    <div class="row">
+                                        @if (ViewBag.Message == "Success")
+                                        {
+                                            <div class="alert alert-success"><strong><span class="glyphicon glyphicon-check"></span> Your   profile has been updated.</strong></div>
+                                        }
+                                        @if (ViewBag.Message == "Failure")
+                                        {
+                                            <div class="alert alert-danger"><span class="glyphicon glyphicon-alert"></span><strong> Error, please try again.</strong></div>
+                                        }
+                                        <div class="alert ">
+                                            @Html.ValidationMessage("error", new { @id = "validationMessage" })
+                                        </div>
+                                        <div class="alert alert-success" id="mostrarAlertSuccess" style="display:none; margin-top:10px">
+                                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                            <strong>¡Eliminación exitosa!</strong> El registro fue eliminado correctamente.
+                                        </div>
+                                        <div class="alert alert-danger" id="mostrarAlertDanger" style="display:none; margin-top:10px">
+                                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                            <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
+                                        </div>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+
+                </div>
+
+
+
+
+                <div class="tab-pane fade" id="publicacion" style="margin-left:50px; width:100%">
+                    @using (Html.BeginForm("GetPublicacion", "Gestion", FormMethod.Post, new { @id = "Frm-login", role = "form", @class = "form-horizontal" }))
+                    {
+                            <div class="row">
+                                <br />
+                                <div class="col-lg-6">
+                                    <a class="alert-link" data-toggle="modal" data-target="#historiaPublicacion">Historia de Publicaciones</a>
+                                    <section>
+                                        <div class="modal fade" id="historiaPublicacion" tabindex="-1" role="dialog" aria-labelledby="myModalLabelPub">
+                                            <div class="modal-dialog" role="document" style="width:70%">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                        <h4 class="modal-title" id="myModalLabelPub">Historia de Publicaciones</h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="row">
+                                                            <div class="form-group-sm">
+                                                                <div class="col-lg-10">
+                                                                    @(Html.Kendo().Grid<TelerikMvcApp4.Models.PublicacionModel>()
+                                                                      .Name("Grid")
+                                                                    .Columns(columns =>
+                                                                    {
+                                                                        columns.Bound(c => c.Fecha).Title("Fecha").Width(200).HtmlAttributes(new { style = "text-align:right" }).Format("{0:dd/MM/yyyy}");
+                                                                        columns.Bound(c => c.Periodico).Title("Nombre Periódico").Width(200);
+                                                                        columns.Bound(c => c.Dias).Title("Días").Width(90);
+                                                                        columns.Bound(c => c.Observacion).Title("Observación");
+                                                                        columns.Command(command => command.Destroy()).Width(110);
+                                                                    })
+                                                                    .AutoBind(false)
+                                                                    .ToolBar(toolbar =>
+                                                                    {
+                                                                    toolbar.Template(@<text>
+                                                                        <div class="toolbar">
+                                                                            <label class="category-label" for="category">Mostrar Historia por código de expediente:</label>
+                                                                            @(Html.Kendo().DropDownList()
+                                                                                            .Name("categoriesPub")
+                                                                                            .OptionLabel("Todos")
+                                                                                            //.DataTextField("CodExpediente")
+                                                                                            //.DataValueField("CodExpediente")
+                                                                                            .DataTextField("DescMarca")
+                                                                                            .DataValueField("DescMarca")
+                                                                                            .AutoBind(false)
+                                                                                            .Events(e => e.Change("categoriesChangePub"))
+                                                                                            .HtmlAttributes(new { style = "width: 150px;" })
+                                                                                            .DataSource(ds =>
+                                                                                            {
+                                                                                                ds.Read("GetExpediente", "Gestion");
+                                                                                            })
+                                                                            )
+                                                                        </div>
+                                                                    </text>);
+                                                                    })
+                                                                    .HtmlAttributes(new { style = "height:405px; width:100%" })
+                                                                    .Pageable(pageable => pageable
+                                                                    .Input(true)
+                                                                    .Numeric(false)
+                                                                    ).Events(e => e.DataBound("dataBoundPub"))
+                                                                    .Sortable()
+                                                                    .Scrollable(scr => scr.Height(250))
+                                                                    .Filterable()
+                                                                    .Resizable(resize => resize.Columns(true))
+                                                                    .Reorderable(reorder => reorder.Columns(true))
+                                                                    .ColumnMenu()
+                                                                    .DataSource(dataSource => dataSource
+                                                                    .Ajax()
+                                                                    .Batch(true)
+                                                                    .PageSize(10)
+                                                                    .ServerOperation(false)
+                                                                    .Model(model =>
+                                                                    {
+                                                                        model.Id(p => p.PubClave);
+                                                                    })
+                                                                    .Read("GetPublicacionHistoria", "Gestion")
+                                                                    .Destroy("Editing_Destroy_Pub", "Gestion")
+                                                                    .Events(events => events.RequestEnd("onRequestEnd"))
+                                                                    ))
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="alert alert-success" id="mostrarSuccess" style="display:none; margin-top:10px">
+                                                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                                                <strong>¡Eliminación exitosa!</strong> El registro fue eliminado correctamente.
+                                                            </div>
+                                                            <div class="alert alert-danger" id="mostrarDanger" style="display:none; margin-top:10px">
+                                                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                                                <strong>¡No se pudo eliminar el registro!</strong> Elimine primero la imagen de la publicación
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+                            <br />
+
+                            <div class="row">
+                                <div class="col-md-6" style="width:80%">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">Nueva Publicación</div>
+                                        <div class="panel-body">
+                                            <div class="row ">
+                                                <div class="col-lg-4">
+                                                    <p><strong>Empresa</strong></p>
+                                                    @(Html.Kendo().DropDownList()
+                                                      .Name("EmpresasList2")
+                                                      .OptionLabel("Seleccione empresa...")
+                                                      .DataTextField("DescripcionEmpresa")
+                                                      .DataValueField("CodEmpresa")
+                                                      .HtmlAttributes(new { style = "width:100%" })
+                                                      .Filter("contains")
+                                                      .DataSource(source =>
+                                                      {
+                                                          source.Read(read =>
+                                                          {
+                                                              read.Action("GetApoderadoExp", "Gestion");
+                                                          })
+                                                          .ServerFiltering(true);
+                                                      })
+                                                    )
+
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <p><strong>Número expediente</strong></p>
+                                                    @(Html.Kendo().DropDownList()
+                                                      .Name("PoderExpediente2")
+                                                      .HtmlAttributes(new { style = "width:100%" })
+                                                      .OptionLabel("Seleccione expediente...")
+                                                      .DataTextField("DescExp")
+                                                      .DataValueField("CodExp")
+                                                      .DataSource(source =>
+                                                      {
+                                                          source.Read(read =>
+                                                          {
+                                                              read.Action("GetExpPoder", "Gestion")
+                                                                  .Data("filterProducts4");
+                                                          })
+                                                          .ServerFiltering(true);
+                                                      })
+                                                      .Enable(false)
+                                                      .AutoBind(false)
+                                                      .CascadeFrom("EmpresasList2")
+                                                    )
+                                                </div>
+                                                <script>
+                                                    function filterProducts4() {
+                                                        return {
+                                                            CodEmpresa: $("#EmpresasList2").val()
+                                                        };
+                                                    }
+                                                </script>
+                                                @*<h3>Fecha de Publicación:</h3>*@
+                                                <div class="col-lg-4">
+                                                    <p><strong>Fecha de Publicación</strong> :</p>
+                                                    @(Html.Kendo().DatePicker()
+                                                      .Name("fechaPrimeraPublicacion")
+                                                      .Value(DateTime.Now)
+                                                      .HtmlAttributes(new { style = "width: 100%" })
+                                                    )
+                                                </div>
+
+
+                                                <div class="col-lg-4">
+                                                    <br />
+                                                    <p><strong>Lista de Periódicos:</strong> </p>
+                                                    @(Html.Kendo().DropDownList()
+                                                      .Name("ListaPeriodicos")
+                                                      .DataTextField("DescPeriodico")
+                                                      .DataValueField("CodigoPeriodico")
+                                                      .HtmlAttributes(new { style = "width:100%" })
+                                                      .Filter("contains")
+                                                      .DataSource(source =>
+                                                      {
+                                                          source.Read(read =>
+                                                          {
+                                                              read.Action("GetPeriodico", "Gestion");
+                                                          });
+                                                          //.ServerFiltering(true);
+                                                      })
+                                                    )
+
+                                                </div>
+
+                                                <div class="col-lg-4">
+                                                    <br />
+                                                    <p> <strong>Días:</strong></p>
+                                                    <input class="form-control" id="diasPublicacion" name="diasPublicacion" type="number" placeholder="Cant. de días a publicar">
+                                                </div>
+                                                @*</div>*@
+                                            </div>
+                                            <br />
+                                            <br />
+                                            <button class="btn btn-success" type="submit" onclick="submitForm()">Registrar Datos de Publicación</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                    }
+
+                </div>
+            </div>
+        </section>
+
+        @*<section class="sec-RegistroButtons well">
+            <div class="row">
+                <div class="col-lg-2">
+                    <button class="btn btn-default" type="submit">Bandejas</button>
+                </div>
+                <div class="col-lg-2">
+                    <button class="btn btn-default" type="submit">Titulares</button>
+                </div>
+                <div class="col-lg-2">
+                    <button class="btn btn-default" type="submit">Pagos</button>
+                </div>
+                <div class="col-lg-2">
+                    <button class="btn btn-default" type="submit" data-toggle="modal" data-target="#myModal">Historia</button>
+                </div>
+                <div class="col-lg-2">
+                    <button class="btn btn-default" type="submit">Cambios</button>
+                </div>
+                <div class="col-lg-2">
+                    <button class="btn btn-default" type="submit">Antecedentes</button>
+                </div>
+            </div>
+        </section>*@
+    </div>
+
+
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+        <script type="text/javascript">
+
+            $(document).ready(function () {
+                $("#mostrarAlertSuccess").hide();
+                $("#mostrarAlertDanger").hide();
+                $("#mostrarSuccess").hide();
+                $("#mostrarDanger").hide();
+                //$(".alert-danger").hide();
+                $('#nuevoExpNro').hide();
+                $("#btnRenovar").prop("disabled", true);
+
+                if (location.hash) {
+                    $('a[href=' + location.hash + ']').tab('show');
+                }
+                $(document.body).on("click", "a[data-toggle]", function (event) {
+                    location.hash = this.getAttribute("href");
+                });
+            });
+
+            function error_handler(e) {
+                if (e.errors) {
+                    var message = "Errors:\n";
+                    $.each(e.errors, function (key, value) {
+                        if ('errors' in value) {
+                            $.each(value.errors, function () {
+                                message += this + "\n";
+                            });
+                        }
+                    });
+                    alert(message);
+                }
+            }
+
+            function onRequestEnd(e) {
+                if (e.type == "destroy" && !e.response.Errors) {
+                   
+                    $("#mostrarSuccess").hide();
+                    $("#mostrarDanger").show();
+                    $("#mostrarDanger").fadeIn(2000).delay(7000).fadeOut(1000);
+                }
+                if (e.type == "destroy" && e.response.Errors) {
+                    $("#mostrarSuccess").show();
+                    $("#mostrarDanger").hide();
+                    $("#mostrarSuccess").fadeIn(2000).delay(7000).fadeOut(1000);
+                }
+            }
+            function pulsarExpediente(e) {
+                tecla = (document.all) ? e.keyCode : e.which;
+
+                return (tecla != 13);
+            }
+
+            function pulsarExpediente2(e) {
+                tecla = (document.all) ? e.keyCode : e.which;
+
+                return (tecla != 13);
+            }
+
+            function dataBound() {
+                //Selects all delete buttons
+                $("#Grid2 tbody tr .k-grid-delete").each(function () {
+                    var currentDataItem = $("#Grid2").data("kendoGrid").dataItem($(this).closest("tr"));
+                    //alert(currentDataItem.isDeletable)
+                    //Check in the current dataItem if the row is deletable
+                    if (currentDataItem.isDeletable == true) {
+                        $(this).remove();
+                    }
+                })
+
+
+            }
+
+            function dataBoundPub() {
+                //Selects all delete buttons
+                $("#Grid tbody tr .k-grid-delete").each(function () {
+                    var currentDataItem = $("#Grid").data("kendoGrid").dataItem($(this).closest("tr"));
+                    //alert(currentDataItem.isDeletable)
+                    //Check in the current dataItem if the row is deletable
+                    if (currentDataItem.isDeletable == true) {
+                        $(this).remove();
+                    }
+                })
+            }
+
+            $('#select').bind('change', function (e) {
+                if (this.value == 2) {
+                    $("#nuevoExpNro").show();
+                    $("#btnRenovar").prop("disabled", false);
+                    $("#btnRegistrar").prop("disabled", true);
+                    //$("#expedienteNro").prop("disabled", true);
+
+                } else {
+                    //$("#titular").prop("disabled", true);
+                    $("#nuevoExpNro").hide();
+                    $("#btnRenovar").prop("disabled", true);
+                    $("#btnRegistrar").prop("disabled", false);
+                    $("#expedienteNro").prop("disabled", false);
+                }
+
+            });
+
+            $('#btnRenovar').click(function () {
+                var nuevoExpediente = $('#nuevoExpediente').val();
+
+            });
+
+            $("#expedienteNro").keypress(function (e) {
+                var buscarExpediente = $("#expedienteNro").val();
+                var apoderado = document.getElementById('EmpresasList');
+                //var expediente = document.getElementById('expedienteNro');
+                var poder = document.getElementById('poder');
+                var estado = document.getElementById('Status');
+                var fechaSolicitud = document.getElementById('fechaSolicitud');
+                //var fechaEstado = document.getElementById('fechaEstado');
+                var marca = document.getElementById('Marca');
+                var agente = document.getElementById('Agente');
+                var pais = document.getElementById('pais2');
+                var tipo = document.getElementById('select');
+                var fechaVencimiento = document.getElementById('fechaVencimiento');
+                var existe = false;
+
+                tecla = (document.all) ? e.keyCode : e.which;
+                if (tecla == 13) {
+
+                    $.ajax({
+                        url: "@Url.Action("RetornarExpedienteEditar", "Gestion")",
+                        data: "{'buscar': '" + buscarExpediente + "' }",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+
+                            $(data).each(function (i) {
+                                existe = true;
+                                $("#EmpresasList").data("kendoDropDownList").value(data[i].CodSolicitante);
+                                $("#poder").data("kendoDropDownList").value(data[i].CodPoder);
+
+                                $("#Status").data("kendoDropDownList").value(data[i].CodEstado);
+                                //$("#EmpresasList").data("kendoDropDownList").value(data[i].FechaSolicitud);
+                                //$("#EmpresasList").data("kendoDropDownList").value(data[i].FechaEstado);
+                                fechaSolicitud.value = data[i].FechaSolicitud;
+                                //fechaEstado.value = data[i].FechaEstado;
+                                $("#Marca").data("kendoDropDownList").value(data[i].CodMarca);
+                                $("#Agente").data("kendoDropDownList").value(data[i].CodAgente);
+                                $("#pais2").data("kendoComboBox").value(data[i].CodPais);
+                                $("#select").data("kendoComboBox").value(data[i].TipoSolicitud);
+                                fechaVencimiento.value = data[i].FechaVencimiento;
+                                //tipo.value = data[i].TipoMovimiento;
+                                //$("#EmpresasList").data("kendoDropDownList").value(data[i].CodSolicitante);
+                            });
+                            if (!existe) {
+                                $("#EmpresasList").data("kendoDropDownList").value("");
+                                $("#poder").data("kendoDropDownList").value("");
+
+                                $("#Status").data("kendoDropDownList").value("");
+                                //$("#EmpresasList").data("kendoDropDownList").value(data[i].FechaSolicitud);
+                                //$("#EmpresasList").data("kendoDropDownList").value(data[i].FechaEstado);
+                                fechaSolicitud.value = "";
+                                //fechaEstado.value = "";
+                                $("#Marca").data("kendoDropDownList").value("");
+                                $("#Agente").data("kendoDropDownList").value("");
+                                $("#pais2").data("kendoComboBox").value("");
+                                $("#select").data("kendoComboBox").value("");
+                                fechaVencimiento.value = "";
+                            }
+                        },
+                        error: function (request, status, error) {
+
+                        },
+                        failure: function (response) {
+                            alert("arriva al failure");
+                        }
+                    });
+                }
+            });
+
+            function getConfirmation() {
+                var expNro = $("#expedienteNro").val();
+                var apoderado = document.getElementById('EmpresasList');
+                //var expediente = document.getElementById('expedienteNro');
+                var poder = document.getElementById('poder');
+                var estado = document.getElementById('Status');
+                var fechaSolicitud = document.getElementById('fechaSolicitud');
+                var fechaEstado = document.getElementById('fechaEstado');
+                var marca = document.getElementById('Marca');
+                var agente = document.getElementById('Agente');
+                var pais = document.getElementById('pais2');
+                var tipo = document.getElementById('select');
+                //var fechaVencimiento = document.getElementById('fechaVencimiento');
+
+                var retVal = confirm("¿Deseas anular el expediente?");
+                if (retVal == true) {
+                    //document.write("User wants to continue!");
+                    $.ajax({
+                        url: "@Url.Action("AnularExpediente", "Gestion")",
+                        data: "{'buscar': '" + expNro + "' }",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            if (data.Success == false) {
+                                $("#mostrarAlertSuccess").hide();
+                                $("#mostrarAlertDanger").show();
+                                var str = data.Message;
+                                $("#mostrarAlertDanger").html(str);
+                                $("#mostrarAlertDanger").fadeIn(2000).delay(7000).fadeOut(1000);
+                                //alert(data.Message);
+                            } else {
+                                //alert("El expediente ha sido borrado!");
+                                $("#mostrarAlertSuccess").show();
+                                $("#mostrarAlertDanger").hide();
+                                var str = data.Message;
+                                $("#mostrarAlertSuccess").html(str);
+                                $("#mostrarAlertSuccess").fadeIn(2000).delay(7000).fadeOut(1000);
+                            }
+                            $("#EmpresasList").data("kendoDropDownList").value("");
+                            $("#poder").data("kendoDropDownList").value("");
+                            $("#Status").data("kendoDropDownList").value("");
+                            fechaSolicitud.value = "";
+                            fechaEstado.value = "";
+                            $("#Marca").data("kendoDropDownList").value("");
+                            $("#Agente").data("kendoDropDownList").value("");
+                            $("#pais2").data("kendoComboBox").value("");
+                            $("#select").data("kendoComboBox").value("");
+
+                        },
+                        error: function (request, status, error) {
+
+                        },
+                        failure: function (response) {
+                            alert("arriva al failure");
+                        }
+                    });
+                    return true;
+                }
+                else {
+                    $("#EmpresasList").data("kendoDropDownList").value("");
+                    $("#poder").data("kendoDropDownList").value("");
+                    $("#Status").data("kendoDropDownList").value("");
+                    fechaSolicitud.value = "";
+                    fechaEstado.value = "";
+                    $("#Marca").data("kendoDropDownList").value("");
+                    $("#Agente").data("kendoDropDownList").value("");
+                    $("#pais2").data("kendoComboBox").value("");
+                    $("#select").data("kendoComboBox").value("");
+                    return false;
+                }
+            }
+
+            @*$("#btnAnular").click(function () {
+
+            var expNro = $("#expedienteNro").val();
+            var apoderado = document.getElementById('EmpresasList');
+            //var expediente = document.getElementById('expedienteNro');
+            var poder = document.getElementById('poder');
+            var estado = document.getElementById('Status');
+            var fechaSolicitud = document.getElementById('fechaSolicitud');
+            var fechaEstado = document.getElementById('fechaEstado');
+            var marca = document.getElementById('Marca');
+            var agente = document.getElementById('Agente');
+            var pais = document.getElementById('pais2');
+            var tipo = document.getElementById('select');
+            //var fechaVencimiento = document.getElementById('fechaVencimiento');
+
+            $.ajax({
+                url: "@Url.Action("AnularExpediente", "Gestion")",
+                data: "{'buscar': '" + expNro + "' }",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    if (data.Success == false) {
+                        $("#mostrarAlertSuccess").hide();
+                        $("#mostrarAlertDanger").show();
+                        var str = data.Message;
+                        $("#mostrarAlertDanger").html(str);
+                        $("#mostrarAlertDanger").fadeIn(2000).delay(7000).fadeOut(1000);
+                        //alert(data.Message);
+                    } else {
+                        //alert("El expediente ha sido borrado!");
+                        $("#mostrarAlertSuccess").show();
+                        $("#mostrarAlertDanger").hide();
+                        var str = data.Message;
+                        $("#mostrarAlertSuccess").html(str);
+                        $("#mostrarAlertSuccess").fadeIn(2000).delay(7000).fadeOut(1000);
+                    }
+                    $("#EmpresasList").data("kendoDropDownList").value("");
+                    $("#poder").data("kendoDropDownList").value("");
+                    $("#Status").data("kendoDropDownList").value("");
+                    fechaSolicitud.value = "";
+                    fechaEstado.value = "";
+                    $("#Marca").data("kendoDropDownList").value("");
+                    $("#Agente").data("kendoDropDownList").value("");
+                    $("#pais2").data("kendoComboBox").value("");
+                    $("#select").data("kendoComboBox").value("");
+
+                },
+                error: function (request, status, error) {
+
+                },
+                failure: function (response) {
+                    alert("arriva al failure");
+                }
+            });
+
+
+        })*@
+
+
+            function categoriesChangePub() {
+
+                var value = this.value(),
+                     grid = $("#Grid").data("kendoGrid");
+
+                $.ajax({
+                    url: '@Url.Action("GetPublicacionHistoria", "Gestion")',
+                    data: { codExp: value },
+                    type: 'POST',
+                    dataType: "json",
+                    success: function () {
+
+                        if (value) {
+                            grid.dataSource.filter({ field: "CodExpediente", operator: "eq", value: parseInt(value) });
+                        } else {
+                            grid.dataSource.filter({});
+                        }
+
+
+                    }
+
+                });
+
+            }
+
+            $(window).on('popstate', function () {
+                var anchor = location.hash || $("a[data-toggle=tab]").first().attr("href");
+                $('a[href=' + anchor + ']').tab('show');
+            });
+
+            $("#btn-Aceptar").click(function () {
+                var slt = $("#ExptList").val();
+                $.ajax({
+                    url: "@Url.Action("ObtenerDatosLogo", "Gestion")",
+                    data: "{'expedienteCod': '" + slt + "' }",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        $("#fechaIncioLogotipo").val(data.Model.FechaCreada);
+                        $("#statusLogotipo").val(data.Model.Status);
+                        $("#registroLogotipo").val(data.Model.RegistroReg);
+                        $("#registroInicioLogotipo").val(data.Model.FechaCreada);
+                        $("#registroVencimientoLogotipo").val(data.Model.VencimientoReg);
+                        $("#desdeLogotipo").val(data.Model.FechaDesdeReg);
+                    },
+                    error: function (request, status, error) {
+                        alert(xhr.responseText);
+                    },
+                    failure: function (response) {
+                        alert("arriva al failure");
+                    }
+                });
+            });
+
+            $("#BtnBuscar").click(function () {
+                var slt2 = $("#ExptList2").val();
+                $.ajax({
+                    url: "@Url.Action("ObtenerDatosRenovacion", "Gestion")",
+                    data: "{'expedienteCod': '" + slt2 + "' }",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+
+                        $("#fechaIncioRenovacion").val(data.Model.FechaCreacion);
+                        $("#statusRenovacion").val(data.Model.StatusRenovacion);
+                        $("#registroRenovacion").val(data.Model.RegistroRenovacion);
+                        $("#registroInicioRenovacion").val(data.Model.FechaInicioRenovacion);
+                        $("#registroVencimientoRenovacion").val(data.Model.VencimientoRenovacion);
+                        $("#registroInicioRenovacion2").val(data.Model.DesdeFechaRenovacion);
+                        $("#marcaRenovacion").val(data.Model.MarcaRenovacion);
+                        $("#ClaseGeneralRenovacion").val(data.Model.ClaseRenovacion);
+                        $("#edNizaRenovacion").val(data.Model.EdNizaRenovacion);
+                        $("#PrioridadRenovacion").val(data.Model.TipoRenovacion);
+                        $("#expRenovacionId").val(data.Model.PrioridadRenovacion);
+                        document.getElementById("fechaIncioRenovacion").disabled = true;
+                        document.getElementById("statusRenovacion").disabled = true;
+                        document.getElementById("registroRenovacion").disabled = true;
+                        document.getElementById("registroInicioRenovacion").disabled = true;
+                        document.getElementById("registroVencimientoRenovacion").disabled = true;
+                        document.getElementById("registroInicioRenovacion2").disabled = true;
+                        document.getElementById("marcaRenovacion").disabled = true;
+                        document.getElementById("ClaseGeneralRenovacion").disabled = true;
+                        document.getElementById("edNizaRenovacion").disabled = false;
+                        document.getElementById("PrioridadRenovacion").disabled = true;
+                        document.getElementById("expRenovacionId").disabled = true;
+                        $("#expRenovacionId").val(slt2);
+                    },
+                    error: function (request, status, error) {
+                        alert(xhr.responseText);
+                    },
+                    failure: function (response) {
+                        alert("arriva al failure");
+                    }
+                });
+            });
+
+            $("#buscarAll").click(function () {
+                var slt2 = $("#PoderExpediente").val();
+                $.ajax({
+                    url: "@Url.Action("BuscarDatosExpediente", "Gestion")",
+                    data: "{'expedienteCod': '" + slt2 + "' }",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+
+                    },
+                    error: function (request, status, error) {
+                        alert(xhr.responseText);
+                    },
+                    failure: function (response) {
+                        alert("arriva al failure");
+                    }
+                });
+            });
+
+
+
+        </script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+﻿@media only screen and (max-width:1024px) {
+   #grillaParecido{
+    margin-left:10px; 
+    float:left; 
+    width:100%;
+}
+    #enviarEmail{
+    /*float:right;*/ 
+    width:100%;
+}
+
+}

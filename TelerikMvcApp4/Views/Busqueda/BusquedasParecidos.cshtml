@@ -1,0 +1,282 @@
+﻿@{
+
+    ViewBag.Title = "Vigilancia de Marcas";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+</head>
+<body>
+    <div class="container body-content">
+        <section>
+            <h2>Vigilancia de Marcas</h2>
+            <br />
+
+            <div id="grillaParecido" class="row well" style="margin:0 auto; width:100%">
+                @*<div class="row">
+                    <div class="col-lg-6">
+                        <label class="category-label" for="category">Parecidos de la Marca:</label>
+                        @(Html.Kendo().DropDownList()
+                                    .Name("marcaParecido")
+                                    .OptionLabel("Todos")
+                                    .DataTextField("DescMarca")
+                                    .DataValueField("CodMarca")
+                                    .Filter("contains")
+                                    .AutoBind(false)
+                                    .Events(e => e.Change("categoriesChange"))
+                                    .HtmlAttributes(new { style = "width: 150px;" })
+                                    .DataSource(ds =>
+                                    {
+                                        ds.Read("GetMarcaParecido", "Gestion");
+                                    })
+                        )
+                    </div>
+                </div>*@
+                @*<div class="row">
+                    @(Html.Kendo().Grid<TelerikMvcApp4.Models.MarcaParecido>()
+                .Name("grid")
+                .Columns(columns =>
+                {
+                    //columns.Bound(c => c.CodMarca).Title("Marca");
+                    columns.Bound(c => c.DescMarca).Title("Denominación").Width(200).Filterable(ftb => ftb.Multi(true).Search(true));
+                    columns.Bound(c => c.DescTitular).Title("Titular").Width(350);
+                    columns.Bound(c => c.PorcentajeSimilitud).Title("Porc. Similitud").Filterable(false).HtmlAttributes(new { style = "text-align:center" }).Width(150);
+                    columns.Bound(c => c.PorcentajeError).Title("Porc. Error").Filterable(false).HtmlAttributes(new { style = "text-align:center" }).Width(150);
+                    //columns.Bound(c => c.EnviarCorreo).ClientTemplate("<input type='checkbox' />").Title("¿Enviar?").Filterable(false).Width(120).HtmlAttributes(new { @onclick = "click" });
+                })
+                .AutoBind(false)
+                .HtmlAttributes(new { style = "height:405px; width:100%" })
+                .Pageable(pageable => pageable
+                         .Input(true)
+                         .Numeric(false)
+                )
+                .Sortable()
+                .Scrollable(scr => scr.Height(250))
+                .Filterable()
+                .Resizable(resize => resize.Columns(true))
+                .Reorderable(reorder => reorder.Columns(true))
+                .ColumnMenu()
+                .Selectable(s => s.Mode(GridSelectionMode.Multiple))
+                .DataSource(dataSource => dataSource
+                    .Ajax()
+                    .Batch(true)
+                    .PageSize(10)
+                    .ServerOperation(false)
+                    .Model(model =>
+                    {
+                        model.Id(p => p.ParecidoCodigo);
+                    })
+                    .Read("ToolbarTemplate_Read", "Busqueda")
+                    ))
+                </div>*@
+
+                @(Html.Kendo().Grid<TelerikMvcApp4.Models.MarcaParecido>()
+                                          .Name("GridMarcaPar")
+                                          .Columns(columns =>
+                                          {
+                                              columns.Bound(e => e.DescMarca).Title("Marca").Width(70);
+                                              columns.Bound(e => e.DescTitular).Title("Titular").Width(100);
+                                              columns.Bound(e => e.NroClaseEdNiza).Title("Clase Ed Niza").Width(50).Filterable(false);
+                                              columns.Bound(e => e.EdNizaDescripcion).Title("Ed Niza Descripción").Width(100).Filterable(false);
+                                          })
+                                          .Sortable()
+                                          .Pageable()
+                                          .ColumnMenu()
+                                          .Selectable()
+                                          .Scrollable()
+                                          .Filterable(ftb => ftb.Mode(GridFilterMode.Row))
+                                          .ClientDetailTemplateId("client-template")
+                                          .HtmlAttributes(new { style = "height:550px;" })
+                                          .DataSource(dataSource => dataSource
+                                          .Ajax()
+                                          .Model(model =>
+                                            {
+                                                model.Id(p => p.CodMarca);
+                                            })
+                                          .PageSize(20)
+                                          .Read(read => read.Action("MarcaParecido", "Busqueda"))
+                                          )
+
+                )
+
+                <script id="client-template" type="text/x-kendo-template">
+                    @(Html.Kendo().TabStrip()
+                                        .Name("tabStrip_#=CodMarca#")
+                                        .SelectedIndex(0)
+                                        .Animation(animation => animation.Open(open => open.Fade(FadeDirection.In)))
+                                        .Items(items =>
+                                        {
+                                        items.Add().Text("Más Datos").Content(@<text>
+                        @(Html.Kendo().Grid<TelerikMvcApp4.Models.MarcaParecido>()
+                                               .Name("grid_#=CodMarca#")
+                                               .Columns(columns =>
+                                               {
+                                                   columns.Bound(o => o.DescMarca).Title("Marca").Width(110);
+                                                   columns.Bound(o => o.DescTitular).Title("Titular").Width(300);
+                                                   columns.Bound(o => o.PorcentajeSimilitud).Title("% Similitud").Width(70)
+                                                   .HtmlAttributes(new { style = "text-align:right" });
+                                                   columns.Bound(o => o.PorcentajeError).Title("% Error").Width(70)
+                                                   .HtmlAttributes(new { style = "text-align:right" });
+                                                   //columns.Bound(c => c.EnviarCorreo).ClientTemplate("<input type='checkbox' />").Title("¿Enviar?").Filterable(false).Width(120).HtmlAttributes(new { @onclick = "click" });
+                                               })
+                                                .DataSource(dataSource => dataSource
+                                                .Ajax()
+                                                .PageSize(5)
+                                                .Read(read => read.Action("MarcaParecidoDetalle", "Busqueda", new { codMarca = "#=CodMarca#" }))
+                                                )
+                                                .Selectable(s => s.Mode(GridSelectionMode.Multiple))
+                                                .ToClientTemplate())
+                                        </text>
+                                        );
+                                        })
+                                    .ToClientTemplate()
+                    )
+                </script>
+
+                <div id="enviarEmail" class="row">
+                    
+                    <div class="col-lg-4">
+                        <br />
+                        <p> <strong>Para:</strong></p>
+                        <input class="form-control" id="destinatario" name="destinatario" type="text" placeholder="Enviar a..." required autocomplete="off">
+                    </div>
+                    <br /><br />
+                    <div class="col-lg-3">
+                        <input  class="btn btn-success" type="submit" value="Enviar E-mail" id="send" onClick="window.location.reload()" style="float:right"/>
+                    </div>
+                    <div class="col-lg-3">
+                        <input class="form-control" id="numMarca" name="numMarca" type="text" style="display:none">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    
+    
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if ('@ViewBag.Message' == 'Sent') {
+                alert('Mail enviado correctamente');
+            }
+
+            document.getElementById("destinatario").required = true;
+            $("#numMarca").hide();
+
+            //$("#Grid2").KendoGrid({
+            //    pdfExport: function (e) {
+            //        $("#Grid2 input:checkbox:not(:checked)").each(function () {
+            //            $(this).parents("tr").addClass("hiddenRow");
+            //        });
+            //        e.promise
+            //          .done(function () {
+            //              $("#Grid2 input:checkbox:not(:checked)").each(function () {
+            //                  $(this).parents("tr").removeClass("hiddenRow");
+            //              });
+            //          });
+            //    }
+            //})
+
+
+            $('#send').click(function () {
+                var items = {};
+                var grids = $('.k-detail-row .k-grid');
+                var cont = 0;
+                var enviarDest = $('#destinatario').val();
+                for (var i = 0; i < grids.length; i++) {
+                    var grid = $(grids[i]).data('kendoGrid');
+                    //var grid = $('.k-detail-row .k-grid').data('kendoGrid');
+                    var selectedElements = grid.select();
+                    for (var j = 0; j < selectedElements.length; j++) {
+                        var item = grid.dataItem(selectedElements[j]);
+                        items['anyName[' + cont + '].CodMarca'] = item.CodMarca;
+                        items['anyName[' + cont + '].DescMarca'] = item.DescMarca;
+                        items['anyName[' + cont + '].ParecidoCodigo'] = item.ParecidoCodigo;
+                        items['anyName[' + cont + '].CodTitular'] = item.CodTitular;
+                        items["destinatario"] = enviarDest;
+                        cont += 1;
+                    }
+                }
+                $.ajax({
+                    url: '@Url.Action("Index", "Busqueda")',
+                    type: "POST",
+                    async: false,
+                    data: items,
+                    success: function (result) {
+                        console.log(result);
+                    }
+                })
+            })
+        });
+
+        //$("#btnPdfExport").kendoButton({
+        //    click: function () {
+        //        $("#Grid2").getKendoGrid().saveAsPDF();
+        //    }
+        //});
+
+
+
+        function categoriesChange() {
+            var value = this.value(),
+                 grid = $("#grid").data("kendoGrid");
+            var marca = document.getElementById('numMarca');
+            //var marca = document.GetElementById('numMarca');
+            marca.value = value;
+            //alert(marca.value);
+
+            $.ajax({
+                url: '@Url.Action("ToolbarTemplate_Read", "Busqueda")',
+                data: { CodMarca: value },
+                type: 'POST',
+                dataType: "json",
+                success: function () {
+                    if (value) {
+                        grid.dataSource.filter({ field: "CodMarca", operator: "eq", value: parseInt(value) });
+                    } else {
+                        grid.dataSource.filter({});
+                    }
+                }
+            });
+        }
+        @*function categoriesChange() {
+            var value = this.value();
+            $.ajax({
+            url: "@Url.Action("BusquedaMarca", "Busqueda")",
+                data: "{'CodMarca': '" + value + "'}",
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                $.each(data, function (i, item) {
+                    alert(item.DescMarca)
+                    var s = '<tr>';
+                    s += '<td>' + item.DescMarca + '</td>';
+                    s += '<td>' + item.DescTitular + '</td>';
+                    s += '<td>' + item.PorcentajeSimilitud + '</td>';
+                    s += '<td>' + item.PorcentajeError + '</td>';
+                    s += '</tr>';
+
+                    $("#").clone().append(s);
+                });
+            },
+            error: function (request, status, error) {
+                alert(xhr.responseText );
+            },
+            failure: function (response) {
+                alert("arriva al failure");
+            }
+            });
+        }*@
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,832 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>MantenimientoDiseño</title>
+    <link href="@Url.Content("~/Content/kendo/2016.1.412/kendo.common.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2016.1.412/kendo.mobile.all.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2016.1.412/kendo.dataviz.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2016.1.412/kendo.bootstrap.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2016.1.412/kendo.dataviz.bootstrap.min.css")" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script src="@Url.Content("~/Scripts/kendo/2016.1.412/jquery.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2016.1.412/jszip.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2016.1.412/kendo.all.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2016.1.412/kendo.aspnetmvc.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo.modernizr.custom.js")"></script>
+    <link href="@Url.Content("~/Content/site.css")" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Century | Next</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav ul-Menu">
+                    <li>@Html.ActionLink("Inicio", "Index", "Gestion")</li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Registro de Marca <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="~/Gestion/RegistroMarca">Solicitud de Marca </a></li>
+                            <li><a href="~/Gestion/Renovacion">Renovación </a></li>
+                            <li><a href="~/Gestion/PatenteInversion">Patente de Invensión</a></li>
+                            <li class="divider"></li>
+                            <li><a href="~/Gestion/DibujoIndustriales">Dibujos Modelos Industriales</a></li>
+                            <li class="divider"></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true">Mantenimiento<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="~/Mantenimiento/MantenimientoPoderes">Mantenimiento de Poderes</a></li>
+                            <li class="divider"></li>
+                            <li><a href="~/Mantenimiento/MantenimientoGeneral">Mantenimiento General</a></li>
+                            <li class="divider"></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Busqueda de Marca<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="~/Busqueda/BusquedaMarca">Busqueda  de Marcas</a></li>
+                            <li><a href="~/Busqueda/BusquedasParecidos">Busqueda de parecidos fonéticos</a></li>
+                            <li class="divider"></li>
+                            <li><a href="~/Busqueda/DibujoIndustriales">Dibujos Modelos Industriales</a></li>
+                            <li class="divider"></li>
+                            <li><a href="~/Busqueda/BusquedaMarca">Vigilancia de Marcas</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <div class="nav navbar-nav navbar-right">
+                    <form class="navbar-form navbar-left" role="search">
+                        <div class="form-group">
+                            @*<input class="form-control" type="text" placeholder="Busqueda">*@
+                            @(Html.Kendo().AutoComplete()
+                              .Name("countries")
+                              .Filter("startswith")
+                              .Placeholder("Busqueda")
+                              .BindTo(new string[] {
+                                    "Albania",
+                                    "Andorra",
+                                    "Armenia",
+                                    "Austria",
+                                    "Azerbaijan",
+                                    "Belarus",
+                                    "Belgium",
+                                    "Bosnia & Herzegovina",
+                                    "Bulgaria",
+                                    "Croatia",
+                                    "Cyprus",
+                                    "Czech Republic",
+                                    "Denmark",
+                                    "Estonia",
+                                    "Finland",
+                                    "France",
+                                    "Georgia",
+                                    "Germany",
+                                    "Greece",
+                                    "Hungary",
+                                    "Iceland",
+                                    "Ireland",
+                                    "Italy",
+                                    "Kosovo",
+                                    "Latvia",
+                                    "Liechtenstein",
+                                    "Lithuania",
+                                    "Luxembourg",
+                                    "Macedonia",
+                                    "Malta",
+                                    "Moldova",
+                                    "Monaco",
+                                    "Montenegro",
+                                    "Netherlands",
+                                    "Norway",
+                                    "Poland",
+                                    "Portugal",
+                                    "Romania",
+                                    "Russia",
+                                    "San Marino",
+                                    "Serbia",
+                                    "Slovakia",
+                                    "Slovenia",
+                                    "Spain",
+                                    "Sweden",
+                                    "Switzerland",
+                                    "Turkey",
+                                    "Ukraine",
+                                    "United Kingdom",
+                                    "Vatican City"
+                              })
+                              .Separator(", ").HtmlAttributes(new { @class = "form-control" })
+                            )
+
+
+                        </div>
+                        <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </nav>
+        
+    <h2>Mantenimiento de Diseño</h2>
+    <section class="well" style="margin:0 auto;width:90%;">
+        <div class="row" style="margin:0 auto;width:80%;">
+            <div class="col-lg-3">
+                <button class="btn btn-primary btn-lg" type="submit">TITULARES</button>
+            </div>
+            <div class="col-lg-3">
+                <button class="btn btn-primary btn-lg" type="submit">CREADORES</button>
+            </div>
+            <div class="col-lg-3">
+                <button class="btn btn-primary btn-lg" type="submit">HISTORIA</button>
+            </div>
+            <div class="col-lg-3">
+                <button class="btn btn-primary btn-lg" type="submit">VARIACIONES</button>
+            </div>
+        </div>
+    </section>
+    <br />
+    <section class="sec-Registro">
+        <ul class="nav nav-tabs ul-Registro">
+            <li class="active"><a aria-expanded="true" href="#home" data-toggle="tab">General</a></li>
+            <li><a aria-expanded="false" href="#profile" data-toggle="tab">Titulares/Creadores</a></li>
+            <li><a aria-expanded="false" href="#figura" data-toggle="tab">Figura</a></li>
+        </ul>
+        
+        <div class="tab-content Div-Registro dv-ContainerForm" id="myTabContent">
+           
+            <div class="tab-pane fade active in" id="home">
+                    @using (Html.BeginForm("GetMntDiseño", "Mantenimiento", FormMethod.Post, new { @id = "Frm-login", role = "form", @class = "form-horizontal" }))
+                    {
+                        <div class="row" style="margin-top:5px;margin-left:5px;">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <div class="col-lg-10">
+                                        <p>
+                                            <strong>Expediente:</strong>
+                                            @(Html.Kendo().DropDownList()
+                                        .Name("ExptList2")
+                                        .DataTextField("DescExpediente")
+                                                        .DataValueField("DescExpediente")
+                                        .HtmlAttributes(new { style = "width:70%", @class = "form-control" })
+                                        .Filter("contains")
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("GetExpediente", "Gestion");
+                                            })
+                                            .ServerFiltering(true);
+                                        })
+                                            )
+                                        </p>
+                                    </div>
+                                    <button type="button" class="btn btn-primary btn-lg" id="btnMntDiseño" name="btnMntDiseño">
+                                        Buscar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <div class="col-lg-10">
+                                        <p><strong>Del:</strong></p>
+                                        <input class="form-control" id="fechaIncioRenovacion" name="fechaIncioRenovacion" type="text" placeholder="Expediente Renovacion">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <div class="col-lg-10">
+                                        <p><strong>Status:</strong></p>
+                                        @(Html.Kendo().DropDownList()
+                                          .Name("Status")
+                                          .DataTextField("DesStatus")
+                                          .DataValueField("CodStatus")
+                                          .HtmlAttributes(new { style = "width:100%", @class = "form-control" })
+                                          .Filter("contains")
+                                          .DataSource(source =>
+                                          {
+                                              source.Read(read =>
+                                              {
+                                                  read.Action("GetStatus", "Gestion");
+                                              })
+                                              .ServerFiltering(true);
+                                          })
+                                        )
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <div class="col-lg-10">
+                                        <p><strong>Registro:</strong></p>
+                                        <input class="form-control" id="registroRenovacion" name="registroRenovacion" type="text" placeholder="Registro Renovacion">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <div class="col-lg-10">
+                                        <p><strong>Del:</strong></p>
+                                        <input class="form-control" id="registroInicioRenovacion" name="registroInicioRenovacion" type="text" placeholder="Registro Inicio Fecha Renovacion">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <div class="col-lg-10">
+                                        <p><strong>Vencimiento:</strong></p>
+                                        <input class="form-control" id="registroVencimientoRenovacion" name="registroVencimientoRenovacion" type="text" placeholder="Vencimiento Registro Renovacion">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <div class="col-lg-10">
+                                        <p><strong>Desde:</strong></p>
+                                        <input class="form-control" id="registroInicioRenovacion2" name="registroInicioRenovacion2" type="text" placeholder="Inicio del Registro Renovacion">
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <div class="col-lg-10">
+                                        <p><strong>Fecha Creación:</strong></p>
+                                        @(Html.Kendo().DateTimePicker()
+                                            .Name("fechaCreacionRenovacion")
+                                            .Value(DateTime.Now)
+                                            .HtmlAttributes(new { style = "width:100%;" })
+                                        )
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <div class="col-lg-10">
+                                        <p><strong>Fecha Vencimiento:</strong></p>
+                                        @(Html.Kendo().DateTimePicker()
+                                            .Name("fechaVencimientoRenovacion")
+                                            .Value(DateTime.Now.AddYears(10))
+                                            .HtmlAttributes(new { style = "width:100%;" })
+                                        )
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <div class="col-lg-10">
+                                        <p><strong>Fecha Renovación:</strong></p>
+                                        @(Html.Kendo().DateTimePicker()
+                                            .Name("fechaRenovacion")
+                                            .Value(DateTime.Now)
+                                            .HtmlAttributes(new { style = "width:100%;" })
+                                        )
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-lg-5">
+                                <div class="form-group">
+                                    <div class="col-lg-10">
+                                        <p><strong>Marca:</strong></p>
+                                        <textarea class="form-control" id="marcaRenovacion" name="marcaRenovacion" rows="5"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <p>
+                                    <strong>Clase</strong>
+                                    <input class="form-control" id="ClaseGeneralRenovacion" name="ClaseGeneralRenovacion" type="text" placeholder="Clase">
+                                </p>
+                                <p>
+                                    <strong>Ed. Niza</strong>
+                                    <input class="form-control" id="edNizaRenovacion" name="edNizaRenovacion" type="text" placeholder="Ed. Niza">
+                                </p>
+                            </div>  
+                            <div class="col-lg-3">
+                                <div class="form-group">                                    
+                                        <p>
+                                            <strong>Tipo:</strong>
+                                            <select class="form-control" id="selectTipo" name="selectTipo">
+                                                <option value="Registro">Registro</option>
+                                                <option value="1ra Renovación">1ra Renovación</option>
+                                                <option value="2da Renovación">2da Renovación</option>
+                                            </select>
+                                        </p>                                    
+                                </div>
+                            </div>                            
+                        </div>
+                        <br />
+                        @*<div class="row">
+                                <div class="col-lg-4"><strong>Prioridad</strong></div>
+                                <input class="form-control" id="PrioridadRenovacion" name="PrioridadRenovacion" type="text" placeholder="Prioridad">
+                            </div>*@
+                        <br />
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <div class="col-lg-10">
+                                        <p><strong>Renovacion en Expend:</strong></p>
+                                        <input class="form-control" id="expRenovacionId" name="expRenovacionId" type="text" placeholder="Renovacion en Expend">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <div class="col-lg-10">
+                                        <p><strong>Renueva Reg:</strong></p>
+                                        <input class="form-control" id="regRenovacion" name="regRenovacion" type="text" placeholder="Renueva Reg">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row well" style="width:15%;float:right;margin-right:20px;margin-bottom:10px;">
+                                <button type="submit" class="btn btn-primary btn-lg" id="btnAceptar" name="btnAceptar" style="margin:0 auto;">
+                                    Renovar
+                                </button>
+                            </div>
+                        </div>
+
+                        @*<div class="row">
+                                <div class="form-group">
+                                    <div class="col-lg-10">
+                                        <p>Modificada:</p>
+                                        <input class="form-control" id="modificadaRenovacion" name="modificadaRenovacion" type="text" placeholder="Modificada">
+                                    </div>
+                                </div>
+                            </div>*@
+                    }
+                </div>
+           
+            <div class="tab-pane fade" id="profile">
+                <div class="container-fluid">
+                   @using (Html.BeginForm("GetTitularesMant", "Mantenimiento", FormMethod.Post, new { @id = "Frm-login", role = "form", @class = "form-horizontal" }))
+                   {
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <div class="col-lg-10">
+                                    <p>
+                                        <strong>Expediente:</strong>
+                                        @(Html.Kendo().DropDownList()
+                                        .Name("ExptList22")
+                                        .DataTextField("DescExpediente")
+                                                        .DataValueField("DescExpediente")
+                                        .HtmlAttributes(new { style = "width:70%", @class = "form-control" })
+                                        .Filter("contains")
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("GetExpediente", "Gestion");
+                                            })
+                                            .ServerFiltering(true);
+                                        })
+                                        )
+                                    </p>
+                                </div>
+                                <button type="button" class="btn btn-primary btn-lg" id="btnMntDiseño2" name="btnMntDiseño2">
+                                    Buscar
+                                </button>
+                            </div>
+                        </div>                      
+                        <br />                                                        
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <div class="col-lg-10">
+                                    <p><strong>Status:</strong></p>
+                                    @(Html.Kendo().DropDownList()
+                                          .Name("StatusQ")
+                                          .DataTextField("DesStatus")
+                                          .DataValueField("CodStatus")
+                                          .HtmlAttributes(new { style = "width:100%", @class = "form-control" })
+                                          .Filter("contains")
+                                          .DataSource(source =>
+                                          {
+                                              source.Read(read =>
+                                              {
+                                                  read.Action("GetStatus", "Gestion");
+                                              })
+                                              .ServerFiltering(true);
+                                          })
+                                    )
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <div class="col-lg-10">
+                                    <p>
+                                        <strong>Tipo:</strong>
+                                        <select class="form-control" id="TipoSlt2" name="TipoSlt2">
+                                            <option value="Registro">Registro</option>
+                                            <option value="1ra Renovación">1ra Renovación</option>
+                                            <option value="2da Renovación">2da Renovación</option>
+                                        </select>
+                                    </p>
+                                </div>
+                              </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="col-lg-10">
+                                <p><strong>Titular:</strong></p>
+                                <input class="form-control" id="titularCreadoresMnt" name="titularCreadoresMnt" type="text" placeholder="Expediente">
+                                                            
+                            </div>
+                        </div>
+                       
+                    </div>
+                    <br />
+                    <div class="row dv-ContainerForm">
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <div class="col-lg-10">
+                                            <p><strong>Registro:</strong></p>
+                                            <input class="form-control" id="registroCreadoresMant" name="registroCreadoresMant" type="text" placeholder="Registro">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <div class="col-lg-10">
+                                            <p><strong>Del:</strong></p>
+                                            <input class="form-control" id="registroInicioCreadoresMant" name="registroInicioCreadoresMant" type="text" placeholder="Registro Inicio Fecha">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <div class="col-lg-10">
+                                            <p><strong>Vencimiento:</strong></p>
+                                            <input class="form-control" id="registroVencimientoCreadoresMant" name="registroVencimientoCreadoresMant" type="text" placeholder="Vencimiento Registro">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <div class="col-lg-10">
+                                            <p><strong>Desde:</strong></p>
+                                            <input class="form-control" id="ReginiCreadores" name="ReginiCreadores" type="text" placeholder="Inicio del Registro">
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                            </div>
+                            <div class="row well" style="width:15%;float:right;margin-right:20px;margin-bottom:10px;margin-top:10px;">
+                                <button type="submit" class="btn btn-primary btn-lg" id="btnAceptar" name="btnAceptar" style="margin:0 auto;">
+                                    Renovar
+                                </button>
+                            </div>
+                   }
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="figura">
+             @using (Html.BeginForm("GetFiguraMant", "Mantenimiento", FormMethod.Post, new { @id = "Frm-login", role = "form",   @class = "form-horizontal" }))
+                {
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <div class="col-lg-10">
+                                        <p>
+                                            <strong>Expediente:</strong>
+                                            @(Html.Kendo().DropDownList()
+                                        .Name("ExptList222")
+                                        .DataTextField("DescExpediente")
+                                                        .DataValueField("DescExpediente")
+                                        .HtmlAttributes(new { style = "width:70%", @class = "form-control" })
+                                        .Filter("contains")
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("GetExpediente", "Gestion");
+                                            })
+                                            .ServerFiltering(true);
+                                        })
+                                            )
+                                        </p>
+                                    </div>                                  
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">                             
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <div class="col-lg-10">
+                                        <p><strong>Del:</strong></p>
+                                        @(Html.Kendo().DateTimePicker()
+                                            .Name("fechaCreacionRenovacion2")
+                                            .Value(DateTime.Now)
+                                            .HtmlAttributes(new { style = "width:100%;" })
+                                        )
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <div class="col-lg-10">
+                                        <p><strong>Status:</strong></p>
+                                        @(Html.Kendo().DropDownList()
+                                          .Name("StatusQR")
+                                          .DataTextField("DesStatus")
+                                          .DataValueField("CodStatus")
+                                          .HtmlAttributes(new { style = "width:100%", @class = "form-control" })
+                                          .Filter("contains")
+                                          .DataSource(source =>
+                                          {
+                                              source.Read(read =>
+                                              {
+                                                  read.Action("GetStatus", "Gestion");
+                                              })
+                                              .ServerFiltering(true);
+                                          })
+                                        )
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row dv-ContainerForm">
+                            <br />
+                            <div class="col-lg-6" style="width:30%;">
+                                @(Html.Kendo().Upload()
+                                    .Name("files")
+                                )
+                            </div>
+
+                            <div class="col-lg-6" style="width:70%;">
+                                <div class="row">                                   
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <p><strong>Desde:</strong></p>
+                                            <div class="col-lg-10">
+                                                @(Html.Kendo().DateTimePicker()
+                                            .Name("fechaCreacion2")
+                                            .Value(DateTime.Now)
+                                            .HtmlAttributes(new { style = "width:100%;" })
+                                                )
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="form-group">
+                                    <div class="col-lg-10">
+                                        <p><strong>Tipo de Diseño</strong></p>  
+                                        <select class="form-control" id="tpDiseño" name="tpDiseño">
+                                            <option value="value">Dibujo</option>
+                                            <option value="value">Dibujo</option>
+                                            <option value="value">Dibujo</option>
+                                        </select>
+                                        </div>
+                                </div>
+                                <br />
+                                <div class="form-group">
+                                    <div class="col-lg-10">
+                                        <p><strong>Variaciones</strong></p>
+                                        <select class="form-control" id="variacionesMnt" name="variacionesMnt">
+                                            <option value="value">Dibujo</option>
+                                            <option value="value">Dibujo</option>
+                                            <option value="value">Modelo</option>
+                                        </select>
+                                    </div>
+                                </div>                                
+                             </div>
+                        </div>
+                        <div class="row well" style="width:15%;float:right;margin-right:20px;margin-bottom:10px;margin-top:10px;">
+                            <button type="submit" class="btn btn-primary btn-lg" id="btnAceptar" name="btnAceptar" style="margin:0 auto;">
+                                Renovar
+                            </button>
+                        </div>
+                    </div>
+                 
+             }
+            </div>
+
+        </div>  
+         
+        
+    </section>
+    <br />
+    
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script>
+
+        @*$("#").click(function () {
+            var expCod = $("#ExpedienteList").val();
+            $.ajax({
+                url: "@Url.Action("GetMntGeneral", "Mantenimiento")",
+                data: "{'expedienteCod': '" + expCod + "' }",
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                //expendGeneralMantenimiento
+                //fechaIncioGeneralMant
+                //statusGeneralMant
+                //registroGeneralMant
+                //registroInicioGeneralMant
+                //registroVencimientoGeneralMant
+                //registroInicioMant
+                //titutloMant
+                //ClaseGeneralMant
+                //edNizaMant
+                //registroRadioMant
+                //renovacionMant
+                //segundaRenovacionMant
+                //poderMant
+                //agenteMant
+                //numeroSolicitudMant
+                //fechaSolicitudMant
+                //renovacionExpMant
+                //fechaGeneral
+                //paisesMant
+               
+                $("#fechaIncioRenovacion").val(data.Model.FechaCreacion);
+                $("#statusRenovacion").val(data.Model.StatusRenovacion);
+                $("#registroRenovacion").val(data.Model.RegistroRenovacion);
+                $("#registroInicioRenovacion").val(data.Model.FechaInicioRenovacion);
+                $("#registroVencimientoRenovacion").val(data.Model.VencimientoRenovacion);
+                $("#registroInicioRenovacion2").val(data.Model.DesdeFechaRenovacion);
+                $("#marcaRenovacion").val(data.Model.MarcaRenovacion);
+                $("#ClaseGeneralRenovacion").val(data.Model.ClaseRenovacion);
+                $("#edNizaRenovacion").val(data.Model.EdNizaRenovacion);
+                $("#PrioridadRenovacion").val(data.Model.TipoRenovacion);
+                $("#expRenovacionId").val(data.Model.PrioridadRenovacion);
+                
+               
+                //registroVencimientoRenovacion
+                //registroInicioRenovacion2
+            },
+            error: function (request, status, error) {
+                alert(xhr.responseText );
+            },
+            failure: function (response) {
+                alert("arriva al failure");
+            }
+        });
+        });*@
+
+        $("#btnMntDiseño").click(function () {
+            var slt2 = $("#ExptList2").val();           
+            $.ajax({
+                url: "@Url.Action("ObtenerDatosRenovacion", "Gestion")",
+                data: "{'expedienteCod': '" + slt2 + "' }",
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+             
+                $("#fechaIncioRenovacion").val(data.Model.FechaCreacion);
+                $("#statusRenovacion").val(data.Model.StatusRenovacion);
+                $("#registroRenovacion").val(data.Model.RegistroRenovacion);
+                $("#registroInicioRenovacion").val(data.Model.FechaInicioRenovacion);
+                $("#registroVencimientoRenovacion").val(data.Model.VencimientoRenovacion);
+                $("#registroInicioRenovacion2").val(data.Model.DesdeFechaRenovacion);
+                $("#marcaRenovacion").val(data.Model.MarcaRenovacion);
+                $("#ClaseGeneralRenovacion").val(data.Model.ClaseRenovacion);
+                $("#edNizaRenovacion").val(data.Model.EdNizaRenovacion);
+                $("#PrioridadRenovacion").val(data.Model.TipoRenovacion);
+                $("#expRenovacionId").val(data.Model.PrioridadRenovacion);
+               
+                alert("demo");
+                document.getElementById("registroInicioRenovacion").disabled = true;
+                document.getElementById("registroVencimientoRenovacion").disabled = true;
+                document.getElementById("registroInicioRenovacion2").disabled = true;
+            },
+            error: function (request, status, error) {
+                alert(xhr.responseText );
+            },
+            failure: function (response) {
+                alert("arriva al failure");
+            }
+        });
+        });
+
+        $("#btnMntDiseño2").click(function () {
+            var slt2 = $("#ExptList22").val();
+                $.ajax({
+                    url: "@Url.Action("ObtenerTitularesRenovacion", "Mantenimiento")",
+                    data: "{'expedienteCod': '" + slt2 + "' }",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                         
+                    //titularCreadoresMnt
+                    //creadorCreadoresMnt
+                    //registroCreadoresMant
+                    //registroInicioCreadoresMant
+                    //registroVencimientoCreadoresMant
+                    //registroInicioCreadoresMant
+                    $("#ReginiCreadores").val(data.Model.FechaInicio);
+                    $("#titularCreadoresMnt").val(data.Model.CreadorExp);
+                    //$("#creadorCreadoresMnt").val(data.Model.CreadorExp);
+                    //$("#statusCreadoresMant").val(data.Model.Status);
+                    $("#registroCreadoresMant").val(data.Model.RegExp);
+                    $("#registroVencimientoCreadoresMant").val(data.Model.FechaVencimiento);
+                    $("#registroInicioCreadoresMant").val(data.Model.FechaCreacion);
+                },
+                error: function (request, status, error) {
+                    alert(xhr.responseText );
+                },
+                failure: function (response) {
+                    alert("arriva al failure");
+                }
+            });
+        });
+
+        $("#btnMntFigura").click(function () {
+            var slt2 = $("#ExptList222").val();
+            $.ajax({
+                url: "@Url.Action("ObtenerMntFigura", "Mantenimiento")",
+                data: "{'expedienteCod': '" + slt2 + "' }",
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                         
+                //titularCreadoresMnt
+                //creadorCreadoresMnt
+                //registroCreadoresMant
+                //registroInicioCreadoresMant
+                //registroVencimientoCreadoresMant
+                //registroInicioCreadoresMant
+                $("#ReginiCreadores").val(data.Model.FechaInicio);
+                $("#titularCreadoresMnt").val(data.Model.CreadorExp);
+                //$("#creadorCreadoresMnt").val(data.Model.CreadorExp);
+                //$("#statusCreadoresMant").val(data.Model.Status);
+                $("#registroCreadoresMant").val(data.Model.RegExp);
+                $("#registroVencimientoCreadoresMant").val(data.Model.FechaVencimiento);
+                $("#registroInicioCreadoresMant").val(data.Model.FechaCreacion);
+            },
+            error: function (request, status, error) {
+                alert(xhr.responseText );
+            },
+            failure: function (response) {
+                alert("arriva al failure");
+            }
+        });
+        });
+
+        @*$("#btn-Aceptar").click(function () {
+            var slt = $("#ExptList").val();
+            $.ajax({
+                url: "@Url.Action("ObtenerDatosLogo", "Gestion")",
+                data: "{'expedienteCod': '" + slt + "' }",
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                $("#fechaIncioLogotipo").val(data.Model.FechaCreada);
+                $("#statusLogotipo").val(data.Model.Status);
+                $("#registroLogotipo").val(data.Model.RegistroReg);
+                $("#registroInicioLogotipo").val(data.Model.FechaCreada);
+                $("#registroVencimientoLogotipo").val(data.Model.VencimientoReg);
+                $("#desdeLogotipo").val(data.Model.FechaDesdeReg);
+            },
+            error: function (request, status, error) {
+                alert(xhr.responseText );
+            },
+            failure: function (response) {
+                alert("arriva al failure");
+            }
+        });
+        });*@
+    </script>
+</body>
+    
+</html>

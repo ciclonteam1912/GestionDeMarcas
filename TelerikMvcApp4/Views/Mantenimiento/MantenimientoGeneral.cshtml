@@ -1,0 +1,3118 @@
+﻿@*@model IEnumerable<TelerikMvcApp4.Models.MntPoder>*@
+
+@{
+    ViewBag.Title = "Mantenimientos";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+</head>
+<body>
+    @*<div class="container body-content">*@
+        <div class="alert alert-dismissible alert-success successDiv" id="kokotecheId" style="display:none;">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Well done!</strong> You successfully read <a href="#" class="alert-link">this important alert message</a>.
+        </div>
+
+
+        <section class="container-fluid">
+            <div class="row">
+                <div class="col-lg-6" style="width:15%;height:100%;position:fixed;text-align:left;font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                    <div class="list-group">
+                        <a class="list-group-item" href="#sistema">Sistema</a>
+                        <a class="list-group-item" href="#empresa">Titular</a>
+                        <a class="list-group-item" href="#Poder">Poder</a>
+                        <a class="list-group-item" href="#Agente">Agente</a>
+                        <a class="list-group-item" href="#Periodico">Periódico</a>
+                        <a class="list-group-item" href="#marca">Marca</a>
+                        <a class="list-group-item" href="#TipoMarca">Tipo de Marca</a>
+                        <a class="list-group-item" href="#Clase">Clase</a>
+                        <a class="list-group-item" href="#EdNiza">Ed Niza</a>
+                        <a class="list-group-item" href="#Estado">Estado</a>
+                        <a class="list-group-item" href="#Pais">País</a>
+                        <a class="list-group-item" href="#TipoMov">Tipo de Movimiento</a>
+                        <a class="list-group-item" href="#TipoSolicitud">Tipo de Solicitud</a>
+                    </div>
+                </div>
+
+                <div class="col-lg-6" style="width:85%;height:100%;float:right;">
+                    <div class="panel panel-primary panel-Mantenimiento dvSombreadoMnt" id="sistema">
+                        <div class="panel-heading panel-MantenimientoHead"><p style="color:white;font-size:14px;font-family:'Segoe UI Light';">Mantenimiento del Sistema</p></div>
+                        <div class="panel-body">
+                            @using (Html.BeginForm("GetConfiguracion", "Mantenimiento", FormMethod.Post, new { @id = "Frm-Configuracion", role = "form", @class = "form-horizontal" }))
+                            {
+                                <fieldset>
+                                    <legend>Mantenimiento del Sistema</legend>
+                                    <div class="col-lg-6">
+                                        <p> <strong>Porcentaje de parecido fonético:</strong></p>
+                                        <input class="form-control" id="porcentajeParecido" name="porcentajeParecido" type="number" placeholder="Porcentaje" required autocomplete="off" onkeypress="return pulsar(event)">
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <p> <strong>Días de espera:</strong></p>
+                                        <input class="form-control" id="diasEspera" name="diasEspera" type="number" placeholder="Días de espera" required autocomplete="off">
+                                    </div>
+
+                                    <div>
+                                        <div class="col-lg-10" style="margin-top:20px;">
+                                            <button class="btn btn-primary" type="submit">Aceptar</button>
+                                            <button class="btn btn-primary" type="reset">Cancelar</button>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            }
+                        </div>
+                    </div>
+                    <br />
+                    <div class="panel panel-primary panel-Mantenimiento dvSombreadoMnt" id="empresa">
+                        <div class="panel-heading panel-MantenimientoHead"><p style="color:white;font-size:14px;font-family:'Segoe UI Light';">Titular</p></div>
+                        <div class="panel-body">
+                            @using (Html.BeginForm("GetRegistroApoderado", "Mantenimiento", FormMethod.Post, new { @id = "Frm-loginEmpresa", role = "form", @class = "form-horizontal" }))
+                            {
+                                <fieldset>
+                                    <legend>Mantenimiento de Titular</legend>
+                                    <div class="col-lg-2">
+                                        <p> <strong>Código:</strong></p>
+                                        <input class="form-control" id="codigoApoderado" name="codigoApoderado" type="number" placeholder="Código" required autocomplete="off" onkeypress="return pulsar(event)">
+                                    </div>
+                                    <div class="form-group-sm">
+                                        <div class="col-lg-6" style="margin-bottom:10px;">
+                                            <p> <strong>Elige el tipo de titular:</strong></p>
+                                            @(Html.Kendo().ComboBox()
+                                                  .Name("comboPersona")
+                                                  .DataTextField("DescTipoPersona")
+                                                  .DataValueField("CodTipoPersona")
+                                                  //.Filter("contains")
+                                                  .Filter(FilterType.StartsWith)
+                                                  .IgnoreCase(true)
+                                                  .Placeholder("Seleccione un tipo de titular...")
+                                                  .DataSource(source =>
+                                                  {
+                                                      source.Read(read =>
+                                                      {
+                                                          read.Action("GetTipoPersona", "Gestion");
+                                                      });
+                                                  })
+                                            )
+                                        </div>
+                                    </div>
+                                    <div class="form-group-sm">
+                                        <div class="col-lg-10" style="margin-bottom:10px;">
+                                            <p> <strong>Titular:</strong></p>
+                                            <input class="form-control" id="nombreEmpresa" name="nombreEmpresa" type="text" placeholder="Razón Social" required autocomplete="off" style="text-transform: uppercase">
+                                        </div>
+                                    </div>
+                                    <div class="form-group-sm">
+                                        <div class="col-lg-10" style="margin-bottom:10px;">
+                                            <p><strong>Ruc:</strong></p>
+                                            <input class="form-control" id="rucEmpresa" name="rucEmpresa" type="text" placeholder="Ruc de la Empresa/Titular" required autocomplete="off">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group-sm">
+                                        <div class="col-lg-10" style="margin-bottom:10px;">
+                                            <p><strong>Dirección:</strong></p>
+                                            <input class="form-control" id="direccionEmpresa" name="direccionEmpresa" type="text" placeholder="Dirección de la Empresa/Titular" required autocomplete="off">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group-sm">
+                                        <div class="col-lg-6">
+                                            <p><strong>Telefono:</strong></p>
+                                            <input class="form-control" id="telefonoEmpresa" name="telefonoEmpresa" type="text" placeholder="Telefono Empresa/Titular" required autocomplete="off">
+                                        </div>
+                                    </div>
+                                    <div class="form-group-sm">
+                                        <div class="col-lg-6" style="margin-bottom:10px;">
+                                            <p><strong>Pais:</strong></p>
+                                            @(Html.Kendo().ComboBox()
+                                                  .Name("pais2")
+                                                  .DataTextField("PaisDescripcion")
+                                                  .DataValueField("PaisCodigo")
+                                                  .Filter(FilterType.StartsWith)
+                                                  .IgnoreCase(true)
+                                                  .Placeholder("Seleccione un país...")
+                                                  .DataSource(source =>
+                                                  {
+                                                      source.Read(read =>
+                                                      {
+                                                          read.Action("GetPais", "Gestion");
+                                                      });
+                                                  })
+                                            )
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group-sm">
+                                        <div class="col-lg-10">
+                                            <p><strong>Correo Electrónico:</strong></p>
+                                            <input class="form-control" id="correoEmpresa" name="correoEmpresa" type="email" placeholder="Correo Electrónico" required autocomplete="off">
+                                        </div>
+                                    </div>
+
+                                    @*<div class="form-group-sm">
+                                        <p><button class="btn btn-success" type="submit">Guardar</button></p>
+                                    </div>*@
+                                    <div>
+                                        <div class="col-lg-10" style="margin-top:20px;">
+                                            <button class="btn btn-primary" type="submit">Aceptar</button>
+                                            <button class="btn btn-primary" type="reset">Cancelar</button>
+                                            @*<button id="editarMarcaJS" class="btn btn-primary" type="button">Editar</button>*@
+                                        </div>
+
+                                    </div>
+
+
+                                </fieldset>
+                            }
+
+                        </div>
+                    </div>
+                    <br />
+                    <div class="panel panel-primary panel-Mantenimiento dvSombreadoMnt" id="Poder">
+                        <div class="panel-heading panel-MantenimientoHead"><p style="color:white;font-size:14px;font-family:'Segoe UI Light';">Poder</p></div>
+                        <div class="panel-body">
+                            @using (Html.BeginForm("GetRegistroPoder", "Mantenimiento", FormMethod.Post, new { @id = "Frm-loginEmpresa", role = "form", @class = "form-horizontal" }))
+                            {
+                                <div class="row">
+                                    <div class="form-group-sm">
+                                        <div class="col-lg-6">
+                                            <p> <strong>Nº Poder:</strong></p>
+                                            <input class="form-control" id="poderEmpresa" name="poderEmpresa" type="number" placeholder="Nº Poder" required autocomplete="off" onkeypress="return pulsarPoder(event)">
+                                        </div>
+                                    </div>
+                                    <div class="form-group-sm">
+                                        <div class="col-lg-6">
+                                            <p> <strong>Titular/Solicitante:</strong></p>
+                                            @(Html.Kendo().ComboBox()
+                                              .Name("EmprLst")
+                                              .DataTextField("DescripcionEmpresa")
+                                              .DataValueField("CodEmpresa")
+                                              .HtmlAttributes(new { style = "width:100%" })
+                                              .Filter(FilterType.StartsWith)
+                                              .IgnoreCase(true)
+                                              .Placeholder("Seleccione un titular...")
+                                              .DataSource(source =>
+                                              {
+                                                  source.Read(read =>
+                                                  {
+                                                      read.Action("GetApoderado", "Gestion");
+                                                  });
+
+                                              })
+                                            )
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="form-group-sm">
+                                        <div class="col-lg-6">
+                                            <p> <strong>Firmante(s):</strong></p>
+                                            @*<input class="form-control" id="firmantePoder" name="firmantePoder" type="text" placeholder="Firmante" required autocomplete="off">*@
+                                            @(Html.Kendo().MultiSelect()
+                                          .Name("firmantePoder")
+                                          .DataTextField("DescAgente")
+                                          .DataValueField("CodAgente")
+                                          .Placeholder("Seleccionar firmantes...")
+                                          //.MaxSelectedItems(3)
+                                          .AutoBind(false)
+                                          .DataSource(source =>
+                                          {
+                                              source.Read(read =>
+                                              {
+                                                  read.Action("GetAgente", "Gestion");
+                                              });
+                                              //.ServerFiltering(true);
+                                          })
+                                            )
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+
+                                        <p><strong>Fecha de Creación:</strong></p>
+
+                                        @(Html.Kendo().DateTimePicker()
+                                            .Name("FechaGen")
+                                            //.Value(DateTime.Now)
+                                            .HtmlAttributes(new { style = "width:100%;" })
+                                        )
+
+                                    </div>
+
+
+                                </div>
+                                <br />
+                                <div class="row" style="margin-top:15px;">
+                                    <div class="form-group-sm">
+                                        <div class="col-lg-6">
+                                            <p> <strong>Poder Descripción:</strong></p>
+                                            <textarea class="form-control" id="poderDescripcion" name="poderDescripcion" type="text" placeholder="Descripción Poder" required autocomplete="off"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group-sm">
+                                        <div class="col-lg-6">
+                                            <p> <strong>Observación:</strong></p>
+                                            <textarea class="form-control" id="poderObservacion" name="poderObservacion" type="text" placeholder="Observación..." autocomplete="off"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <div class="col-lg-10">
+                                                <p><strong>Adjuntar Escaneo de Poder:</strong></p>
+                                                @(Html.Kendo().Upload()
+                                                    .Name("scanPoder")
+                                                )
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <a class="alert-link" data-toggle="modal" data-target="#poderScan"> Ver Escaneo de Poder</a>
+                                        <section>
+                                            <div class="modal fade" id="poderScan" role="dialog" aria-labelledby="myModalLabel">
+                                                <div class="modal-dialog" role="document" style="width:40%">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                            <h4 class="modal-title" id="myModalLabel">Escaneo de Poder</h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="row">
+                                                                <div class="form-group-sm">
+                                                                    <div class="col-lg-10">
+                                                                        @(Html.Kendo().Grid<TelerikMvcApp4.Models.MntPoder>()
+                    .Name("gridPoder")
+                    .HtmlAttributes(new { style = "height:335px;" })
+                    .Columns(columns =>
+                    {
+                        columns.Template(e => { }).ClientTemplate(" ").Width(120).Title("Imagen").HtmlAttributes(new { style = "height:10px" });
+                        columns.Bound(e => e.Poder).Width(100).Title("Nº Poder").HtmlAttributes(new { style = "height:40px" });
+                        columns.Bound(e => e.DescPoder).Width(100).Title("Desc. Poder").HtmlAttributes(new { style = "height:40px" });
+                    })
+                    .AutoBind(false)
+                    .ClientRowTemplate(
+                        "<tr id='a' data-uid='#: uid #'>" +
+                            "<td class='photo'>" +
+                            "<img src='data:image/png;base64,#: imagen64 #' alt='#: data.Poder #' style='width: 180px; height:100px;'/>" +
+                            "</td>" +
+                         "<td class='details'>" +
+                             "<span class='title'>#: Poder #</span>" +
+                         "</td>" +
+                         "<td class='details'>" +
+                             "<span class='title'>#: DescPoder #</span>" +
+                         "</td>" +
+                         "</tr>"
+                    )
+
+                    .DataSource(dataSource => dataSource
+                        .Ajax()
+                        .Batch(true)
+                        .PageSize(10)
+                        .ServerOperation(false)
+
+                        .Model(model =>
+                        {
+                            model.Id(p => p.Poder);
+                        })
+                        .Read(read => read.Action("GrillaPoder", "Mantenimiento").Data("getParameterPoder"))
+                    //.Events(events => events.RequestEnd("onRequestEnd"))
+
+                    )
+                    .Scrollable()
+                                                                        )
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </div>
+                                </div>
+
+                                <br />
+                                <div class="form-group-sm">
+                                    <button class="btn btn-primary" type="submit">Registrar</button>
+                                    <button class="btn btn-primary" type="reset">Cancelar</button>
+                                </div>
+                                @*<div class="alert alert-success">
+                                    <strong>Success!</strong> Indicates a successful or positive action.
+                                </div>
+                                <div class="alert alert-warning">
+                                    <strong>Warning!</strong> Indicates a warning that might need attention.
+                                </div>*@
+                            }
+                        </div>
+                    </div>
+                    <br />
+                    <div class="panel panel-primary panel-Mantenimiento dvSombreadoMnt" id="Agente">
+                        <div class="panel-heading panel-MantenimientoHead"><p style="color:white;font-size:14px;font-family:'Segoe UI Light';">Agente</p></div>
+                        <div class="panel-body">
+                            @using (Html.BeginForm("GetAgente", "Mantenimiento", FormMethod.Post, new { @id = "Frm-login", role = "form", @class = "form-horizontal" }))
+                            {
+                                <fieldset>
+                                    <legend>Mantenimiento de Agentes</legend>
+                                    <div class="row">
+                                        <div class="col-lg-2">
+                                            <p> <strong>Código:</strong></p>
+                                            <input class="form-control" id="codigoAgente" name="codigoAgente" type="number" placeholder="Código" required autocomplete="off" onkeypress="return pulsarAgente(event)">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <div class="col-lg-10">
+                                                    <p><strong>Nombre:</strong></p>
+                                                    <input class="form-control" id="nombreAgente" name="nombreAgente" type="text" placeholder="Nombre del agente" required autocomplete="off">
+                                                </div>
+                                            </div>
+                                            @*<div class="form-group">
+                                                <div class="col-lg-10">
+                                                    <p><strong>Apellido:</strong></p>
+                                                    <input class="form-control" id="apellidoAgente" name="apellidoAgente" type="text" placeholder="Apellido">
+                                                </div>
+                                            </div>*@
+                                            <div class="form-group">
+                                                <div class="col-lg-10">
+                                                    <p><strong>Matricula:</strong></p>
+                                                    <input class="form-control" id="matriculaAgente" name="matriculaAgente" type="text" placeholder="Matricula" autocomplete="off">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <button class="btn btn-primary" type="submit">Aceptar</button>
+                                    <button class="btn btn-primary" type="reset">Cancelar</button>
+                                    @*<button type="button" class="btn btn-default" data-toggle="modal" data-target="#editarAgente">
+                                       <span class="glyphicon glyphicon-pencil"></span>
+                                    </button>*@
+
+
+                                </fieldset>
+                            }
+
+                        </div>
+                    </div>
+                    <br />
+                    <div class="panel panel-primary panel-Mantenimiento dvSombreadoMnt" id="Periodico">
+                        <div class="panel-heading panel-MantenimientoHead"><p style="color:white;font-size:14px;font-family:'Segoe UI Light';">Periódico</p></div>
+                        <div class="panel-body">
+                            @using (Html.BeginForm("GetPeriodico", "Mantenimiento", FormMethod.Post, new { @id = "Frm", role = "form", @class = "form-horizontal" }))
+                            {
+                                <fieldset>
+                                    <legend>Mantenimiento de Periódico</legend>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <p> <strong>Código:</strong></p>
+                                            <input class="form-control" id="codigoPeriodico" name="codigoPeriodico" type="number" placeholder="Código" required autocomplete="off" onkeypress="return pulsarPeriodico(event)">
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <div class="col-lg-10">
+                                                    <p><strong>Periódico:</strong></p>
+                                                    <input class="form-control" id="PeriodicoNombre" name="PeriodicoNombre" type="text" placeholder="Nombre del Periódico" required autocomplete="off">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <br />
+                                    <button class="btn btn-primary" type="submit">Aceptar</button>
+                                    <button class="btn btn-primary" type="reset">Cancelar</button>
+                                    @*<button type="button" class="btn btn-default" data-toggle="modal" data-target="#editarPeriodico">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </button>*@
+
+                                </fieldset>
+                            }
+                        </div>
+                    </div>
+                    <br />
+                    <div class="panel panel-primary panel-Mantenimiento dvSombreadoMnt" id="marca">
+                        <div class="panel-heading panel-MantenimientoHead"><p style="color:white;font-size:14px;font-family:'Segoe UI Light';">Marca</p></div>
+                        <div class="panel-body">
+                            @using (Html.BeginForm("GetMarca", "Mantenimiento", FormMethod.Post, new { @id = "Frm", role = "form", @class = "form-horizontal" }))
+                            {
+                                <fieldset>
+                                    <legend>Mantenimiento de Marca</legend>
+                                    <div class="row">
+                                        <div class="col-lg-2" style="margin-bottom:10px">
+                                            <p> <strong>Código:</strong></p>
+                                            <input class="form-control" id="codigoMarca" name="codigoMarca" type="number" placeholder="Código" required autocomplete="off" onkeypress="return pulsarMarca(event)">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <div class="col-lg-10">
+                                                    <p><strong>Denominación:</strong></p>
+                                                    <input class="form-control" id="MarcaNombre" name="MarcaNombre" type="text" placeholder="Nombre de la Marca" autocomplete="off" style="text-transform: uppercase">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <div class="col-lg-10">
+                                                    <p><strong>Nº Poder:</strong></p>
+                                                    @*<input class="form-control" id="poderMarca" name="poderMarca" type="number" autocomplete="off">*@
+                                                    @(Html.Kendo().DropDownList()
+                                              .Name("poderMarca")
+                                              .OptionLabel("Seleccione un poder...")
+                                              .DataTextField("DescPoder")
+                                              .DataValueField("Poder")
+                                              .HtmlAttributes(new { style = "width:100%" })
+                                              .Filter("contains")
+
+                                              .DataSource(source =>
+                                              {
+                                                  source.Read(read =>
+                                                  {
+                                                      read.Action("GetPoder", "Gestion");
+                                                  });
+                                              })
+                                                    )
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <br />
+                                        @*<div class="col-lg-2">
+                                            <a class="alert-link" data-toggle="modal" data-target="#buscarPoder">Buscar Poder</a>
+                                            <section>
+                                                <div class="modal fade" id="buscarPoder" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                <h4 class="modal-title" id="myModalLabel">Poder</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="row">
+
+                                                                    <div class="form-group-sm">
+                                                                        <div class="col-lg-10">
+                                                                            <p><strong>Poderes:</strong></p>
+                                                                            @(Html.Kendo().Grid(Model)
+                                                                          .Name("Grid2")
+                                                                        .Columns(columns =>
+                                                                        {
+                                                                            columns.Bound(c => c.Poder).Title("Nº Poder").Width("100px").HtmlAttributes(new { style = "text-align:right" });
+                                                                            columns.Bound(c => c.DescPoder).Title("Descripción").Width(200);
+                                                                            columns.Bound(c => c.FechaCreacion).Title("Fecha Creación").Width(150).Format("{0:dd/MM/yyyy}");
+                                                                            columns.Bound(c => c.DescApoderado).Title("Titular").Width(200);
+                                                                        })
+                                                                        .HtmlAttributes(new { style = "height:350px; width:100%" })
+                                                                    .Pageable(pageable => pageable
+                                                                       .Input(true)
+                                                                       .Numeric(false)
+                                                                     )
+                                                                    .Sortable()
+                                                                    .Scrollable(scr => scr.Height(250))
+                                                                    .Filterable()
+                                                                    .Resizable(resize => resize.Columns(true))
+                                                                    .Reorderable(reorder => reorder.Columns(true))
+                                                                    .AllowCopy(true)
+                                                                    .Selectable(selectable => selectable
+                                                                        .Mode(GridSelectionMode.Multiple)
+                                                                        .Type(GridSelectionType.Cell))
+                                                                    .ColumnMenu()
+                                                                    .Events(events => events
+                                                                       .Change("onChange"))
+                                                                    .DataSource(dataSource => dataSource
+                                                                        .Ajax()
+                                                                        .PageSize(10)
+                                                                        .ServerOperation(false)))
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        </div>*@
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <div class="col-lg-10">
+                                                    <p><strong>Clase:</strong></p>
+                                                    @(Html.Kendo().ComboBox()
+                                                  .Name("clase2")
+                                                  .DataTextField("DescClase")
+                                                  .DataValueField("CodClase")
+                                                  .Filter(FilterType.StartsWith)
+                                                  .IgnoreCase(true)
+                                                  .Placeholder("Selecciona una clase...")
+                                                  .DataSource(source =>
+                                                  {
+                                                      source.Read(read =>
+                                                      {
+                                                          read.Action("GetClase", "Gestion");
+                                                      });
+                                                  })
+                                                    )
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <div class="col-lg-10">
+                                                    <p><strong>Nº Clase:</strong></p>
+                                                    @(Html.Kendo().ComboBox()
+                                                  .Name("edCla")
+                                                  .DataTextField("NizNroClase")
+                                                  .DataValueField("NizNroClase")
+                                                  //.Filter(FilterType.StartsWith)
+                                                  .IgnoreCase(true)
+                                                  .Placeholder("Seleccione Ed Niza...")
+                                                  .DataSource(source =>
+                                                  {
+                                                      source.Read(read =>
+                                                      {
+                                                          read.Action("GetEdNizaMnt3", "Gestion")
+                                                              .Data("filterClass2");
+                                                      })
+                                                      .ServerFiltering(true);
+                                                  })
+                                                  .Enable(false)
+                                                  .AutoBind(false)
+                                                  .CascadeFrom("clase2")
+                                                    )
+                                                    <script>
+                                                        function filterClass2() {
+                                                            return {
+                                                                clases: $('#clase2').val(),
+                                                                edClaseFilter: $('#edCla').data('kendoComboBox').value()
+                                                            };
+                                                        }
+                                                    </script>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <br />
+                                        <div class="col-lg-4">
+                                            <a class="alert-link" data-toggle="modal" data-target="#verMas">Ver Ed Niza</a>
+                                            <section>
+                                                <div class="modal fade" id="verMas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                <h4 class="modal-title" id="myModalLabel">Ed Niza</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="row">
+                                                                    <div class="col-lg-12">
+                                                                        @*<div class="form-group-sm">*@
+                                                                            @*<div class="col-lg-10">*@
+                                                                                <p><strong>Descripción Producto:</strong></p>
+                                                                                @(Html.Kendo().ComboBox()
+                                                                          .Name("descNiza")
+                                                                          .DataTextField("DescEdNiza")
+                                                                          .DataValueField("DescEdNiza")
+                                                                          .HtmlAttributes(new { style = "width:100%;" })
+                                                                          //.Filter(FilterType.StartsWith)
+                                                                          .IgnoreCase(true)
+                                                                          .Placeholder("Seleccione Ed Niza...")
+                                                                          .DataSource(source =>
+                                                                          {
+                                                                              source.Read(read =>
+                                                                              {
+                                                                                  read.Action("GetEdNizaDescMnt", "Gestion")
+                                                                                      .Data("filterClass3");
+                                                                              })
+                                                                              .ServerFiltering(true);
+                                                                          })
+                                                                          .Enable(false)
+                                                                          .AutoBind(false)
+                                                                          .CascadeFrom("edCla")
+                                                                                )
+                                                                                <script>
+                                                                                function filterClass3() {
+                                                                                    return {
+                                                                                        clases: $('#edCla').val(),
+                                                                                        edClaseFilter: $('#descNiza').data('kendoComboBox').value()
+                                                                                    };
+                                                                                }
+                                                                                </script>
+                                                                            @*</div>*@
+                                                                        @*</div>*@
+                                                                    </div>
+                                                                    
+                                                                </div>
+                                                                @*<div class="modal-footer">
+                                                                    <button type="button" class="btn btn-success">Guardar Cambios</button>
+                                                                </div>*@
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <div class="col-lg-12">
+                                                    <p><strong>Descripción Producto/Servicio:</strong></p>
+                                                    <input class="form-control" id="descripcionProd" name="descripcionProd" type="text" placeholder="Descripción Producto.." autocomplete="off">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <div class="col-lg-10">
+                                                    <p><strong>Tipo Marca:</strong></p>
+                                                    @(Html.Kendo().ComboBox()
+                                                  .Name("tipoMarca")
+                                                  .DataTextField("TipoMarcaDesc")
+                                                  .DataValueField("TipoMarcaCod")
+                                                  .Filter(FilterType.StartsWith)
+                                                  .IgnoreCase(true)
+                                                  .Placeholder("Seleccione un tipo de marca...")
+                                                  .DataSource(source =>
+                                                  {
+                                                      source.Read(read =>
+                                                      {
+                                                          read.Action("GetTipoMarca", "Gestion");
+                                                      });
+                                                  })
+                                                    )
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <div class="col-lg-10">
+                                                    <p><strong>Especificar:</strong></p>
+                                                    <input class="form-control" id="EspecificarTipo" name="EspecificarTipo" type="text" placeholder="Especificar tipo de marca" disabled autocomplete="off">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-4" id="logotipo">
+                                            <div class="form-group">
+                                                <div class="col-lg-10">
+                                                    <p><strong>Cargar Logotipo:</strong></p>
+                                                    @(Html.Kendo().Upload()
+                                                    .Name("files")
+                                                    .Multiple(false)
+                                                    .Events(e => e.Upload("onUpload"))
+                                                    )
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-lg-6" id="ocultarLogotipo">
+                                            <a class="alert-link" data-toggle="modal" data-target="#logotipoMarca"> Ver Logotipo</a>
+                                            <section>
+                                                <div class="modal fade" id="logotipoMarca" role="dialog" aria-labelledby="myModalLabel">
+                                                    <div class="modal-dialog" role="document" style="width:40%">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                <h4 class="modal-title" id="myModalLabel">Logotipo</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="row">
+                                                                    <div class="form-group-sm">
+                                                                        <div class="col-lg-10">
+                                                                            @(Html.Kendo().Grid<TelerikMvcApp4.Models.MarcaModel>()
+                    .Name("grid")
+                    .HtmlAttributes(new { style = "height:335px;" })
+                    .Columns(columns =>
+                    {
+                        columns.Template(e => { }).ClientTemplate(" ").Width(120).Title("Imagen").HtmlAttributes(new { style = "height:10px" });
+                        columns.Bound(e => e.MarcaDescripcion).Width(100).Title("Marca").HtmlAttributes(new { style = "height:40px" });
+                    })
+                    .AutoBind(false)
+                    @*.ToolBar(toolbar =>
+                    {
+                    toolbar.Template(@<text>
+                                                                                <div class="toolbar">
+                                                                                    <label class="category-label" for="category">Mostrar imágenes por marca:</label>
+                                                                                    @(Html.Kendo().DropDownList()
+                            .Name("categories")
+                            .OptionLabel("Todos")
+                            .DataTextField("MarcaDescripcion")
+                            .DataValueField("MarcaCodigo")
+                            .Filter("contains")
+                            .AutoBind(false)
+                            .Events(e => e.Change("categoriesChange"))
+                            .HtmlAttributes(new { style = "width: 150px;" })
+                            .DataSource(ds =>
+                            {
+                                ds.Read("GetMarcas", "Gestion");
+                            })
+                                                                                    )
+                                                                                </div>
+                    </text>);
+                    })*@
+                    .ClientRowTemplate(
+                        "<tr id='a' data-uid='#: uid #'>" +
+                            "<td class='photo'>" +
+                            "<img src='data:image/png;base64,#: imagen64 #' alt='#: data.MarcaCodigo #' style='width: 180px; height:100px;'/>" +
+                            "</td>" +
+                         "<td class='details'>" +
+                             "<span class='title'>#: MarcaDescripcion #</span>" +
+                         "</td>" +
+                         "</tr>"
+                    )
+
+                    .DataSource(dataSource => dataSource
+                        .Ajax()
+                        .Batch(true)
+                        .PageSize(10)
+                        .ServerOperation(false)
+
+                        .Model(model =>
+                        {
+                            model.Id(p => p.MarcaCodigo);
+                        })
+                        .Read(read => read.Action("GrillaLogotipo", "Mantenimiento").Data("getParameter"))
+                    //.Events(events => events.RequestEnd("onRequestEnd"))
+
+                    )
+                    .Scrollable()
+                                                                            )
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <div class="col-lg-10">
+                                                    <p><strong>Reivindicaciones:</strong></p>
+                                                    <select id="reivindicacion" name="reivindicacion" onchange="changecombobox();" style="width:90px;">
+                                                        <option value="NO">NO</option>
+                                                        <option value="SI">SI</option>
+                                                    </select>
+                                                    @*@(Html.Kendo().ComboBox()
+                                                      .Name("reivindicacion")
+                                                      .Filter("contains")
+                                                      .Placeholder("Seleccionar opción...")
+                                                      .DataTextField("Text")
+                                                      .DataValueField("Value")
+                                                      .BindTo(new List<SelectListItem>() {
+                                                            new SelectListItem() {
+                                                                Text = "SI", Value = "1"
+                                                            },
+                                                            new SelectListItem() {
+                                                                Text = "NO", Value = "2"
+                                                            }
+                                                      })
+                                                    .SelectedIndex(1)
+                                                    .Suggest(true)
+                                                    .HtmlAttributes(new { style = "width:100%;" })
+                                                    )*@
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <div class="form-group">
+                                                <div class="col-lg-10">
+                                                    <p><strong>Especificar:</strong></p>
+                                                    <input class="form-control" id="EspecificarReiv" name="EspecificarReiv" type="text" placeholder="Especificar.." disabled autocomplete="off">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <hr />
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <div class="col-lg-12">
+                                                    <p><strong>Prioridad: </strong></p>
+                                                    <input class="form-control" id="nroPrioridad" name="nroPrioridad" type="text" placeholder="Nº Prioridad.." autocomplete="off">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <div class="col-lg-12">
+                                                    <p><strong>País: </strong></p>
+                                                    @(Html.Kendo().ComboBox()
+                                                  .Name("pais")
+                                                  .DataTextField("PaisDescripcion")
+                                                  .DataValueField("PaisCodigo")
+                                                  .Filter(FilterType.StartsWith)
+                                                  .IgnoreCase(true)
+                                                  .Placeholder("Seleccione un país...")
+                                                  .DataSource(source =>
+                                                  {
+                                                      source.Read(read =>
+                                                      {
+                                                          read.Action("GetPais", "Gestion");
+                                                      });
+                                                  })
+                                                    )
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <div class="col-lg-12">
+                                                    <p><strong>Fecha Prioridad: </strong></p>
+                                                    @(Html.Kendo().DateTimePicker()
+                                                    .Name("FechaPrioridad")
+                                                    .Format("dd/MM/yyyy")
+                                                    //.Value(DateTime.Now)
+                                                    .HtmlAttributes(new { style = "width:100%;" })
+                                                    )
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <br />
+
+                                    <button class="btn btn-primary" type="submit">Aceptar</button>
+                                    <button class="btn btn-primary" type="reset">Cancelar</button>
+                                    @*<button type="button" class="btn btn-default" data-toggle="modal" data-target="#editarMarca">
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                    </button>*@
+
+                                </fieldset>
+                            }
+
+                        </div>
+                    </div>
+                    <br />
+                    <div class="panel panel-primary panel-Mantenimiento dvSombreadoMnt" id="TipoMarca">
+                        <div class="panel-heading panel-MantenimientoHead"><p style="color:white;font-size:14px;font-family:'Segoe UI Light';">Tipo de Marca</p></div>
+                        <div class="panel-body">
+                            @using (Html.BeginForm("GetTipoMarca", "Mantenimiento", FormMethod.Post, new { @id = "Frm", role = "form", @class = "form-horizontal" }))
+                            {
+                                <fieldset>
+                                    <legend>Mantenimiento de Tipo de Marca</legend>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <p> <strong>Código:</strong></p>
+                                            <input class="form-control" id="codigoTipoMarca" name="codigoTipoMarca" type="number" placeholder="Código" required autocomplete="off" onkeypress="return pulsarTipoMarca(event)">
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <div class="col-lg-10">
+                                                    <p><strong>Tipo de Marca:</strong></p>
+                                                    <input class="form-control" id="tipoMarcaDesc" name="tipoMarcaDesc" type="text" placeholder="Nuevo Tipo de Marca" required autocomplete="off">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <p><strong>¿Tendrá Logotipo?</strong></p>
+                                            @(Html.Kendo().ComboBox()
+                                              .Name("IndLogotipo")
+                                              .Filter("contains")
+                                              .Placeholder("Seleccionar opción...")
+                                              .DataTextField("Text")
+                                              .DataValueField("Value")
+                                              .BindTo(new List<SelectListItem>() {
+                                                    new SelectListItem() {
+                                                        Text = "SI", Value = "S"
+                                                    },
+                                                    new SelectListItem() {
+                                                        Text = "NO", Value = "N"
+                                                    }
+                                              })
+                                            //.SelectedIndex(1)
+                                            .Suggest(true)
+                                            .HtmlAttributes(new { style = "width:100%;" })
+                                            )
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <button class="btn btn-primary" type="submit">Aceptar</button>
+                                    <button class="btn btn-primary" type="reset">Cancelar</button>
+                                    @*<button type="button" class="btn btn-default" data-toggle="modal" data-target="#editarTipoMarca">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </button>*@
+
+                                </fieldset>
+                            }
+                        </div>
+                    </div>
+                    <br />
+                    <div class="panel panel-primary panel-Mantenimiento dvSombreadoMnt" id="Clase">
+                        <div class="panel-heading panel-MantenimientoHead"><p style="color:white;font-size:14px;font-family:'Segoe UI Light';">Clase</p></div>
+                        <div class="panel-body">
+                            @using (Html.BeginForm("GetClaseMnt", "Mantenimiento", FormMethod.Post, new { @id = "Frm-login", role = "form", @class = "form-horizontal" }))
+                            {
+                                <fieldset>
+                                    <legend>Mantenimiento de Clase</legend>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+
+                                            <div class="form-group">
+                                                <div class="col-lg-10">
+                                                    <p><strong>Código:</strong></p>
+                                                    <input class="form-control" id="codigoClase" name="codigoClase" type="number" placeholder="Código" onkeypress="return pulsarClase(event)" autocomplete="off">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <div class="col-lg-10">
+                                                    <p><strong>Descripción de la clase:</strong></p>
+                                                    <input class="form-control" id="descripcionClase" name="descripcionClase" type="text" placeholder="Descripción" required autocomplete="off">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <button class="btn btn-primary" type="submit">Aceptar</button>
+                                    <button class="btn btn-primary" type="reset">Cancelar</button>
+                                    @*<button type="button" class="btn btn-default" data-toggle="modal" data-target="#editarClase">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </button>*@
+
+                                </fieldset>
+                            }
+                        </div>
+                    </div>
+                    <br />
+                    <div class="panel panel-primary panel-Mantenimiento dvSombreadoMnt" id="EdNiza">
+                        <div class="panel-heading panel-MantenimientoHead"><p style="color:white;font-size:14px;font-family:'Segoe UI Light';">EdNiza</p></div>
+                        <div class="panel-body">
+                            @using (Html.BeginForm("GetEdNiza", "Mantenimiento", FormMethod.Post, new { @id = "Frm-login", role = "form", @class = "form-horizontal" }))
+                            {
+                                <fieldset>
+                                    <legend>Mantenimiento de Ed Niza</legend>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+
+                                            <div class="form-group">
+                                                <div class="col-lg-10">
+                                                    <p><strong>Código:</strong></p>
+                                                    <input class="form-control" id="codigoEdNiza" name="codigoEdNiza" type="number" placeholder="Código" onkeypress="return pulsarEdNiza(event)" autocomplete="off">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="col-lg-10">
+                                                    <p><strong>Clase:</strong></p>
+                                                    @(Html.Kendo().DropDownList()
+                                                      .Name("ClaseList")
+                                                      .OptionLabel("Selecciona la clase...")
+                                                      .DataTextField("DescClase")
+                                                      .DataValueField("CodClase")
+                                                      .HtmlAttributes(new { style = "width:100%" })
+                                                      .Filter("contains")
+                                                      .DataSource(source =>
+                                                      {
+                                                          source.Read(read =>
+                                                          {
+                                                              read.Action("GetClase", "Gestion");
+                                                          });
+                                                          //.ServerFiltering(true);
+                                                      })
+                                                    )
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-lg-10">
+                                                    <p><strong>Número Clase:</strong></p>
+                                                    <input class="form-control" id="edNizaMnt" name="edNizaMnt" type="text" placeholder="Número Clase" required autocomplete="off">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-lg-10">
+                                                    <p>Descripción Ed Niza:</p>
+                                                    <input class="form-control" id="descripcionEd" name="descripcionEd" type="text" placeholder="Descripción Ed Niza" required autocomplete="off">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br />
+
+                                    <button class="btn btn-primary" type="submit">Aceptar</button>
+                                    <button class="btn btn-primary" type="reset">Cancelar</button>
+                                    @*<button type="button" class="btn btn-default" data-toggle="modal" data-target="#editarEdNiza">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </button>*@
+
+                                </fieldset>
+                            }
+                        </div>
+                    </div>
+                    <br />
+                    @*<div class="panel panel-primary panel-Mantenimiento dvSombreadoMnt" id="EdNiza">
+                        <div class="panel-heading panel-MantenimientoHead"><p style="color:white;font-size:14px;font-family:'Segoe UI Light';">Ed Niza</p></div>
+                        <div class="panel-body">
+                            @using (Html.BeginForm("GetEdNiza", "Mantenimiento", FormMethod.Post, new { @id = "Frm-login", role = "form", @class = "form-horizontal" }))
+                            {
+                                <fieldset>
+                                    <legend>Mantenimiento de Ed Niza</legend>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <div class="col-lg-10">
+                                                    <p><strong>Codigo:</strong></p>
+                                                    <input class="form-control" id="codigoClase2" name="codigoClase2" type="text" placeholder="Codigo de Ed Niza">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <div class="col-lg-10">
+                                                    <p><strong>Descripción de Ed Niza:</strong></p>
+                                                    <input class="form-control" id="descrpcionClase2" name="descrpcionClase2" type="text" placeholder="Descripción">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <button class="btn btn-primary" type="submit">Aceptar</button>
+                                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#editarClase">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </button>
+
+                                </fieldset>
+                            }
+
+
+                        </div>
+                    </div>*@
+                    <br />
+                    <div class="panel panel-primary panel-Mantenimiento dvSombreadoMnt" id="Estado">
+                        <div class="panel-heading panel-MantenimientoHead"><p style="color:white;font-size:14px;font-family:'Segoe UI Light';">Estado</p></div>
+                        <div class="panel-body">
+                            @using (Html.BeginForm("GetEstado", "Mantenimiento", FormMethod.Post, new { @id = "Frm-login", role = "form", @class = "form-horizontal" }))
+                            {
+                                <fieldset>
+                                    <legend>Mantenimiento de Estado</legend>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <div class="col-lg-10">
+                                                    <p><strong>Código:</strong></p>
+                                                    <input class="form-control" id="codigoEstado" name="codigoEstado" type="number" placeholder="Código" onkeypress="return pulsarEstado(event)" autocomplete="off">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <div class="col-lg-10">
+                                                    <p><strong>Estado:</strong></p>
+                                                    <input class="form-control" id="estadoNombre" name="estadoNombre" type="text" placeholder="Nombre de estado" required autocomplete="off">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @*<div class="col-lg-6">
+                                            <div class="form-group">
+                                                <div class="col-lg-10">
+                                                    <label><input type="checkbox" id="cbox1" name="cbox1" value="S"> Marca Concedida</label><br>
+                                                </div>
+                                            </div>
+                                        </div>*@
+                                        <div class="col-lg-4">
+                                            <p><strong>¿Estado Concedido?</strong></p>
+                                            @(Html.Kendo().ComboBox()
+                                              .Name("cbox1")
+                                              .Filter("contains")
+                                              .Placeholder("Seleccionar opción...")
+                                              .DataTextField("Text")
+                                              .DataValueField("Value")
+                                              .BindTo(new List<SelectListItem>() {
+                                                    new SelectListItem() {
+                                                        Text = "SI", Value = "S"
+                                                    },
+                                                    new SelectListItem() {
+                                                        Text = "NO", Value = "N"
+                                                    }
+                                              })
+                                            //.SelectedIndex(1)
+                                            .Suggest(true)
+                                            .HtmlAttributes(new { style = "width:100%;" })
+                                            )
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <button class="btn btn-primary" type="submit">Aceptar</button>
+                                    <button class="btn btn-primary" type="reset">Cancelar</button>
+                                    @*<button type="button" class="btn btn-default" data-toggle="modal" data-target="#editarEstado">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </button>*@
+
+                                </fieldset>
+                            }
+                        </div>
+                    </div>
+                    <br />
+                    <div class="panel panel-primary panel-Mantenimiento dvSombreadoMnt" id="Pais">
+                        <div class="panel-heading panel-MantenimientoHead"><p style="color:white;font-size:14px;font-family:'Segoe UI Light';">País</p></div>
+                        <div class="panel-body">
+                            @using (Html.BeginForm("GetPais", "Mantenimiento", FormMethod.Post, new { @id = "Frm", role = "form", @class = "form-horizontal" }))
+                            {
+                                <fieldset>
+                                    <legend>Mantenimiento de País</legend>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <div class="col-lg-10">
+                                                    <p><strong>Código:</strong></p>
+                                                    <input class="form-control" id="codigoPais" name="codigoPais" type="number" placeholder="Código" onkeypress="return pulsarPais(event)" autocomplete="off">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <div class="col-lg-10">
+                                                    <p><strong>País:</strong></p>
+                                                    <input class="form-control" id="PaisDescripcion" name="PaisDescripcion" type="text" placeholder="País" required autocomplete="off">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <br />
+                                    <button class="btn btn-primary" type="submit">Aceptar</button>
+                                    <button class="btn btn-primary" type="reset">Cancelar</button>
+                                    @*<button type="button" class="btn btn-default" data-toggle="modal" data-target="#editarPais">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </button>*@
+
+                                </fieldset>
+                            }
+                        </div>
+                    </div>
+                    <br />
+                    <div class="panel panel-primary panel-Mantenimiento dvSombreadoMnt" id="TipoMov">
+                        <div class="panel-heading panel-MantenimientoHead"><p style="color:white;font-size:14px;font-family:'Segoe UI Light';">Tipo de Movimiento</p></div>
+                        <div class="panel-body">
+                            @using (Html.BeginForm("GetTipoMov", "Mantenimiento", FormMethod.Post, new { @id = "Frm", role = "form", @class = "form-horizontal" }))
+                            {
+                                <fieldset>
+                                    <legend>Mantenimiento de Tipo de Movimiento</legend>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <div class="col-lg-10">
+                                                    <p><strong>Código:</strong></p>
+                                                    <input class="form-control" id="codigoTipoMov" name="codigoTipoMov" type="number" placeholder="Código" onkeypress="return pulsarTipoMov(event)" autocomplete="off">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <div class="col-lg-10">
+                                                    <p><strong>Tipo Movimiento:</strong></p>
+                                                    <input class="form-control" id="TipoMovDescripcion" name="TipoMovDescripcion" type="text" placeholder="Tipo de Movimiento" required autocomplete="off">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <br />
+                                    <button class="btn btn-primary" type="submit">Aceptar</button>
+                                    <button class="btn btn-primary" type="reset">Cancelar</button>
+                                    @*<button type="button" class="btn btn-default" data-toggle="modal" data-target="#editarPais">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </button>*@
+
+                                </fieldset>
+                            }
+                        </div>
+                    </div>
+                    <br />
+                    <div class="panel panel-primary panel-Mantenimiento dvSombreadoMnt" id="TipoSolicitud">
+                        <div class="panel-heading panel-MantenimientoHead"><p style="color:white;font-size:14px;font-family:'Segoe UI Light';">Tipo de Solicitud</p></div>
+                        <div class="panel-body">
+                            @using (Html.BeginForm("GetTipoSol", "Mantenimiento", FormMethod.Post, new { @id = "Frm", role = "form", @class = "form-horizontal" }))
+                            {
+                                <fieldset>
+                                    <legend>Mantenimiento de Tipo de Solicitud</legend>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <div class="col-lg-10">
+                                                    <p><strong>Código:</strong></p>
+                                                    <input class="form-control" id="codigoTipoSol" name="codigoTipoSol" type="number" placeholder="Código" onkeypress="return pulsarTipoSol(event)" autocomplete="off">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <div class="col-lg-10">
+                                                    <p><strong>Tipo Solicitud:</strong></p>
+                                                    <input class="form-control" id="TipoSolDescripcion" name="TipoSolDescripcion" type="text" placeholder="Tipo de Solicitud" required autocomplete="off">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <div class="col-lg-10">
+                                                    <p><strong>Abreviación Tipo de Solicitud:</strong></p>
+                                                    <input class="form-control" id="TipoSolAbrev" name="TipoSolAbrev" type="text" placeholder="Abreviación Tipo de Solicitud" autocomplete="off">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <button class="btn btn-primary" type="submit">Aceptar</button>
+                                    <button class="btn btn-primary" type="reset">Cancelar</button>
+                                    @*<button type="button" class="btn btn-default" data-toggle="modal" data-target="#editarPais">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </button>*@
+
+                                </fieldset>
+                            }
+                        </div>
+                    </div>
+                    @*<div class="panel panel-primary panel-Mantenimiento dvSombreadoMnt" id="Inventor">
+                        <div class="panel-heading panel-MantenimientoHead"><p style="color:white;font-size:14px;font-family:'Segoe UI Light';">Inventor</p></div>
+                        <div class="panel-body">
+                            @using (Html.BeginForm("GetInventor", "Mantenimiento", FormMethod.Post, new { @id = "Frm", role = "form", @class = "form-horizontal" }))
+                        {
+                        <fieldset>
+                            <legend>Mantenimiento de Inventor</legend>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <div class="col-lg-10">
+                                            <p><strong>Inventor:</strong></p>
+                                            <input class="form-control" id="InventorNombre" name="InventorNombre" type="text" placeholder="Nombre del Inventor">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <br />
+                            <button class="btn btn-primary" type="submit">Aceptar</button>
+                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#editarInventor">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                            </button>
+
+                        </fieldset>
+                        }
+                        </div>
+                    </div>*@
+                    <br />
+
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <div class="modal fade" id="editarAgente" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Editar Agente.</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-lg-10">
+                                    <p><strong>Agente</strong></p>
+                                    @(Html.Kendo().AutoComplete()
+                                          .Name("AgList2")
+                                          .DataTextField("DescAgente")
+                                          .Filter("idSolicitnate")
+                                          .MinLength(3)
+                                          .HtmlAttributes(new { style = "width:100%" })
+                                          .DataSource(source =>
+                                          {
+                                              source.Read(read =>
+                                              {
+                                                  read.Action("GetAgente", "Gestion");
+
+                                              })
+                                              .ServerFiltering(true);
+                                          })
+                                    )
+
+                                    <br />
+                                    <p><strong>Nombre Agente</strong> </p>
+                                    <br />
+                                    <input class="form-control" id="editarNombre" name="editarNombre" type="text" placeholder="Cambiar Nombre de Agente">
+                                    <br />
+                                    <p><strong>Matricula</strong> </p>
+                                    <br />
+                                    <input class="form-control" id="editarMatricula" name="editarMatricula" type="text" placeholder="Cambiar Matricula de Agente">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="btnAgente" name="btnAgente">Editar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="editarPeriodico" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Editar Periódico</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-lg-10">
+                                    <p><strong>Clase:</strong></p>
+                                    @(Html.Kendo().AutoComplete()
+                                  .Name("per")
+                                  .DataTextField("DescPeriodico")
+                                  .Filter("CodigoPeriodico")
+                                  .Placeholder("Escriba el periódico que desea editar")
+                                  .MinLength(3)
+                                  .HtmlAttributes(new { style = "width:100%" })
+                                  .DataSource(source =>
+                                  {
+                                      source.Read(read =>
+                                      {
+                                          read.Action("GetPeriodico", "Gestion");
+
+                                      })
+                                      .ServerFiltering(true);
+                                  })
+                                    )
+
+                                    <br />
+                                    <p><strong>Descripción del periódico</strong> </p>
+
+                                    <input class="form-control" id="PerEdit" name="PerEdit" type="text" placeholder="Cambiar Nombre del periódico">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+
+                        <button type="button" class="btn btn-primary" id="btnEditarPeriodico" name="btnEditarPeriodico">Editar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="editarMarca" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Editar Marca</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-lg-10">
+                                    <p><strong>Clase:</strong></p>
+                                    @(Html.Kendo().AutoComplete()
+                                  .Name("mar")
+                                  .DataTextField("DescripcionEmpresa")
+                                  .Filter("CodEmpresa")
+                                  .Placeholder("Escriba la empresa que desea editar")
+                                  .MinLength(1)
+                                  .HtmlAttributes(new { style = "width:100%" })
+                                  .DataSource(source =>
+                                  {
+                                      source.Read(read =>
+                                      {
+                                          read.Action("GetEmpresas", "Gestion");
+
+                                      })
+                                      .ServerFiltering(true);
+                                  })
+                                    )
+
+                                    <br />
+                                    <p><strong>Descripción de la marca</strong> </p>
+
+                                    <input class="form-control" id="MarcaEdit" name="MarcaEdit" type="text" placeholder="Cambiar Nombre de la marca">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+
+                        <button type="button" class="btn btn-primary" id="btnEditarMarca" name="btnEditarMarca">Editar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="editarTipoMarca" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Editar Tipo Marca</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-lg-10">
+                                    <p><strong>Clase:</strong></p>
+                                    @(Html.Kendo().AutoComplete()
+                                  .Name("tipoMarc")
+                                  .DataTextField("TipoMarcaDesc")
+                                  .Filter("TipoMarcaCod")
+                                  .Placeholder("Escriba el tipo de marca que desea editar")
+                                  .MinLength(3)
+                                  .HtmlAttributes(new { style = "width:100%" })
+                                  .DataSource(source =>
+                                  {
+                                      source.Read(read =>
+                                      {
+                                          read.Action("GetTipoMarca", "Gestion");
+
+                                      })
+                                      .ServerFiltering(true);
+                                  })
+                                    )
+
+                                    <br />
+                                    <p><strong>Descripción del Tipo de Marca</strong> </p>
+
+                                    <input class="form-control" id="TipoMarcEdit" name="TipoMarcEdit" type="text" placeholder="Cambiar descripción del Tipo de Marca">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+
+                        <button type="button" class="btn btn-primary" id="btnEditarTipoMarca" name="btnEditarTipoMarca">Editar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="editarClase" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Editar Clase</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-lg-10">
+                                    <p><strong>Clase:</strong></p>
+                                    @(Html.Kendo().AutoComplete()
+                                  .Name("k")
+                                  .DataTextField("DescClase")
+                                  .Filter("CodClase")
+                                  .Placeholder("Escriba la clase que desea editar")
+                                  .MinLength(3)
+                                  .HtmlAttributes(new { style = "width:100%" })
+                                  .DataSource(source =>
+                                  {
+                                      source.Read(read =>
+                                      {
+                                          read.Action("GetClase", "Gestion");
+
+                                      })
+                                      .ServerFiltering(true);
+                                  })
+                                    )
+
+                                    <br />
+                                    <p><strong>Descripción de la clase</strong> </p>
+                                    <br />
+                                    <input class="form-control" id="ClassEdit" name="ClassEdit" type="text" placeholder="Cambiar descripción de la clase">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+
+                        <button type="button" class="btn btn-primary" id="btnEditarClase" name="btnEditarClase">Editar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="editarEdNiza" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Editar Ed Niza</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-lg-10">
+                                    <p><strong>Clase:</strong></p>
+                                    @(Html.Kendo().ComboBox()
+                                  .Name("clase")
+                                  .DataTextField("DescClase")
+                                  .DataValueField("CodClase")
+                                  .Filter(FilterType.StartsWith)
+                                  .IgnoreCase(true)
+                                  .Placeholder("Selecciona una clase...")
+                                  .DataSource(source =>
+                                  {
+                                      source.Read(read =>
+                                      {
+                                          read.Action("GetClase", "Gestion");
+                                      });
+                                  })
+                                    )
+
+                                    <p><strong>Ed Niza:</strong></p>
+                                    @(Html.Kendo().ComboBox()
+                                      .Name("ed")
+                                      .DataTextField("DescEdNiza")
+                                      .DataValueField("CodEdNiza")
+                                      .Filter(FilterType.StartsWith)
+                                      .IgnoreCase(true)
+                                      .Placeholder("Selecciona una ed Niza...")
+                                      .DataSource(source =>
+                                      {
+                                          source.Read(read =>
+                                          {
+                                              read.Action("GetEdNizaMnt2", "Gestion")
+                                                  .Data("filterClass");
+                                          })
+                                          .ServerFiltering(true);
+                                      })
+                                      .Enable(false)
+                                      .AutoBind(false)
+                                      .CascadeFrom("clase")
+                                    )
+                                    <script>
+                                        function filterClass() {
+                                            return {
+                                                clases: $('#clase').val(),
+                                                edNizaFilter: $('#ed').data('kendoComboBox').value()
+                                            };
+                                        }
+                                    </script>
+                                    @*<p><strong>Clase:</strong></p>
+                                    @(Html.Kendo().AutoComplete()
+                                      .Name("clase")
+                                      .DataTextField("DescClase")
+                                      .Filter("CodClase")
+                                      .Placeholder("Escriba la sub clase que desea editar")
+                                      .MinLength(1)
+                                      .HtmlAttributes(new { style = "width:100%" })
+                                      .DataSource(source =>
+                                      {
+                                          source.Read(read =>
+                                          {
+                                              read.Action("GetClase", "Gestion");
+
+                                          })
+                                          .ServerFiltering(true);
+                                      })
+                                    )
+                                    <p><strong>Ed Niza:</strong></p>
+                                    @(Html.Kendo().AutoComplete()
+                                      .Name("ed")
+                                      .DataTextField("DescEdNiza")
+                                      .Filter("CodEdNiza")
+                                      .Placeholder("Escriba la sub clase que desea editar")
+                                      .MinLength(1)
+                                      .HtmlAttributes(new { style = "width:100%" })
+                                      .DataSource(source =>
+                                      {
+                                          source.Read(read =>
+                                          {
+                                              read.Action("GetEdNizaMnt", "Gestion");
+
+                                          })
+                                          .ServerFiltering(true);
+                                      })
+                                    )*@
+
+                                    <br />
+                                    <p><strong>Ed Niza:</strong> </p>
+                                    <br />
+                                    <input class="form-control" id="edNiza" name="edNiza" type="text" placeholder="Cambiar Ed Niza">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="edNizaBtn" name="edNizaBtn">Editar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*<div class="modal fade" id="editarEdNiza" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Editar Ed Niza</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-lg-10">
+                                    <p><strong>Ed Niza:</strong></p>
+                                    @(Html.Kendo().AutoComplete()
+                                      .Name("zxc")
+                                      .DataTextField("DescEdNiza")
+                                      .Filter("CodEdNiza")
+                                      .Placeholder("Escriba la sub clase que desea editar")
+                                      .MinLength(3)
+                                      .HtmlAttributes(new { style = "width:100%" })
+                                      .DataSource(source =>
+                                      {
+                                          source.Read(read =>
+                                          {
+                                              read.Action("GetNiza", "Mantenimiento");
+
+                                          })
+                                          .ServerFiltering(true);
+                                      })
+                                    )
+
+                                    <br />
+                                    <p><strong>Ed Niza:</strong> </p>
+                                    <br />
+                                    <input class="form-control" id="nizaCambiar" name="nizaCambiar" type="text" placeholder="Cambiar Ed Niza">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="edNizaBtn" name="edNizaBtn">Editar</button>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+
+        <div class="modal fade" id="editarEstado" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Editar Estado</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-lg-10">
+                                    <p><strong>Estado:</strong></p>
+                                    @(Html.Kendo().AutoComplete()
+                                  .Name("EstList")
+                                  .DataTextField("DesStatus")
+                                  .Filter("CodStatus")
+                                  .Placeholder("Escriba el estado que desea editar")
+                                  .MinLength(3)
+                                  .HtmlAttributes(new { style = "width:100%" })
+                                  .DataSource(source =>
+                                  {
+                                      source.Read(read =>
+                                      {
+                                          read.Action("GetStatus", "Gestion");
+
+                                      })
+                                      .ServerFiltering(true);
+                                  })
+                                    )
+
+                                    <br />
+                                    <p><strong>Editar Estado:</strong> </p>
+                                    <br />
+                                    <input class="form-control" id="estadoMnt" name="estadoMnt" type="text" placeholder="Cambiar Estado">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="EstadoBtn" name="EstadoBtn">Editar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="modal fade" id="editarInventor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Editar Solicitante</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-lg-10">
+                                    <p><strong>Inventor:</strong></p>
+                                    @(Html.Kendo().AutoComplete()
+                                  .Name("Inventor")
+                                  .DataTextField("descrpcionInventor")
+                                  .Filter("idInventor")
+                                  .Placeholder("Escriba el Inventor que desea editar")
+                                  .MinLength(3)
+                                  .HtmlAttributes(new { style = "width:100%" })
+                                  .DataSource(source =>
+                                  {
+                                      source.Read(read =>
+                                      {
+                                          read.Action("GetInvension", "Gestion");
+
+                                      })
+                                      .ServerFiltering(true);
+                                  })
+                                    )
+
+                                    <br />
+                                    <p><strong>Editar Inventor:</strong> </p>
+                                    <br />
+                                    <input class="form-control" id="inventorMnt" name="inventorMnt" type="text" placeholder="Cambiar Inventor">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="inventorBtn" name="inventorBtn">Editar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="editarPais" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Editar País</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-lg-10">
+                                    <p><strong>País:</strong></p>
+                                    @(Html.Kendo().AutoComplete()
+                                  .Name("paises")
+                                  .DataTextField("PaisDescripcion")
+                                  .Filter("PaisCodigo")
+                                  .Placeholder("Escriba el país que desea editar")
+                                  .MinLength(1)
+                                  .HtmlAttributes(new { style = "width:100%" })
+                                  .DataSource(source =>
+                                  {
+                                      source.Read(read =>
+                                      {
+                                          read.Action("GetPais", "Gestion");
+
+                                      })
+                                      .ServerFiltering(true);
+                                  })
+                                    )
+
+                                    <br />
+                                    <p><strong>Descripción del Tipo de Marca</strong> </p>
+
+                                    <input class="form-control" id="PaisEdit" name="PaisEdit" type="text" placeholder="Cambiar descripción del País">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+
+                        <button type="button" class="btn btn-primary" id="btnEditarPais" name="btnEditarPais">Editar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @*</div>*@
+
+
+
+
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous">
+        </script>
+
+        <script>
+            //$("#poderMarca").prop("disabled", true);
+            //var input = document.getElementById('MarcaNombre');
+            //input.value = 15000;
+            //function onChange(arg) {
+            //    var mytextbox = document.getElementById('poderMarca');
+            //    var selected = $.map(this.select(), function (item) {
+            //        alert($(item).text());
+            //        mytextbox.value = $(item).text();
+            //        //return $(item).text();
+
+            //    });
+            //}
+            @*function categoriesChange() {
+                var value = this.value(),
+                     grid = $("#grid").data("kendoGrid");
+                $.ajax({
+                    url: '@Url.Action("GrillaLogotipo", "Mantenimiento")',
+                    data: { codExp: value },
+                    type: 'POST',
+                    dataType: "json",
+                    success: function () {
+                        if (value) {
+                            grid.dataSource.filter({ field: "MarcaCodigo", operator: "eq", value: parseInt(value) });
+                        } else {
+                            grid.dataSource.filter({});
+                        }
+                    }
+                });
+            }*@
+
+            var niza = $("#descNiza").val();
+            var mytextbox = document.getElementById('descripcionProd');
+            var mydropdown = document.getElementById('descNiza').value;
+            $('#descNiza').bind('change', function (e) {
+                mytextbox.value = mytextbox.value + this.value + "; "; //to appened
+                //    //mytextbox.innerHTML = this.value;
+            });
+
+            $('#tipoMarca').bind('change', function (e) {
+                if (this.value == 7) {
+                    $("#EspecificarTipo").prop("disabled", false);
+                } else {
+                    $("#EspecificarTipo").prop("disabled", true);
+                    document.getElementById('EspecificarTipo').value = "";
+                }
+                if (this.value != 1 && this.value !=7) {
+                    $("#logotipo").show();
+                } else {
+                    $("#logotipo").hide();
+                }
+
+            });
+
+            $('#comboPersona').bind('change', function (e) {
+                if (this.value == 1) {
+                    $("#titular").hide();
+                } else {
+                    //$("#titular").prop("disabled", true);
+                    $("#titular").show();
+                }
+
+            });
+
+
+            //function changecombobox() {
+            //    var valor = $("#reivindicacion").val();
+            //    var niza = $("#edCla").val();
+
+            //    if (valor == "SI") {
+            //        $("#EspecificarReiv").prop("disabled", false);
+            //    } else {
+            //        $("#EspecificarReiv").prop("disabled", false);
+            //        document.getElementById('EspecificarReiv').value = "";
+            //    }
+            //}
+
+            function resizeWinTo() {
+                myWindow.resizeTo(800, 600);
+                myWindow.focus();
+            }
+
+
+            function pulsar(e) {
+                //e.preventDefault();
+                // averiguamos el código de la tecla pulsada (keyCode para IE y which para Firefox)
+                tecla = (document.all) ? e.keyCode : e.which;
+                // si la tecla no es 13 devuelve verdadero,  si es 13 devuelve false y la pulsación no se ejecuta
+                return (tecla != 13);
+
+            }
+
+            function pulsarPoder(e) {
+
+                tecla = (document.all) ? e.keyCode : e.which;
+
+                return (tecla != 13);
+            }
+
+            function pulsarAgente(e) {
+                tecla = (document.all) ? e.keyCode : e.which;
+
+                return (tecla != 13);
+            }
+
+            function pulsarPeriodico(e) {
+                tecla = (document.all) ? e.keyCode : e.which;
+
+                return (tecla != 13);
+            }
+
+            function pulsarMarca(e) {
+                tecla = (document.all) ? e.keyCode : e.which;
+
+                return (tecla != 13);
+            }
+            function pulsarTipoMarca(e) {
+                tecla = (document.all) ? e.keyCode : e.which;
+
+                return (tecla != 13);
+            }
+
+            function pulsarClase(e) {
+                tecla = (document.all) ? e.keyCode : e.which;
+
+                return (tecla != 13);
+            }
+
+            function pulsarEdNiza(e) {
+                tecla = (document.all) ? e.keyCode : e.which;
+
+                return (tecla != 13);
+            }
+
+            function pulsarEstado(e) {
+                tecla = (document.all) ? e.keyCode : e.which;
+
+                return (tecla != 13);
+            }
+
+            function pulsarPais(e) {
+                tecla = (document.all) ? e.keyCode : e.which;
+
+                return (tecla != 13);
+            }
+
+            function pulsarTipoMov(e) {
+                tecla = (document.all) ? e.keyCode : e.which;
+
+                return (tecla != 13);
+            }
+
+            function pulsarTipoSol(e) {
+                tecla = (document.all) ? e.keyCode : e.which;
+
+                return (tecla != 13);
+            }
+
+            $(document).ready(function () {
+                $("#logotipo").hide();
+                $("#ocultarLogotipo").hide();
+                $("#EspecificarReiv").prop("disabled", false);
+                //$(this).find("Periodci").attr("href");
+                var codigoEmpresa = document.getElementById('codigoApoderado');
+                var descripcionEmpresa = document.getElementById('nombreEmpresa');
+                var rucEmp = document.getElementById('rucEmpresa');
+                var nombreTitular = document.getElementById('elTitular');
+                var direccionEmpresa = document.getElementById('direccionEmpresa');
+                var rubroEmpresa = document.getElementById('rubroEmpresa');
+                var telefonoEmpresa = document.getElementById('telefonoEmpresa');
+                var pais = document.getElementById('pais2');
+                var correo = document.getElementById('correoEmpresa');
+                $.ajax({
+                    url: "@Url.Action("BuscarMaxCodApoderado", "Mantenimiento")",
+                    //data: "{'buscar': '" + codigoEmpresa + "' }",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        //alert(data);
+                        //if(data != null){
+                        codigoEmpresa.value = data;
+                        rubroEmpresa.value = "";
+                        //pais.value = "";
+                        //}
+
+                        //$("#kokotecheId").html("Se realizo la tarea correctamente");
+                        //$("#kokotecheId").fadeIn(1000).delay(5000).fadeOut(1000);
+                    },
+                    error: function (request, status, error) {
+
+                    },
+                    failure: function (response) {
+                        alert("arriva al failure");
+                    }
+                });
+
+                var codigoAgente = document.getElementById('codigoAgente');
+                $.ajax({
+                    url: "@Url.Action("BuscarMaxCodAgente", "Mantenimiento")",
+                    //data: "{'buscar': '" + codigoEmpresa + "' }",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        //alert(data);
+                        //if(data != null){
+                        codigoAgente.value = data;
+                        //}
+
+                        //$("#kokotecheId").html("Se realizo la tarea correctamente");
+                        //$("#kokotecheId").fadeIn(1000).delay(5000).fadeOut(1000);
+                    },
+                    error: function (request, status, error) {
+
+                    },
+                    failure: function (response) {
+                        alert("arriva al failure");
+                    }
+                });
+
+                var codigoMarca = document.getElementById('codigoMarca');
+                $.ajax({
+                    url: "@Url.Action("BuscarMaxCodMarca", "Mantenimiento")",
+                    //data: "{'buscar': '" + codigoEmpresa + "' }",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        //alert(data);
+                        //if(data != null){
+                        codigoMarca.value = data;
+                        //}
+
+                        //$("#kokotecheId").html("Se realizo la tarea correctamente");
+                        //$("#kokotecheId").fadeIn(1000).delay(5000).fadeOut(1000);
+                    },
+                    error: function (request, status, error) {
+
+                    },
+                    failure: function (response) {
+                        alert("arriva al failure");
+                    }
+                });
+
+                var codigoPeriodico = document.getElementById('codigoPeriodico');
+                $.ajax({
+                    url: "@Url.Action("BuscarMaxCodPeriodico", "Mantenimiento")",
+                    //data: "{'buscar': '" + codigoEmpresa + "' }",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        //alert(data);
+                        //if(data != null){
+                        codigoPeriodico.value = data;
+                        //}
+
+                        //$("#kokotecheId").html("Se realizo la tarea correctamente");
+                        //$("#kokotecheId").fadeIn(1000).delay(5000).fadeOut(1000);
+                    },
+                    error: function (request, status, error) {
+
+                    },
+                    failure: function (response) {
+                        alert("arriva al failure");
+                    }
+                });
+
+                var codigoTipoMarca = document.getElementById('codigoTipoMarca');
+                $.ajax({
+                    url: "@Url.Action("BuscarMaxCodTipoMarca", "Mantenimiento")",
+                    //data: "{'buscar': '" + codigoEmpresa + "' }",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        //alert(data);
+                        //if(data != null){
+                        codigoTipoMarca.value = data;
+                        //}
+
+                        //$("#kokotecheId").html("Se realizo la tarea correctamente");
+                        //$("#kokotecheId").fadeIn(1000).delay(5000).fadeOut(1000);
+                    },
+                    error: function (request, status, error) {
+
+                    },
+                    failure: function (response) {
+                        alert("arriva al failure");
+                    }
+                });
+
+                var codigoClase = document.getElementById('codigoClase');
+                $.ajax({
+                    url: "@Url.Action("BuscarMaxCodClase", "Mantenimiento")",
+                    //data: "{'buscar': '" + codigoEmpresa + "' }",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        //alert(data);
+                        //if(data != null){
+                        codigoClase.value = data;
+                        //}
+
+                        //$("#kokotecheId").html("Se realizo la tarea correctamente");
+                        //$("#kokotecheId").fadeIn(1000).delay(5000).fadeOut(1000);
+                    },
+                    error: function (request, status, error) {
+
+                    },
+                    failure: function (response) {
+                        alert("arriva al failure");
+                    }
+                });
+
+                var codigoEdNiza = document.getElementById('codigoEdNiza');
+                $.ajax({
+                    url: "@Url.Action("BuscarMaxCodEdNiza", "Mantenimiento")",
+                    //data: "{'buscar': '" + codigoEmpresa + "' }",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        //alert(data);
+                        //if(data != null){
+                        codigoEdNiza.value = data;
+                        //}
+
+                        //$("#kokotecheId").html("Se realizo la tarea correctamente");
+                        //$("#kokotecheId").fadeIn(1000).delay(5000).fadeOut(1000);
+                    },
+                    error: function (request, status, error) {
+
+                    },
+                    failure: function (response) {
+                        alert("arriva al failure");
+                    }
+                });
+
+                var codigoEstado = document.getElementById('codigoEstado');
+                $.ajax({
+                    url: "@Url.Action("BuscarMaxCodEstado", "Mantenimiento")",
+                    //data: "{'buscar': '" + codigoEmpresa + "' }",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        //alert(data);
+                        //if(data != null){
+                        codigoEstado.value = data;
+                        //}
+
+                        //$("#kokotecheId").html("Se realizo la tarea correctamente");
+                        //$("#kokotecheId").fadeIn(1000).delay(5000).fadeOut(1000);
+                    },
+                    error: function (request, status, error) {
+
+                    },
+                    failure: function (response) {
+                        alert("arriva al failure");
+                    }
+                });
+
+                var codigoPais = document.getElementById('codigoPais');
+                $.ajax({
+                    url: "@Url.Action("BuscarMaxCodPais", "Mantenimiento")",
+                    //data: "{'buscar': '" + codigoEmpresa + "' }",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        //alert(data);
+                        //if(data != null){
+                        codigoPais.value = data;
+                        //}
+
+                        //$("#kokotecheId").html("Se realizo la tarea correctamente");
+                        //$("#kokotecheId").fadeIn(1000).delay(5000).fadeOut(1000);
+                    },
+                    error: function (request, status, error) {
+
+                    },
+                    failure: function (response) {
+                        alert("arriva al failure");
+                    }
+                });
+
+                var codigoTipoMov = document.getElementById('codigoTipoMov');
+                $.ajax({
+                    url: "@Url.Action("BuscarMaxCodTipoMov", "Mantenimiento")",
+                    //data: "{'buscar': '" + codigoEmpresa + "' }",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        //alert(data);
+                        //if(data != null){
+                        codigoTipoMov.value = data;
+                        //}
+
+                        //$("#kokotecheId").html("Se realizo la tarea correctamente");
+                        //$("#kokotecheId").fadeIn(1000).delay(5000).fadeOut(1000);
+                    },
+                    error: function (request, status, error) {
+
+                    },
+                    failure: function (response) {
+                        alert("arriva al failure");
+                    }
+                });
+
+                var codigoTipoSol = document.getElementById('codigoTipoSol');
+                $.ajax({
+                    url: "@Url.Action("BuscarMaxCodTipoSol", "Mantenimiento")",
+                    //data: "{'buscar': '" + codigoEmpresa + "' }",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        //alert(data);
+                        //if(data != null){
+                        codigoTipoSol.value = data;
+                        //}
+
+                        //$("#kokotecheId").html("Se realizo la tarea correctamente");
+                        //$("#kokotecheId").fadeIn(1000).delay(5000).fadeOut(1000);
+                    },
+                    error: function (request, status, error) {
+
+                    },
+                    failure: function (response) {
+                        alert("arriva al failure");
+                    }
+                });
+
+                $("#titular").hide();
+
+            });
+
+            $("#codigoApoderado").keypress(function (e) {
+                var buscarApoderado = $("#codigoApoderado").val();
+                var tipoPersona = document.getElementById('comboPersona');
+                var descripcionEmpresa = document.getElementById('nombreEmpresa');
+                var rucEmp = document.getElementById('rucEmpresa');
+                var nombreTitular = document.getElementById('elTitular');
+                var direccionEmpresa = document.getElementById('direccionEmpresa');
+                var rubroEmpresa = document.getElementById('rubroEmpresa');
+                var telefonoEmpresa = document.getElementById('telefonoEmpresa');
+                var pais = document.getElementById('pais2');
+                var correo = document.getElementById('correoEmpresa');
+                var existe = false;
+                tecla = (document.all) ? e.keyCode : e.which;
+                if (tecla == 13) {
+                    $.ajax({
+                        url: "@Url.Action("RetornarApoderadoEditar", "Mantenimiento")",
+                        data: "{'buscar': '" + buscarApoderado + "' }",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            $(data).each(function (i) {
+                                existe = true;
+                                $("#comboPersona").data("kendoComboBox").value(data[i].TipoPersona);
+                                //tipoPersona.value = data[i].TipoPersona;
+                                descripcionEmpresa.value = data[i].DescripcionEmpresa;
+                                rucEmp.value = data[i].RUC;
+                                //var str = data[i].Titulares;
+                                //var res = str.split(",");
+                                //$("#elTitular").data("kendoMultiSelect").value(res);
+                                //nombreTitular.value = data[i].Titulares;
+                                direccionEmpresa.value = data[i].Direccion;
+                                //rubroEmpresa.value = data[i].ProductoServicio;
+                                telefonoEmpresa.value = data[i].Telefono;
+                                $("#pais2").data("kendoComboBox").value(data[i].PaisCodigo);
+                                correo.value = data[i].Correo;
+                                //if (tipoPersona.value == 2) {
+                                //    $("#titular").show();
+                                //} else {
+                                //    $("#titular").hide();
+                                //}
+                                //var input = document.getElementById('MarcaNombre');
+                                //input.value = 15000;
+                            });
+                            if (!existe) {
+                                $("#comboPersona").data("kendoComboBox").value("");
+                                descripcionEmpresa.value = "";
+                                rucEmp.value = "";
+                                direccionEmpresa.value = "";
+                                telefonoEmpresa.value = "";
+                                $("#pais2").data("kendoComboBox").value("");
+                                correo.value = "";
+                            }
+                        },
+                        error: function (request, status, error) {
+
+                        },
+                        failure: function (response) {
+                            alert("arriva al failure");
+                        }
+                    });
+                }
+
+
+            });
+
+            $("#poderEmpresa").keypress(function (e) {
+                var buscarPoder = $("#poderEmpresa").val();
+                var empresaPoder = document.getElementById('EmprLst');
+                var fechaCreacion = document.getElementById('FechaGen');
+                var descripcionPoder = document.getElementById('poderDescripcion');
+                var observacion = document.getElementById('poderObservacion');
+                var firmante = document.getElementById('firmantePoder');
+                $("#gridPoder").data("kendoGrid").dataSource.read();
+                $("#gridPoder").data("kendoGrid").refresh();
+                var existe = false;
+                tecla = (document.all) ? e.keyCode : e.which;
+                if (tecla == 13) {
+                    $.ajax({
+                        url: "@Url.Action("RetornarPoderEditar", "Mantenimiento")",
+                        data: "{'buscar': '" + buscarPoder + "' }",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            $(data).each(function (i) {
+                                existe = true;
+                                $("#EmprLst").data("kendoComboBox").value(data[i].CodApoderado);
+                                //empresaPoder.value = data[i].CodApoderado;
+                                fechaCreacion.value = data[i].FechaCreacion;
+                                descripcionPoder.value = data[i].DescPoder;
+                                observacion.value = data[i].Observacion;
+                                //firmante.value = data[i].Firmante;
+                                var str = data[i].Firmante;
+                                var res = str.split(",");
+                                $("#firmantePoder").data("kendoMultiSelect").value(res);
+                                //var input = document.getElementById('MarcaNombre');
+                                //input.value = 15000;
+                            });
+                            if (!existe) {
+                                $("#EmprLst").data("kendoComboBox").value("");
+                                //empresaPoder.value = data[i].CodApoderado;
+                                fechaCreacion.value = "";
+                                descripcionPoder.value = "";
+                                observacion.value = "";
+                                firmante.value = "";
+                            }
+                        },
+                        error: function (request, status, error) {
+
+                        },
+                        failure: function (response) {
+                            alert("arriva al failure");
+                        }
+                    });
+                }
+
+
+            });
+
+            $("#codigoAgente").keypress(function (e) {
+                var buscarAgente = $("#codigoAgente").val();
+                var nombreAgente = document.getElementById('nombreAgente');
+                var matricula = document.getElementById('matriculaAgente');
+                var existe = false;
+
+                tecla = (document.all) ? e.keyCode : e.which;
+                if (tecla == 13) {
+                    $.ajax({
+                        url: "@Url.Action("RetornarAgenteEditar", "Mantenimiento")",
+                        data: "{'buscar': '" + buscarAgente + "' }",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            $(data).each(function (i) {
+                                existe = true;
+                                nombreAgente.value = data[i].DescAgente;
+                                matricula.value = data[i].MatriculaAgente;
+
+                                //var input = document.getElementById('MarcaNombre');
+                                //input.value = 15000;
+                            });
+                            if(!existe){
+                                nombreAgente.value = "";
+                                matricula.value = "";
+                            }
+                        },
+                        error: function (request, status, error) {
+
+                        },
+                        failure: function (response) {
+                            alert("arriva al failure");
+                        }
+                    });
+                }
+
+
+            });
+
+            $("#codigoPeriodico").keypress(function (e) {
+                var buscarPeriodico = $("#codigoPeriodico").val();
+                var nombrePeriodico = document.getElementById('PeriodicoNombre');
+                var existe = false;
+
+                tecla = (document.all) ? e.keyCode : e.which;
+                if (tecla == 13) {
+                    $.ajax({
+                        url: "@Url.Action("RetornarPeriodicoEditar", "Mantenimiento")",
+                        data: "{'buscar': '" + buscarPeriodico + "' }",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            $(data).each(function (i) {
+                                existe = true;
+                                nombrePeriodico.value = data[i].DescPeriodico;
+
+                                //var input = document.getElementById('MarcaNombre');
+                                //input.value = 15000;
+                            });
+                            if(!existe){
+                                nombrePeriodico.value = "";
+                            }
+                        },
+                        error: function (request, status, error) {
+
+                        },
+                        failure: function (response) {
+                            alert("arriva al failure");
+                        }
+                    });
+                }
+
+
+            });
+
+            $("#codigoMarca").keypress(function (e) {
+                var buscarMarca = $("#codigoMarca").val();
+                var nombreMarca = document.getElementById('MarcaNombre');
+                var poderMarca = document.getElementById('poderMarca');
+                var clase2 = document.getElementById('clase2');
+                var edCla = document.getElementById('edCla');
+                var tipoMarca = document.getElementById('tipoMarca');
+                var EspecificarTipo = document.getElementById('EspecificarTipo');
+                var reivindicacion = document.getElementById('reivindicacion');
+                var EspecificarReiv = document.getElementById('EspecificarReiv');
+                var descripcionProd = document.getElementById('descripcionProd');
+                var nroPrioridad = document.getElementById('nroPrioridad');
+                var pais = document.getElementById('pais');
+                var FechaPrioridad = document.getElementById('FechaPrioridad');
+                var logotipo = document.getElementById("files");
+
+                $("#grid").data("kendoGrid").dataSource.read();
+                $("#grid").data("kendoGrid").refresh();
+                var existe = false;
+                tecla = (document.all) ? e.keyCode : e.which;
+                if (tecla == 13) {
+                    //alert(tecla);
+                    $.ajax({
+                        url: "@Url.Action("RetornarMarcaEditar", "Mantenimiento")",
+                        data: "{'buscar': '" + buscarMarca + "' }",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            $(data).each(function (i) {
+                                existe = true;
+                                nombreMarca.value = data[i].MarcaDescripcion;
+                                //poderMarca.value = data[i].Poder;
+                                if (data[i].Poder == 0) {
+                                    $("#poderMarca").data("kendoDropDownList").value("");
+                                } else {
+                                    $("#poderMarca").data("kendoDropDownList").value(data[i].Poder);
+                                }
+                                
+                                $("#clase2").data("kendoComboBox").value(data[i].MarcaClase);
+                                //clase2.value = data[i].MarcaClase;
+                                $("#edCla").data("kendoComboBox").value(data[i].MarcaEdniza);
+                                //edCla.value = data[i].MarcaEdniza;
+                                $("#tipoMarca").data("kendoComboBox").value(data[i].Tipo);
+                                if (data[i].Tipo == 7) {
+                                    $("#EspecificarTipo").prop("disabled", false);
+                                } else {
+                                    $("#EspecificarTipo").prop("disabled", true);
+                                }
+                                //if (data[i].Tipo != 1 && data[i].Tipo != 7) {
+                                //    $("#logotipo").show();
+                                //    $("#ocultarLogotipo").show();
+
+                                //} else {
+                                //    $("#logotipo").hide();
+                                //    $("#ocultarLogotipo").hide();
+                                //}
+                                if (data[i].IndicadorLogotipo == 'S') {
+                                    $("#logotipo").show();
+                                    $("#ocultarLogotipo").show();
+                                } else {
+                                    $("#logotipo").hide();
+                                    $("#ocultarLogotipo").hide();
+                                }
+                                logotipo.value.src = "data:image/png;base64," + data[i].Logotipo;
+                                //$("#files").data("kendoUpload").value(data[i].Logotipo);
+                                //alert(data[i].Logotipo);
+                                //tipoMarca.value = data[i].Tipo;
+                                EspecificarTipo.value = data[i].TipoObs;
+                                reivindicacion.value = data[i].Reivindicacion;
+                                //if (reivindicacion.value == "SI") {
+                                //    $("#EspecificarReiv").prop("disabled", true);
+                                //} else {
+                                //    $("#EspecificarReiv").prop("disabled", true);
+                                //}
+                                EspecificarReiv.value = data[i].ReivindicacionObs;
+                                descripcionProd.value = data[i].DescProducto;
+                                nroPrioridad.value = data[i].Prioridad;
+                                $("#pais").data("kendoComboBox").value(data[i].PaisCodigo);
+                                FechaPrioridad.value = data[i].FechaPrioridad;
+                            });
+                            if(!existe){
+                                nombreMarca.value = "";
+                                $("#poderMarca").data("kendoDropDownList").value("");
+                                $("#clase2").data("kendoComboBox").value("");
+                                $("#edCla").data("kendoComboBox").value("");
+                                $("#tipoMarca").data("kendoComboBox").value("");
+                                tipoMarca.value = "";
+                                logotipo.value = "";
+                                EspecificarTipo.value ="";
+                                reivindicacion.value = "";
+                                EspecificarReiv.value = "";
+                                descripcionProd.value = "";
+                                nroPrioridad.value = "";
+                                $("#pais").data("kendoComboBox").value("");
+                                FechaPrioridad.value = "";
+                            }
+                        },
+                        error: function (request, status, error) {
+
+                        },
+                        failure: function (response) {
+                            alert("arriva al failure");
+                        }
+                    });
+                }
+
+
+            });
+
+            $("#codigoTipoMarca").keypress(function (e) {
+                var buscarTipoMarca = $("#codigoTipoMarca").val();
+                var descTipoMarca = document.getElementById('tipoMarcaDesc');
+                var existe = false;
+                tecla = (document.all) ? e.keyCode : e.which;
+                if (tecla == 13) {
+                    $.ajax({
+                        url: "@Url.Action("RetornarTipoMarcaEditar", "Mantenimiento")",
+                        data: "{'buscar': '" + buscarTipoMarca + "' }",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            $(data).each(function (i) {
+                                existe = true;
+                                descTipoMarca.value = data[i].TipoMarcaDesc;
+                                $("#IndLogotipo").data("kendoComboBox").value(data[i].TipoMarcaIndLogo);                               
+                                //var input = document.getElementById('MarcaNombre');
+                                //input.value = 15000;
+                            });
+                            if (!existe) {
+                                descTipoMarca.value = "";
+                                $("#IndLogotipo").data("kendoComboBox").value("");
+                            }
+                        },
+                        error: function (request, status, error) {
+
+                        },
+                        failure: function (response) {
+                            alert("arriva al failure");
+                        }
+                    });
+                }
+
+
+            });
+
+            $("#codigoClase").keypress(function (e) {
+                var buscarClase = $("#codigoClase").val();
+                var descClase = document.getElementById('descripcionClase');
+                var existe = false;
+
+                tecla = (document.all) ? e.keyCode : e.which;
+                if (tecla == 13) {
+                    $.ajax({
+                        url: "@Url.Action("RetornarClaseEditar", "Mantenimiento")",
+                        data: "{'buscar': '" + buscarClase + "' }",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            $(data).each(function (i) {
+                                existe = true;
+                                descClase.value = data[i].DescClase;
+
+                                //var input = document.getElementById('MarcaNombre');
+                                //input.value = 15000;
+                            });
+                            if(!existe){
+                                descClase.value = "";
+                            }
+                        },
+                        error: function (request, status, error) {
+
+                        },
+                        failure: function (response) {
+                            alert("arriva al failure");
+                        }
+                    });
+                }
+
+
+            });
+
+            $("#codigoEdNiza").keypress(function (e) {
+                var buscarEdniza = $("#codigoEdNiza").val();
+                var claseList = document.getElementById('ClaseList');
+                var nroClase = document.getElementById('edNizaMnt');
+                var descEdNiza = document.getElementById('descripcionEd');
+                var existe = false;
+
+                tecla = (document.all) ? e.keyCode : e.which;
+                if (tecla == 13) {
+                    $.ajax({
+                        url: "@Url.Action("RetornarEdNizaEditar", "Mantenimiento")",
+                        data: "{'buscar': '" + buscarEdniza + "' }",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            $(data).each(function (i) {
+                                existe = true;
+                                //claseList.value = data[i].CodClase; //formatear
+                                $("#ClaseList").data("kendoDropDownList").value(data[i].CodClase);
+                                nroClase.value = data[i].NizNroClase;
+                                descEdNiza.value = data[i].DescEdNiza;
+
+                                //var input = document.getElementById('MarcaNombre');
+                                //input.value = 15000;
+                            });
+                            if (!existe) {
+                                $("#ClaseList").data("kendoDropDownList").value("");
+                                nroClase.value = "";
+                                descEdNiza.value = "";
+                            }
+                        },
+                        error: function (request, status, error) {
+
+                        },
+                        failure: function (response) {
+                            alert("arriva al failure");
+                        }
+                    });
+                }
+
+
+            });
+
+            $("#codigoEstado").keypress(function (e) {
+                var buscarEstado = $("#codigoEstado").val();
+                var descEstado = document.getElementById('estadoNombre');
+                var checkEstado = document.getElementById('cbox1');
+                var existe = false;
+
+                tecla = (document.all) ? e.keyCode : e.which;
+                if (tecla == 13) {
+                    $.ajax({
+                        url: "@Url.Action("RetornarEstadoEditar", "Mantenimiento")",
+                        data: "{'buscar': '" + buscarEstado + "' }",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            $(data).each(function (i) {
+                                existe = true;
+                                descEstado.value = data[i].DesStatus;
+                                $("#cbox1").data("kendoComboBox").value(data[i].CheckStatus);
+                                //checkEstado.value = data[i].CheckStatus;
+                                //var input = document.getElementById('MarcaNombre');
+                                //input.value = 15000;
+                            });
+                            if(!existe){
+                                descEstado.value = "";
+                                $("#cbox1").data("kendoComboBox").value("");
+                            }
+                        },
+                        error: function (request, status, error) {
+
+                        },
+                        failure: function (response) {
+                            alert("arriva al failure");
+                        }
+                    });
+                }
+
+
+            });
+
+            function getParameter() {
+                return {
+                    param1: $("#codigoMarca").val()
+                };
+            }
+
+            function getParameterPoder() {
+                return {
+                    param1: $("#poderEmpresa").val()
+                };
+            }
+
+            $("#codigoPais").keypress(function (e) {
+                var buscarPais = $("#codigoPais").val();
+                var descPais = document.getElementById('PaisDescripcion');
+                var existe = false;
+
+                tecla = (document.all) ? e.keyCode : e.which;
+                if (tecla == 13) {
+                    $.ajax({
+                        url: "@Url.Action("RetornarPaisEditar", "Mantenimiento")",
+                        data: "{'buscar': '" + buscarPais + "' }",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            $(data).each(function (i) {
+                                existe = true;
+                                descPais.value = data[i].PaisDescripcion;
+
+                                //var input = document.getElementById('MarcaNombre');
+                                //input.value = 15000;
+                            });
+                            if(!existe){
+                                descPais.value = "";
+                            }
+                        },
+                        error: function (request, status, error) {
+
+                        },
+                        failure: function (response) {
+                            alert("arriva al failure");
+                        }
+                    });
+                }
+
+
+            });
+
+            function onUpload(e) {
+                var files = e.files;
+                alert(files)
+                $.each(files, function () {
+
+                    if (this.extension.toLowerCase() != ".doc") {
+                        alert("Only .doc files can be uploaded!")
+                        e.preventDefault();
+                    }
+
+                    if (this.size / 1024 / 1024 > 5) {
+                        alert("Max 5Mb file size is allowed!")
+                        e.preventDefault();
+                    }
+                });
+            }
+
+            $("#codigoTipoMov").keypress(function (e) {
+                var buscarTipoMov = $("#codigoTipoMov").val();
+                var descTipoMov = document.getElementById('TipoMovDescripcion');
+                var existe = false;
+
+                tecla = (document.all) ? e.keyCode : e.which;
+                if (tecla == 13) {
+                    $.ajax({
+                        url: "@Url.Action("RetornarTipoMovEditar", "Mantenimiento")",
+                        data: "{'buscar': '" + buscarTipoMov + "' }",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            $(data).each(function (i) {
+                                existe = true;
+                                descTipoMov.value = data[i].DescTipoMov;
+
+                                //var input = document.getElementById('MarcaNombre');
+                                //input.value = 15000;
+                            });
+                            if(!existe){
+                                descTipoMov.value = "";
+                            }
+                        },
+                        error: function (request, status, error) {
+
+                        },
+                        failure: function (response) {
+                            alert("arriva al failure");
+                        }
+                    });
+                }
+            });
+
+            $("#codigoTipoSol").keypress(function (e) {
+                var buscarTipoSol = $("#codigoTipoSol").val();
+                var descTipoSol = document.getElementById('TipoSolDescripcion');
+                var abrevTipoSol = document.getElementById('TipoSolAbrev');
+                var existe = false;
+
+                tecla = (document.all) ? e.keyCode : e.which;
+                if (tecla == 13) {
+                    $.ajax({
+                        url: "@Url.Action("RetornarTipoSolEditar", "Mantenimiento")",
+                        data: "{'buscar': '" + buscarTipoSol + "' }",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            $(data).each(function (i) {
+                                existe = true;
+                                descTipoSol.value = data[i].DescTipoSolicitud;
+                                abrevTipoSol.value = data[i].AbrevTipoSolicitud;
+                                //var input = document.getElementById('MarcaNombre');
+                                //input.value = 15000;
+                            });
+                            if(!existe){
+                                descTipoSol.value = "";
+                                abrevTipoSol.value = "";
+                            }
+                        },
+                        error: function (request, status, error) {
+
+                        },
+                        failure: function (response) {
+                            alert("arriva al failure");
+                        }
+                    });
+                }
+            });
+            @*$("#btnEditarPeriodico").click(function () {
+
+            var dtString = $("#PerEdit").val();
+            var slct = $("#per").val();
+
+            $.ajax({
+            url: "@Url.Action("EditarPeriodicoMnt", "Mantenimiento")",
+            data: "{'value2': '" + slct + "' , 'valueString2':'" + dtString + "' }",
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+                $("#kokotecheId").html("Se realizo la tarea correctamente");
+                $("#kokotecheId").fadeIn(1000).delay(5000).fadeOut(1000);
+        },
+            error: function (request, status, error) {
+
+        },
+            failure: function (response) {
+                alert("arriva al failure");
+        }
+        });
+        });
+
+        $("#btnEditarMarca").click(function () {
+
+            var dtString = $("#MarcaEdit").val();
+            var slct = $("#mar").val();
+
+            $.ajax({
+            url: "@Url.Action("EditarMarcaMnt", "Mantenimiento")",
+            data: "{'value2': '" + slct + "' , 'valueString2':'" + dtString + "' }",
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+                $("#kokotecheId").html("Se realizo la tarea correctamente");
+                $("#kokotecheId").fadeIn(1000).delay(5000).fadeOut(1000);
+        },
+            error: function (request, status, error) {
+
+        },
+            failure: function (response) {
+                alert("arriva al failure");
+        }
+        });
+        });
+
+        $("#btnEditarTipoMarca").click(function () {
+
+            var dtString = $("#TipoMarcEdit").val();
+            var slct = $("#tipoMarc").val();
+
+            $.ajax({
+                url: "@Url.Action("EditarTipoMarcaMnt", "Mantenimiento")",
+                data: "{'valor': '" + slct + "' , 'nuevoValor':'" + dtString + "' }",
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+                $("#kokotecheId").html("Se realizo la tarea correctamente");
+                $("#kokotecheId").fadeIn(1000).delay(5000).fadeOut(1000);
+            },
+            error: function (request, status, error) {
+
+            },
+            failure: function (response) {
+                alert("arriva al failure");
+            }
+        });
+        });
+
+        $("#btnEditarClase").click(function () {
+
+            var dtString = $("#ClassEdit").val();
+            var slct = $("#k").val();
+            alert(slct);
+            $.ajax({
+            url: "@Url.Action("EditarClaseMnt", "Mantenimiento")",
+            data: "{'value2': '" + slct + "' , 'valueString2':'" + dtString + "' }",
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+                $("#kokotecheId").html("Se realizo la tarea correctamente");
+                $("#kokotecheId").fadeIn(1000).delay(5000).fadeOut(1000);
+        },
+            error: function (request, status, error) {
+
+        },
+            failure: function (response) {
+                alert("arriva al failure");
+        }
+        });
+        });
+
+        $("#edNizaBtn").click(function () {
+            var dtString = $("#edNiza").val();
+            var slct = $("#ed").val();
+            //alert(slct);
+            $.ajax({
+            url: "@Url.Action("EdNizaMnt", "Mantenimiento")",
+            data: "{'valor': '" + slct + "' , 'nuevoValor':'" + dtString + "' }",
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+                $("#kokotecheId").html("Se realizo la tarea correctamente");
+                $("#kokotecheId").fadeIn(1000).delay(5000).fadeOut(1000);
+        },
+            error: function (request, status, error) {
+
+        },
+            failure: function (response) {
+                alert("arriva al failure");
+        }
+        });
+        });
+
+        $("#btnEditarPais").click(function () {
+
+            var dtString = $("#PaisEdit").val();
+            var slct = $("#paises").val();
+
+            $.ajax({
+                url: "@Url.Action("EditarPaisMnt", "Mantenimiento")",
+                data: "{'valor': '" + slct + "' , 'nuevoValor':'" + dtString + "' }",
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+                $("#kokotecheId").html("Se realizo la tarea correctamente");
+                $("#kokotecheId").fadeIn(1000).delay(5000).fadeOut(1000);
+            },
+            error: function (request, status, error) {
+
+            },
+            failure: function (response) {
+                alert("arriva al failure");
+            }
+        });
+        });
+
+        $("#nizaCambiar").click(function () {
+            var dtString = $("#nizaCambiar").val();
+            var slct = $("#zxc").val();
+
+            $.ajax({
+            url: "@Url.Action("Nizahange", "Mantenimiento")",
+            data: "{'value4': '" + slct + "' , 'valueString4':'" + dtString + "' }",
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+                $("#kokotecheId").html("Se realizo la tarea correctamente");
+                $("#kokotecheId").fadeIn(1000).delay(5000).fadeOut(1000);
+        },
+            error: function (request, status, error) {
+
+        },
+            failure: function (response) {
+                alert("arriva al failure");
+        }
+        });
+        });
+
+
+        $("#EstadoBtn").click(function () {
+            var dtString = $("#estadoMnt").val();
+            var slct = $("#EstList").val();
+
+            $.ajax({
+            url: "@Url.Action("EstadoMnt", "Mantenimiento")",
+            data: "{'value4': '" + slct + "' , 'valueString4':'" + dtString + "' }",
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+                $("#kokotecheId").html("Se realizo la tarea correctamente");
+                $("#kokotecheId").fadeIn(1000).delay(5000).fadeOut(1000);
+        },
+            error: function (request, status, error) {
+
+        },
+            failure: function (response) {
+                alert("arriva al failure");
+        }
+        });
+        });*@
+        </script>
+</body>
+</html>
+
+                            

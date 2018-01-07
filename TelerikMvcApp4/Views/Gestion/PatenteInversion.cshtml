@@ -1,0 +1,238 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>MarcaSolicitada</title>
+    <link href="@Url.Content("~/Content/kendo/2016.1.412/kendo.common.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2016.1.412/kendo.mobile.all.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2016.1.412/kendo.dataviz.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2016.1.412/kendo.bootstrap.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2016.1.412/kendo.dataviz.bootstrap.min.css")" rel="stylesheet" type="text/css" />
+    @*<link href="@Url.Content("~/Content/bootstrap.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" type="text/css" />*@
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script src="@Url.Content("~/Scripts/kendo/2016.1.412/jquery.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2016.1.412/jszip.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2016.1.412/kendo.all.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2016.1.412/kendo.aspnetmvc.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo.modernizr.custom.js")"></script>
+    <link href="@Url.Content("~/Content/site.css")" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Century | Next</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav ul-Menu">
+                    <li>@Html.ActionLink("Inicio", "Index", "Gestion")</li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Movimientos<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="~/Gestion/RegistroMarca">Solicitudes</a></li>
+                            <li><a href="~/Gestion/PatenteInversion">Patente de Invención</a></li>
+                            <li><a href="~/Gestion/MovimientoExpediente">Movimiento de Expediente</a></li>
+                            <li><a href="~/Gestion/DibujoIndustriales">Dibujos Modelos Industriales</a></li>
+                            <li class="divider"></li>
+                            <li><a href="~/Gestion/ImagenesPublicacion">Imagenes de publicación</a></li>
+                            <li><a href="~/Gestion/RegistroOposicion">Registro de Intención de Oposición</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="~/Mantenimiento/MantenimientoGeneral">Mantenimientos</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Consultas<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="~/Busqueda/BusquedasParecidos">Busqueda de parecidos fonéticos</a></li>
+
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section>
+        <h1>Patente de Invención</h1>
+        <div class="panel panel-default panel-Mantenimiento dvSombreadoMnt">
+            <div class="panel-heading"></div>
+            <div class="panel-body">
+                @using (Html.BeginForm("GetPatenteInversion", "Gestion", FormMethod.Post, new { @id = "Frm-login", role = "form", @class = "form-horizontal" }))
+                {
+                    <fieldset>
+                      <legend>Formulario de Patente de Invensión</legend>
+                     
+                      <div class="row">
+                          <div class="col-lg-6">
+                              <div class="form-group-sm">
+                                  <div class="col-lg-10">
+                                      <p><strong>Numero Solicitud:</strong></p>
+                                      <input class="form-control" id="numeroSolictudPatente" name="numeroSolictudPatente" type="text" placeholder="Número Solicitud" required>
+                                  </div>
+                              </div>
+                          </div>
+                          
+                      </div>
+
+                      <div class="row">
+                          <div class="col-lg-6">
+                              <div class="form-group-sm">
+                                  <div class="col-lg-10">
+                                      <p><strong>Solicitante:   </strong><span id="idSolicitante"></span></p>
+                                      @(Html.Kendo().MultiSelect()
+                                          .Name("qwe")
+                                          .DataTextField("DescripcionEmpresa")
+                                          .DataValueField("CodEmpresa")
+                                          .Placeholder("Seleccione los Solicitantes...")
+                                          .AutoBind(false)
+                                          .DataSource(source =>
+                                          {
+                                              source.Read(read =>
+                                              {
+                                                  read.Action("GetApoderado", "Gestion");
+                                              })
+                                              .ServerFiltering(true);
+                                          })
+                                      )
+                                      @*<p><strong>Inventor:   </strong><span id="idInventor"></span></p>
+                                      @(Html.Kendo().MultiSelect()
+                                        .Name("zxc")
+                                        .DataTextField("descrpcionInventor")
+                                        .DataValueField("idInventor")
+                                        .Placeholder("Seleccionar Inventor...")
+                                        .AutoBind(false)
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("GetIncventor", "Gestion");
+                                            })
+                                            .ServerFiltering(true);
+                                        })
+                                      )*@
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="col-lg-6">
+                              <div class="form-group-sm">
+                                  <div class="col-lg-10">
+                                      <p><strong>Fecha Solicitud:</strong></p>
+                                      @(Html.Kendo().DatePicker()
+                                            .Name("datepickerPatente")
+                                            .Value("10/10/2011")
+                                            .Culture("es-ES")
+                                          .HtmlAttributes(new { style = "width: 100%" })
+                                      )
+
+                                      <p><strong>Fecha Vencimiento:</strong></p>
+                                      @(Html.Kendo().DatePicker()
+                                            .Name("FechaVencimiento")
+                                            .Value("10/10/2011")
+                                            .Culture("es-ES")
+                                          .HtmlAttributes(new { style = "width: 100%" })
+                                      )
+                                  </div>
+                              </div>
+                             
+                          </div>
+                      </div>
+
+                      <div class="row">
+                          <div class="col-lg-6">
+                              <div class="form-group-sm">
+                                  <div class="col-lg-10">
+                                      <p><strong>Titulo:</strong></p>
+                                      <input class="form-control" id="tituloPatente" name="tituloPatente" type="text" placeholder="Título Patente" required>
+                                  </div>
+                              </div>
+                              <div class="form-group-sm">
+                                  <div class="col-lg-10">
+                                      <p><strong>Agente:</strong></p>
+                                      @(Html.Kendo().DropDownList()
+                                            .Name("AgenteList")
+                                            .DataTextField("DescAgente")
+                                            .DataValueField("CodAgente")
+                                            .HtmlAttributes(new { style = "width:100%"})
+                                            .Filter("contains")
+                                            .DataSource(source =>
+                                            {
+                                                source.Read(read =>
+                                                {
+                                                    read.Action("GetAgente", "Gestion");
+                                                })
+                                                .ServerFiltering(true);
+                                            })
+                                      )
+                                  </div>
+                              </div>
+                          </div>
+                      </div>  
+
+                      @*<div class="row">
+                          <div class="col-lg-6">
+                              <div class="form-group-sm">
+                                  <div class="col-lg-10">
+                                      <p><strong>Propiedades:</strong></p>
+                                     <textarea class="form-control" id="propiedadesPatente" name="propiedadesPatente" type="text" placeholder="Propiedades" required></textarea>
+                                  </div>
+                              </div>                              
+                          </div>
+                          <div class="col-lg-6">
+                              <div class="form-group-sm">
+                                  <div class="col-lg-10">
+                                      <p><strong>Compuesto:</strong></p>
+                                      <textarea class="form-control" id="compuestoPatente" name="compuestoPatente" type="text" placeholder="Compuesto" required></textarea>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>*@ 
+                        <div class="row">
+                            @*<div class="col-lg-6">
+                                <div class="form-group-sm">
+                                    <div class="col-lg-10">
+                                        <p><strong>Resumen:</strong></p>
+                                        <textarea class="form-control" rows="4" id="resumenPatente" name="resumenPatente" style="width:100%;" required></textarea>
+                                    </div>
+                                </div>                               
+                            </div>*@
+                            <br />
+                            <div class="col-lg-6">
+                                <div class="form-group-sm">
+                                    @(Html.Kendo().Upload()
+                                               .Name("files")
+                                    )
+                                </div>
+                            </div>
+                        </div>  
+                        <br />                   
+                      <div class="row" style="margin:0 auto;">
+                          <div class="form-group">
+                              <div class="col-lg-10">
+                                  <button type="submit" class="btn btn-success">Crear</button>
+                              </div>
+                          </div>
+                      </div>
+                    </fieldset>
+                }
+            </div>
+        </div>
+
+    </section>
+    
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+</body>
+</html>

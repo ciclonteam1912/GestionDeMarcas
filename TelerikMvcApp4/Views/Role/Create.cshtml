@@ -1,0 +1,28 @@
+﻿@model Microsoft.AspNet.Identity.EntityFramework.IdentityRole
+@{
+    ViewBag.Title = "Agregar nuevo Rol";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+
+</head>
+<body>
+    <div class="container body-content">
+        <h2>Agregar Nuevo Rol de Usuario:</h2>
+
+        @using (Html.BeginForm())
+        {
+            <p>Ingrese el nombre del rol de usuario:</p>
+
+            @Html.EditorFor(m => m.Name)
+            <input type="submit" value="Crear Rol" />
+        }
+    </div>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous">
+    </script>
+</body>
+</html>

@@ -1,0 +1,547 @@
+﻿
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Busqueda Marcas</title>
+    <link href="@Url.Content("~/Content/kendo/2016.1.412/kendo.common.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2016.1.412/kendo.mobile.all.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2016.1.412/kendo.dataviz.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2016.1.412/kendo.bootstrap.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2016.1.412/kendo.dataviz.bootstrap.min.css")" rel="stylesheet" type="text/css" />
+    @*<link href="@Url.Content("~/Content/bootstrap.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" type="text/css" />*@
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script src="@Url.Content("~/Scripts/kendo/2016.1.412/jquery.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2016.1.412/jszip.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2016.1.412/kendo.all.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2016.1.412/kendo.aspnetmvc.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo.modernizr.custom.js")"></script>
+    <link href="@Url.Content("~/Content/site.css")" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Century | Next</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav ul-Menu">
+                    <li>@Html.ActionLink("Inicio", "Index", "Gestion")</li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Movimientos<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="~/Gestion/RegistroMarca">Solicitudes</a></li>
+                            <li><a href="~/Gestion/Renovacion">Renovación </a></li>
+                            <li><a href="~/Gestion/PatenteInversion">Patente de Invención</a></li>
+                            <li class="divider"></li>
+                            <li><a href="~/Gestion/MovimientoExpediente">Movimiento de Expediente</a></li>
+                            <li><a href="~/Gestion/DibujoIndustriales">Dibujos Modelos Industriales</a></li>
+                            @*<li><a href="~/Gestion/VerEstado">Modificación de Estados</a></li>*@
+                            <li class="divider"></li>
+                        </ul>
+                    </li>
+                    @*<li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true">Mantenimientos<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="~/Mantenimiento/MantenimientoPoderes">Mantenimiento de Poderes</a></li>
+                            <li class="divider"></li>
+                            <li><a href="~/Mantenimiento/MantenimientoGeneral">Otros Mantenimientos</a></li>
+                            <li class="divider"></li>
+                        </ul>
+                    </li>*@
+                    <li><a href="~/Mantenimiento/MantenimientoGeneral">Mantenimientos</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Consultas<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="~/Busqueda/BusquedaMarca">Busqueda  de Marcas</a></li>
+                            <li><a href="~/Busqueda/BusquedasParecidos">Busqueda de parecidos fonéticos</a></li>
+                            <li class="divider"></li>
+                            @*<li><a href="~/Busqueda/DibujoIndustriales">Dibujos Modelos Industriales</a></li>*@
+                            <li class="divider"></li>
+                            <li><a href="~/Busqueda/BusquedaMarca">Vigilancia de Marcas</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                @*<div class="nav navbar-nav navbar-right">
+                    <form class="navbar-form navbar-left" role="search">
+                        <div class="form-group">
+                            
+                            @(Html.Kendo().AutoComplete()
+                              .Name("countries")
+                              .Filter("startswith")
+                              .Placeholder("Busqueda")
+                              .BindTo(new string[] {
+                                    "Albania",
+                                    "Andorra",
+                                    "Armenia",
+                                    "Austria",
+                                    "Azerbaijan",
+                                    "Belarus",
+                                    "Belgium",
+                                    "Bosnia & Herzegovina",
+                                    "Bulgaria",
+                                    "Croatia",
+                                    "Cyprus",
+                                    "Czech Republic",
+                                    "Denmark",
+                                    "Estonia",
+                                    "Finland",
+                                    "France",
+                                    "Georgia",
+                                    "Germany",
+                                    "Greece",
+                                    "Hungary",
+                                    "Iceland",
+                                    "Ireland",
+                                    "Italy",
+                                    "Kosovo",
+                                    "Latvia",
+                                    "Liechtenstein",
+                                    "Lithuania",
+                                    "Luxembourg",
+                                    "Macedonia",
+                                    "Malta",
+                                    "Moldova",
+                                    "Monaco",
+                                    "Montenegro",
+                                    "Netherlands",
+                                    "Norway",
+                                    "Poland",
+                                    "Portugal",
+                                    "Romania",
+                                    "Russia",
+                                    "San Marino",
+                                    "Serbia",
+                                    "Slovakia",
+                                    "Slovenia",
+                                    "Spain",
+                                    "Sweden",
+                                    "Switzerland",
+                                    "Turkey",
+                                    "Ukraine",
+                                    "United Kingdom",
+                                    "Vatican City"
+                              })
+                              .Separator(", ").HtmlAttributes(new { @class = "form-control" })
+                            )
+
+
+                        </div>
+                        <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                    </form>
+                </div>*@
+            </div>
+        </div>
+    </nav>
+   
+    <h2>Renovación</h2>
+    
+    
+
+    <div class="container-fluid well">
+        <div class="row">            
+            <div class="col-md-2">
+                <div class="input-group input-group-sm">
+                    <span class="input-group-addon" id="sizing-addon2">Expediente</span>
+                    <input type="text" class="form-control" placeholder="Nº de Expediente" aria-describedby="sizing-addon2" id="idExpediente" name="idExpediente">
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="input-group input-group-sm">
+                    <span class="input-group-addon" id="sizing-addon3">Registro</span>
+                    <input type="text" class="form-control" placeholder="Nº de Registro" aria-describedby="sizing-addon3" id="idRegistro" name="idRegistro">
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="input-group input-group-sm">
+                    <span class="input-group-addon" id="sizing-addon4">Marca</span>
+                    <input type="text" class="form-control" placeholder="Nombre de Marca" aria-describedby="sizing-addon4" id="idMarca" name="idMarca">
+                </div>
+            </div>
+            <div class="col-md-2">
+                <button type="button" class="btn btn-success" id="searchData" name="searchData">Buscar <span class="glyphicon glyphicon-search"></span></button>
+            </div>
+            <div class="col-md-2">
+                <div>
+                    <div class="alert alert-dismissible alert-danger errorDiv" id="kokotecheId" style="display:none;">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        <strong>Well done!</strong> You successfully read <a href="#" class="alert-link">this important alert message</a>.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <section>
+    @using (Html.BeginForm("GetSolictudMarca", "Gestion", FormMethod.Post, new { @id = "Frm-login", role = "form", @class = "form-horizontal" }))
+    {
+            <div class="modal fade bs-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Renovación de Solicitud</h4>
+                        </div>
+                        <div class="modal-body">
+                       
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <p></p>
+                                        @*form-control*@
+                                        @(Html.Kendo().DropDownList()
+                                                .Name("EmpresasList")
+                                                .DataTextField("DescripcionEmpresa")
+                                                .DataValueField("CodEmpresa")
+                                                .HtmlAttributes(new { style = "width:100%" })
+                                                .Filter("contains")
+                                                .DataSource(source =>
+                                                {
+                                                    source.Read(read =>
+                                                    {
+                                                        read.Action("GetEmpresas", "Gestion");
+                                                    })
+                                                    .ServerFiltering(true);
+                                                })
+                                        )
+
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <p></p>
+                                        @(Html.Kendo().DropDownList()
+                                                    .Name("PoderExpediente")
+                                                    .HtmlAttributes(new { style = "width:100%" })
+                                                    .OptionLabel("Selecciona la sub clase...")
+                                                    .DataTextField("DescExp")
+                                                    .DataValueField("CodExp")
+                                                    .DataSource(source =>
+                                                    {
+                                                        source.Read(read =>
+                                                        {
+                                                            read.Action("GetExpPoder", "Gestion")
+                                                                .Data("filterProducts");
+                                                        })
+                                                        .ServerFiltering(true);
+                                                    })
+                                                    .Enable(false)
+                                                    .AutoBind(false)
+                                                    .CascadeFrom("EmpresasList")
+                                        )
+                                    </div>
+                                    <script>
+                                            function filterProducts() {
+                                                return {
+                                                    CodEmpresa: $("#EmpresasList").val()
+                                                };
+                                            }
+                                    </script>
+                                </div>
+                                <br />
+                          
+                        <div class="row ">
+                            <div class="col-lg-4">
+                                <div class="form-group-sm">
+                                    <div class="col-lg-10">
+                                        <p><strong>EStado:</strong></p>
+                                        @(Html.Kendo().DropDownList()
+                                        .Name("Status")
+                                        .DataTextField("DesStatus")
+                                        .DataValueField("CodStatus")
+                                        .HtmlAttributes(new { style = "width:100%" })
+                                        .Filter("contains")
+                                        .DataSource(source =>
+                                        {
+                                            source.Read(read =>
+                                            {
+                                                read.Action("GetStatus", "Gestion");
+                                            })
+                                            .ServerFiltering(true);
+                                        })
+                                        )
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group-sm">
+                                    <div class="col-lg-10">
+                                        <p><strong>Del:</strong></p>
+                                        @(Html.Kendo().DateTimePicker()
+                                .Name("fechaIncioGeneral")
+                                .Value(DateTime.Now)
+                                .HtmlAttributes(new { style = "width:100%;" })
+                                        )
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="form-group-sm">
+                                    <div class="col-lg-10">
+                                        <p><strong>Registro:</strong></p>
+                                        <input class="form-control" id="RegistroGeneral" name="RegistroGeneral" type="text" placeholder="Registro">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group-sm">
+                                    <div class="col-lg-10">
+                                        <p><strong>Del:</strong></p>
+                                        @(Html.Kendo().DateTimePicker()
+                                .Name("FechaRegistroGen")
+                                .Value(DateTime.Now)
+                                .HtmlAttributes(new { style = "width:100%;" })
+                                        )
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group-sm">
+                                    <div class="col-lg-10">
+                                        <p><strong>Vencimiento:</strong></p>
+                                        @(Html.Kendo().DateTimePicker()
+                                .Name("vencimientoRegGen")
+                                .Value(DateTime.Now)
+                                .HtmlAttributes(new { style = "width:100%;" })
+                                        )
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group-sm">
+                                    <div class="col-lg-10">
+                                        <p><strong>Desde:</strong></p>
+                                        @(Html.Kendo().DateTimePicker()
+                                .Name("iniFechaRegGen")
+                                .Value(DateTime.Now)
+                                .HtmlAttributes(new { style = "width:100%;" })
+                                        )
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-lg-5">
+                                <div class="form-group-sm">
+                                    <div class="col-lg-10">
+                                        <p><strong>Marca:</strong></p>
+                                        <textarea class="form-control" id="descripcionMarca" name="descripcionMarca" rows="5"></textarea>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <p>
+                                    <strong>Clase</strong>
+                                    @(Html.Kendo().DropDownList()
+                                .Name("ClaseList")
+                                .DataTextField("DescClase")
+                                .DataValueField("CodClase")
+                                .HtmlAttributes(new { style = "width:100%", @class = "form-control" })
+                                .Filter("contains")
+                                .DataSource(source =>
+                                {
+                                    source.Read(read =>
+                                    {
+                                        read.Action("GetClase", "Gestion");
+                                    })
+                                    .ServerFiltering(true);
+                                })
+                                    )
+                                </p>
+                                <p>
+                                    <strong>Ed. Niza</strong>
+                                    @(Html.Kendo().DropDownList()
+                                    .Name("SubClaseList")
+                                    .HtmlAttributes(new { style = "width:100%" })
+                                    .OptionLabel("Selecciona la sub clase...")
+                                    .DataTextField("EdNiza")
+                                    .DataValueField("CodigoRdNiza")
+                                    .DataSource(source =>
+                                    {
+                                        source.Read(read =>
+                                        {
+                                            read.Action("GetSubClase", "Gestion")
+                                                .Data("filterProducts");
+                                        })
+                                        .ServerFiltering(true);
+                                    })
+                                    .Enable(false)
+                                    .AutoBind(false)
+                                    .CascadeFrom("ClaseList")
+                                    )
+                                </p>
+                            </div>
+                            <div class="col-lg-2">
+                                <p><strong>Tipo:</strong></p>
+                                <div class="col-lg-10">
+                                    <select class="form-control" id="select">
+                                        <option value="REG">REG</option>
+                                        <option value="REA">REN</option>
+                                    </select>
+
+                                </div>
+                            </div>                                       
+                        </div>                               
+                        </div>
+                        <div class="modal-footer">                        
+                            <button type="button" class="btn btn-success">Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    }
+    </section>
+
+
+    <div class="panel panel-default" style="width:70%;margin:0 auto;">
+        <div class="panel-heading"></div>
+        <div class="panel-body">
+            <div class="row dv-Formato">
+                <div class="col-lg-6">
+                    <p><strong>Estado:</strong></p>
+                    <span id="idEstado"></span>
+
+                    <p><strong>Del:</strong></p>
+                    <span id="idDel"></span>
+
+                    <p><strong>Registro:</strong></p>
+                    <span id="idReg"></span>
+
+                    <p><strong>Fecha Creación del Registro:</strong></p>
+                    <span id="idCreacion"></span>
+
+                    <p><strong>Vencimiento:</strong></p>
+                    <span id="idVencimiento"></span>
+
+                    <p><strong>Desde:</strong></p>
+                    <span id="idDesde"></span>
+                </div>
+
+                <div class="col-lg-6">
+                    <p><strong>Marca:</strong></p>
+                    <span id="idMarca2"></span>
+
+                    <p><strong>Clase:</strong></p>
+                    <span id="idClase"></span>
+
+                    <p><strong>Ed Niza:</strong></p>
+                    <span id="idEdNiza"></span>
+
+                    @*<p><strong>Tipo:</strong></p>
+                    <span ></span>*@
+                </div>
+
+            </div>
+           
+            <div class="row well" style="width:15%;float:right;margin-right:5px;margin-bottom:10px;">
+                <button type="button" class="btn btn-success" id="btnAceptar" name="btnAceptar" style="margin:0 auto;"  data-toggle="modal" data-target="#myModal">
+                    Renovar
+                </button>
+            </div>
+        </div>
+    </div>
+    <br />
+    
+    @*<section class="sec-RegistroButtons well">
+        <div class="row">
+            <div class="col-lg-2">
+                <button class="btn btn-default" type="submit">Bandejas</button>
+            </div>
+            <div class="col-lg-2">
+                <button class="btn btn-default" type="submit">Titulares</button>
+            </div>
+            <div class="col-lg-2">
+                <button class="btn btn-default" type="submit">Pagos</button>
+            </div>
+            <div class="col-lg-2">
+                <button class="btn btn-default" type="submit" data-toggle="modal" data-target="#myModal">Historia</button>
+            </div>
+            <div class="col-lg-2">
+                <button class="btn btn-default" type="submit">Cambios</button>
+            </div>
+            <div class="col-lg-2">
+                <button class="btn btn-default" type="submit">Antecedentes</button>
+            </div>
+        </div>
+    </section>*@
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+
+        $("#searchData").click(function () {
+          
+            var Expediente = $("#idExpediente").val();
+            var Registro = $("#idRegistro").val();
+            var Marca = $("#idMarca").val();
+
+           
+
+            $.ajax({
+                url: "@Url.Action("CargarExpRen", "Gestion")",
+                data: JSON.stringify({ Expediente: Expediente , Registro : Registro , Marca: Marca }),
+                //data: "{'Expediente':'"+Expediente+"' , 'Registro':'"+Registro+"', 'Marca':'" +Marca+ "' }",
+            dataType: "json",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                if (data != null) {
+                    $.each(data, function (i, item) {
+                        //
+                        //idDel
+                        //idReg
+                        //idCreacion
+                        //idVencimiento
+                        //idDesde
+                        //idMarca
+                        //idClase
+                        //idEdNiza
+                        $("#idEstado").text(item.Status);
+                        $("#idDel").text(item.FechaExpèdiente);
+                        $("#idReg").text(item.Registro);
+                        $("#idCreacion").text(item.FechaInicioRegistro);
+                        $("#idVencimiento").text(item.FechaVencimientoRegistro);
+                        $("#idDesde").text(item.FechaInicioRegistro);
+                        $("#idMarca2").text(item.MarcaDescrpcion);
+                        $("#idClase").text(item.Clase);
+                        $("#idEdNiza").text(item.EdNiza);
+                    });
+                }
+                
+               
+            },
+            error: function (request, status, error) {
+                alert(request + " " + status + " " + error);
+            },
+            failure: function (response) {
+                alert("arriva al failure");
+            }
+        });
+           debugger
+            if ('@Session["frontMessage"]' ==  1) {
+                $("#kokotecheId").html("Ingrese nuevemante");
+                $("#kokotecheId").fadeIn(2000).delay(7000).fadeOut(1000);
+            }
+           
+        });
+    </script>
+  
+</body>
+</html>

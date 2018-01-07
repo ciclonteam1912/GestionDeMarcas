@@ -1,0 +1,89 @@
+﻿@model TelerikMvcApp4.Models.IndexViewModel
+@{
+    ViewBag.Title = "Manage";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+</head>
+<body>
+
+    <div class="container body-content">
+        <h2>@ViewBag.Title.</h2>
+
+        <p class="text-success">@ViewBag.StatusMessage</p>
+        <div>
+            <h4>Cambiar la configuración de su cuenta</h4>
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>Contraseña:</dt>
+                <dd>
+                    [
+                    @if (Model.HasPassword)
+                    {
+                        @Html.ActionLink("Cambie su contraseña", "ChangePassword")
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Crear", "SetPassword")
+                    }
+                    ]
+                </dd>
+
+                @*<dt>External Logins:</dt>
+                <dd>
+                    @Model.Logins.Count [
+                    @Html.ActionLink("Manage", "ManageLogins") ]
+                </dd>*@
+                @*<dt>Número de teléfono:</dt>
+                <dd>
+                    @(Model.PhoneNumber ?? "Ninguno") [
+                    @if (Model.PhoneNumber != null)
+                    {
+                        @Html.ActionLink("Change", "AddPhoneNumber")
+                        @: &nbsp;|&nbsp;
+                        @Html.ActionLink("Remove", "RemovePhoneNumber")
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Agregar", "AddPhoneNumber")
+                    }
+                    ]
+                </dd>*@
+
+                <dt>Autenticación de dos factores:</dt>
+                <dd>
+                    @if (Model.TwoFactor)
+                    {
+                        using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <text>Habilitar
+                                <input type="submit" value="Deshabilitar" class="btn btn-link" />
+                            </text>
+                        }
+                    }
+                    else
+                    {
+                        using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <text>Deshabilitar
+                                <input type="submit" value="Habilitar" class="btn btn-link" />
+                            </text>
+                        }
+                    }
+                </dd>
+
+            </dl>
+        </div>
+    </div>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous">
+    </script>
+    </body>
+</html>
+        

@@ -1,0 +1,280 @@
+﻿
+@{
+    ViewBag.Title = "Dibujos Industriales";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+</head>
+<body>
+    <div class="container body-content">
+        <section>
+            <h1>Dibujos y Modelos Industriales</h1>
+            <div class="panel panel-default panel-Mantenimiento dvSombreadoMnt">
+                <div class="panel-heading"></div>
+                <div class="panel-body">
+                    @using (Html.BeginForm("GetDibujoIndustriales", "Gestion", FormMethod.Post, new { @id = "Frm-login", role = "form", @class = "form-horizontal" }))
+                    {
+                        <fieldset>
+                            <legend>Formulario</legend>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <div class="col-lg-10">
+                                            <p><strong>Solicitante:</strong></p>
+                                            @(Html.Kendo().DropDownList()
+                                          .Name("EmpresasList")
+                                          .DataTextField("DescripcionEmpresa")
+                                          .DataValueField("CodEmpresa")
+                                          .HtmlAttributes(new { style = "width:100%" })
+                                          .Filter("contains")
+                                          .DataSource(source =>
+                                          {
+                                              source.Read(read =>
+                                              {
+                                                  read.Action("GetEmpresas", "Gestion");
+                                              })
+                                              .ServerFiltering(true);
+                                          })
+                                            )
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <div class="col-lg-10">
+                                            <p><strong>Fecha Orden Publicación:</strong></p>
+                                            @(Html.Kendo().DateTimePicker()
+                                            .Name("vencimientoRegGen")
+                                            .Value(DateTime.Now)
+                                            .HtmlAttributes(new { style = "width:100%;" })
+                                            )
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-lg-10">
+                                            <p><strong>Fecha de Vencimiento:</strong></p>
+                                            @(Html.Kendo().DateTimePicker()
+                                            .Name("Vencimiento")
+                                            .Value(DateTime.Now)
+                                            .HtmlAttributes(new { style = "width:100%;" })
+                                            )
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <div class="col-lg-10">
+                                            <p><strong>Domicilio:</strong></p>
+                                            <input class="form-control" id="domicilioDibujo" name="domicilioDibujo" type="text" placeholder="Domicilio" style="width:100%;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <div class="col-lg-10">
+                                            <p><strong>Entrada Nº:</strong></p>
+                                            <input class="form-control" id="entradaNumero" name="entradaNumero" type="text" placeholder="Entrega Nº">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <div class="col-lg-10">
+                                            <p><strong>Fecha:</strong></p>
+                                            @(Html.Kendo().DateTimePicker()
+                                            .Name("fechaDibujo")
+                                            .Value(DateTime.Now)
+                                            .HtmlAttributes(new { style = "width:100%;" })
+                                            )
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <div class="col-lg-10">
+                                            <p><strong>Renovación Registro:</strong></p>
+                                            <input class="form-control" id="renovacionDibujo" name="renovacionDibujo" type="text" placeholder="Renovación Registro">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <div class="col-lg-10">
+                                            <p><strong>Creador:</strong></p>
+                                            <input class="form-control" id="creadorDibujo" name="creadorDibujo" type="text" placeholder="Creador">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <div class="col-lg-10">
+                                            <p><strong>Domicilio:</strong></p>
+                                            <input class="form-control" id="domicilioCreador" name="domicilioCreador" type="text" placeholder="Domicilio del Creador">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <div class="col-lg-10">
+                                            <p><strong>Titulo:</strong></p>
+                                            <input class="form-control" id="tituloCreador" name="tituloCreador" type="text" placeholder="Titulo">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <div class="col-lg-10">
+                                            <p><strong>Clase:</strong></p>
+                                            @(Html.Kendo().DropDownList()
+                                          .Name("ClaseList")
+                                          .DataTextField("DescClase")
+                                          .DataValueField("CodClase")
+                                          .HtmlAttributes(new { style = "width:100%" })
+                                          .Filter("contains")
+                                          .DataSource(source =>
+                                          {
+                                              source.Read(read =>
+                                              {
+                                                  read.Action("GetClase", "Gestion");
+                                              })
+                                              .ServerFiltering(true);
+                                          })
+                                            )
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <div class="col-lg-10">
+                                            <p><strong>Sub Clase:</strong></p>
+                                            @(Html.Kendo().DropDownList()
+                                              .Name("SubClaseList")
+                                              .HtmlAttributes(new { style = "width:100%" })
+                                              .OptionLabel("Selecciona la sub clase...")
+                                              .DataTextField("EdNiza")
+                                              .DataValueField("CodigoRdNiza")
+                                              .DataSource(source =>
+                                              {
+                                                  source.Read(read =>
+                                                  {
+                                                      read.Action("GetSubClase", "Gestion")
+                                                          .Data("filterProducts");
+                                                  })
+                                                  .ServerFiltering(true);
+                                              })
+                                              .Enable(false)
+                                              .AutoBind(false)
+                                              .CascadeFrom("ClaseList")
+                                            )
+                                            <script>
+                                                function filterProducts() {
+                                                    return {
+                                                        CodClase: $("#ClaseList").val()
+                                                    };
+                                                }
+                                            </script>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <div class="col-lg-10">
+                                            <p><strong>Agente:</strong></p>
+                                            @(Html.Kendo().DropDownList()
+                                            .Name("AgenteList")
+                                            .DataTextField("DescAgente")
+                                            .DataValueField("CodAgente")
+                                            .HtmlAttributes(new { style = "width:100%" })
+                                            .Filter("contains")
+                                            .DataSource(source =>
+                                            {
+                                                source.Read(read =>
+                                                {
+                                                    read.Action("GetAgente", "Gestion");
+                                                })
+                                                .ServerFiltering(true);
+                                            })
+                                            )
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    @(Html.Kendo().Upload()
+                                    .Name("files")
+                                    .Async(a => a
+                                        .Save("Save", "Upload")
+                                        .Remove("Remove", "Upload")
+                                        .AutoUpload(true)
+                                    )
+                                    )
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="form-group-sm">
+                                    <div class="col-lg-10">
+                                        <p><strong>Descripción:</strong></p>
+                                        <textarea class="form-control" id="idDescripcion" name="idDescripcion"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <br />
+                            <div class="row" style="margin:0 auto;">
+                                <div class="form-group">
+                                    <div class="col-lg-10">
+                                        <button type="submit" class="btn btn-success btn-lg">Crear</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    }
+                </div>
+            </div>
+
+        </section>
+    </div>
+
+        
+
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+</body>
+</html>

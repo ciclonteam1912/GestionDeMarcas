@@ -1,0 +1,309 @@
+﻿@{
+    ViewBag.Title = "Patente de Invención";
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+</head>
+<body>
+    <div class="container body-content">
+        <section>
+            <div class="panel panel-default panel-patente dvSombreadoMnt">
+                <div class="panel-heading"></div>
+                <div class="panel-body">
+                    @using (Html.BeginForm("GetPatenteInvencion", "Gestion", FormMethod.Post, new { @id = "Frm-login", role = "form", @class = "form-horizontal" }))
+                    {
+                        <fieldset>
+                            <legend>Formulario de Patente de Invención</legend>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group-sm">
+                                        <div class="col-lg-10">
+                                            <p><strong>Numero Solicitud:</strong></p>
+                                            <input class="form-control" id="numeroSolicitudPatente" name="numeroSolicitudPatente" type="text" placeholder="Número Solicitud" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group-sm">
+                                        <div class="col-lg-10">
+                                            <p><strong>Solicitante:   </strong><span id="idSolicitante"></span></p>
+                                            @(Html.Kendo().DropDownList()
+                                          .Name("qwe")
+                                          .DataTextField("DescripcionEmpresa")
+                                          .DataValueField("CodEmpresa")
+                                          .OptionLabel("Seleccione los Solicitantes...")
+                                          .HtmlAttributes(new { style = "width:100%", required = "required" })
+                                          .AutoBind(false)
+                                          .DataSource(source =>
+                                          {
+                                              source.Read(read =>
+                                              {
+                                                  read.Action("GetApoderado", "Gestion");
+                                              })
+                                              .ServerFiltering(true);
+                                          })
+                                            )
+                                            @*<p><strong>Inventor:   </strong><span id="idInventor"></span></p>
+                                            @(Html.Kendo().MultiSelect()
+                                              .Name("zxc")
+                                              .DataTextField("descrpcionInventor")
+                                              .DataValueField("idInventor")
+                                              .Placeholder("Seleccionar Inventor...")
+                                              .AutoBind(false)
+                                              .DataSource(source =>
+                                              {
+                                                  source.Read(read =>
+                                                  {
+                                                      read.Action("GetIncventor", "Gestion");
+                                                  })
+                                                  .ServerFiltering(true);
+                                              })
+                                            )*@
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group-sm">
+                                        <div class="col-lg-10">
+                                            <p><strong>Titulo:</strong></p>
+                                            <input class="form-control" id="tituloPatente" name="tituloPatente" type="text" placeholder="Título Patente" autocomplete="off" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group-sm">
+                                        <div class="col-lg-10">
+                                            <p><strong>Agente:</strong></p>
+                                            @(Html.Kendo().DropDownList()
+                                            .Name("AgenteList")
+                                            .DataTextField("DescAgente")
+                                            .DataValueField("CodAgente")
+                                            .HtmlAttributes(new { style = "width:100%" })
+                                            .Filter("contains")
+                                            .DataSource(source =>
+                                            {
+                                                source.Read(read =>
+                                                {
+                                                    read.Action("GetAgente", "Gestion");
+                                                })
+                                                .ServerFiltering(true);
+                                            })
+                                            )
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            @*<div class="row">
+                                <div class="col-lg-6">
+                                    <div class="form-group-sm">
+                                        <div class="col-lg-10">
+                                            <p><strong>Propiedades:</strong></p>
+                                           <textarea class="form-control" id="propiedadesPatente" name="propiedadesPatente" type="text" placeholder="Propiedades" required></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group-sm">
+                                        <div class="col-lg-10">
+                                            <p><strong>Compuesto:</strong></p>
+                                            <textarea class="form-control" id="compuestoPatente" name="compuestoPatente" type="text" placeholder="Compuesto" required></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>*@
+                            <div class="row">
+                                @*<div class="col-lg-6">
+                                    <div class="form-group-sm">
+                                        <div class="col-lg-10">
+                                            <p><strong>Resumen:</strong></p>
+                                            <textarea class="form-control" rows="4" id="resumenPatente" name="resumenPatente" style="width:100%;" required></textarea>
+                                        </div>
+                                    </div>
+                                </div>*@
+                                <br />
+                                <div class="col-lg-6">
+                                    <div class="form-group-sm">
+                                        <div class="col-lg-10">
+                                            <p><strong>Fecha Solicitud:</strong></p>
+                                            @(Html.Kendo().DatePicker()
+                                            .Name("datepickerPatente")
+                                            .Value("10/10/2011")
+                                            .Culture("es-ES")
+                                          .HtmlAttributes(new { style = "width: 100%" })
+                                            )
+
+                                            <p><strong>Fecha Vencimiento:</strong></p>
+                                            @(Html.Kendo().DatePicker()
+                                            .Name("FechaVencimiento")
+                                            .Value("10/10/2011")
+                                            .Culture("es-ES")
+                                          .HtmlAttributes(new { style = "width: 100%" })
+                                            )
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <br />
+
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-lg-2">
+                                    <div class="form-group-sm">
+                                        @*<div class="col-lg-6">*@
+                                        <p><strong>Imagen:</strong></p>
+                                        @(Html.Kendo().Upload()
+                                               .Name("files")
+                                               .HtmlAttributes(new { style = "width:100%", required = "required" })
+                                        )
+                                        @*</div>*@
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <p><strong>Tipo:</strong></p>
+
+                                    @(Html.Kendo().ComboBox()
+                                                      .Name("select")
+                                                      .DataTextField("AbrevTipoSolicitud")
+                                                      .DataValueField("CodTipoSolicitud")
+                                                      .Filter(FilterType.StartsWith)
+                                                      .HtmlAttributes(new { style = "width:100%", required = "required" })
+                                                      .IgnoreCase(true)
+                                                      .Placeholder("Seleccione un tipo de solicitud...")
+                                                      .DataSource(source =>
+                                                      {
+                                                          source.Read(read =>
+                                                          {
+                                                              read.Action("GetTipoSolicitud", "Gestion");
+                                                          });
+                                                      })
+                                    )
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3" id="nuevaSolNro">
+                                    <br />
+                                    <div class="form-group-sm">
+                                        <div class="col-lg-10">
+                                            <span> <strong>Nuevo Nº Solicitud:</strong></span>
+                                            <input class="form-control" id="nuevaSolicitud" name="nuevaSolicitud" type="number" placeholder="Nuevo Nº de Solicitud" autocomplete="off">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <br />
+
+                            <div class="row" style="margin:0 auto;">
+                                <div class="form-group">
+                                    <div class="col-lg-10">
+                                        <button type="submit" class="btn btn-success">Registrar</button>
+                                        <button class="btn btn-success" type="submit" id="btnRenovar">Renovar</button>
+                                        <button class="btn btn-success" type="reset">Cancelar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    }
+                </div>
+            </div>
+
+        </section>
+
+    </div>
+
+        
+
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#nuevaSolNro').hide();
+                $("#btnRenovar").prop("disabled", true);
+            })
+
+            $('#select').bind('change', function (e) {
+                if (this.value == 2) {
+                    $("#nuevaSolNro").show();
+                    $("#btnRenovar").prop("disabled", false);
+                    $("#btnRegistrar").prop("disabled", true);
+                    $("#numeroSolicitudPatente").prop("disabled", true);
+
+                } else {
+                    //$("#titular").prop("disabled", true);
+                    $("#nuevaSolNro").hide();
+                    $("#btnRenovar").prop("disabled", true);
+                    $("#btnRegistrar").prop("disabled", false);
+                    $("#numeroSolicitudPatente").prop("disabled", false);
+                }
+
+            });
+
+            $("#numeroSolicitudPatente").keypress(function (e) {
+                var buscarPatente = $("#numeroSolicitudPatente").val();
+                var $solicitante = document.getElementById('qwe');
+                var $titulo = document.getElementById('tituloPatente');
+                var $fechaSolicitud = document.getElementById('datepickerPatente');
+                var $fechaVencimiento = document.getElementById('FechaVencimiento');
+                var $agente = document.getElementById('AgenteList');
+                var $tipoSolicitud = document.getElementById('select');
+
+                var existe = false;
+
+                tecla = (document.all) ? e.keyCode : e.which;
+                if (tecla == 13) {
+
+                    $.ajax({
+                        url: "@Url.Action("RetornarPatenteEditar", "Gestion")",
+                        data: "{'buscar': '" + buscarPatente + "' }",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+
+                            $(data).each(function (i) {
+                                existe = true;
+                                $("#qwe").data("kendoDropDownList").value(data[i].SolicitanteCodigo);
+                                $titulo.value = data[i].PatenteTitulo;
+                                //$("#datepickerPatente").data("KendoDatePicker").value(data[i].FechaSolicitud);
+                                $fechaSolicitud.value = data[i].FechaSolicitud;
+                                $("#AgenteList").data("kendoDropDownList").value(data[i].AgenteCodigo);
+                                $("#select").data("kendoComboBox").value(data[i].TipoSolicitud);
+                                //$("#FechaVencimiento").data("KendoDatePicker").value(data[i].FechaVencimiento);
+                                $fechaVencimiento.value = data[i].FechaVencimiento;
+
+                            });
+                            if (!existe) {
+                                $("#qwe").data("kendoDropDownList").value("");
+                                $titulo.value = "";
+                                $fechaSolicitud.value = "";
+                                $("#AgenteList").data("kendoDropDownList").value("");
+                                $("#select").data("kendoComboBox").value("");
+                                $fechaVencimiento.value = "";
+                            }
+                        },
+                        error: function (request, status, error) {
+
+                        },
+                        failure: function (response) {
+                            alert("arriva al failure");
+                        }
+                    });
+                }
+            });
+        </script>
+</body>
+</html>

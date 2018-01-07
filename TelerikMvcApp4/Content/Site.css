@@ -1,0 +1,496 @@
+﻿/************Propiedades del Login********************/
+/*.k-grid-pdf{
+    background-color:blue;
+}*/
+.company-logo {
+            font-size: 30px;
+            font-weight: bold;
+            color: #3aabf0;
+        }
+
+/* Page Template for the exported PDF */
+    .page-template {
+        font-family: "DejaVu Sans", "Arial", sans-serif;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+    }
+    .page-template .header {
+        position: absolute;
+        top: 30px;
+        left: 30px;
+        right: 30px;
+        border-bottom: 1px solid #888;
+        color: #888;
+    }
+    .page-template .footer {
+        position: absolute;
+        bottom: 30px;
+        left: 30px;
+        right: 30px;
+        border-top: 1px solid #888;
+        text-align: center;
+        color: #888;
+    }
+    .page-template .watermark {
+        font-weight: bold;
+        font-size: 400%;
+        text-align: center;
+        margin-top: 30%;
+        color: #aaaaaa;
+        opacity: 0.1;
+        transform: rotate(-35deg) scale(1.7, 1.5);
+    }
+
+
+.k-grid .k-state-selected  {
+  background: #11DED7 !important;
+  color:blue;
+}
+ 
+/*.k-grid .k-alt.k-state-selected {
+  background: #11DED7;
+  color: blue;
+}*/
+
+
+#grillaParecido{
+    margin-left:10px; 
+    float:left; 
+    width:60%;
+}
+/*#enviarEmail{
+    float:right; 
+    width:40%;
+}*/
+#toEmail{
+    margin-bottom:10px;
+    width:100%;
+}
+
+#subjectEmail{
+    margin-bottom:10px;
+    /*width:100%;*/
+}
+#bodyEmail{
+    margin-bottom:10px;
+    height:150px;
+    width:100%;
+}
+#fileUploader{
+    margin-bottom:10px;
+}
+
+#send{
+    margin-bottom:10px;
+}
+
+#validationMessage{ 
+    color: red; 
+}
+
+.alert{
+    display:inline-block;
+    margin-left:20px;
+}
+#Grid2 .k-grid-toolbar
+    {
+        padding: .6em 1.3em;
+    }
+    .category-label
+    {
+        vertical-align: middle;
+        padding-right: .5em;
+    }
+    #category
+    {
+        vertical-align: middle;
+    }
+    .toolbar {
+        float: right;
+    }
+.Bd-Fondo {
+    background-image: url('Imagenes/elaboracion_de_documentos_y_minutas.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+}
+#separadorId{   
+   height:60px;
+    width:100%;
+    margin-top:20px;
+    margin-bottom:20px;
+}
+.hd-Logotipo h2{
+    margin:0px;
+}
+.section-Login{
+  background-color: rgba(17,35,36,0.7);
+  border:0px;
+  width:450px;
+  opacity:0.85;
+  margin:50px auto;
+  height:450px;
+  -webkit-box-shadow: 2px 14px 26px -10px rgba(0,0,0,0.75);
+  -moz-box-shadow: 2px 14px 26px -10px rgba(0,0,0,0.75);
+  box-shadow: 2px 14px 26px -10px rgba(0,0,0,0.75);
+}
+.section-Login p{
+    color:white;
+    text-align:center;    
+    font-family:'Segoe UI Light','Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 35px;
+}
+.section-IconGruop{
+   
+    border:0px;
+    border-radius:0px;
+}
+.section-Icon{    
+   text-align:center;      
+}
+.sectMenu{
+    width:60%;
+    margin:10px auto;
+}
+.h3-Busqueda{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align:center;
+    color:#b5b5b5;
+}
+/* enable absolute positioning */
+.inner-addon { 
+    position: relative; 
+}
+
+/* style icon */
+.inner-addon .glyphicon {
+  position: absolute;
+  padding: 10px;
+  pointer-events: none;
+}
+
+/* align icon */
+.left-addon .glyphicon  { left:  0px;}
+.right-addon .glyphicon { right: 0px;}
+
+/* add padding  */
+.left-addon input  { padding-left:  30px; }
+.right-addon input { padding-right: 30px; }
+.i-Icon{
+    
+     font-size:20px;
+    
+}
+.input-Text{
+   
+     font-size:15px;
+     margin-top:10px;
+     height:50px;
+     text-align:center;
+}
+.field-Form{
+    width:55%;
+    margin:0 auto;
+}
+.Btn-Cont{
+    width:50%;
+    margin:0 auto;
+    
+}.Btn-Form{
+     background:rgb(10,139,148);
+     width:100px;
+ }
+/*****************************************************/
+
+/*********Gestion de Documentos MAIN******************/
+.nav-Container{
+    border:0px;
+}
+.nav-Incio{
+    background-image: -o-linear-gradient(left, #13D6F0 0%, #00D4F0 0%, #066666 100%, #11DED7 100%);
+background-image: -moz-linear-gradient(left, #13D6F0 0%, #00D4F0 0%, #066666 100%, #11DED7 100%);
+background-image: -webkit-linear-gradient(left, #13D6F0 0%, #00D4F0 0%, #066666 100%, #11DED7 100%);
+background-image: linear-gradient(to left, #13D6F0 0%, #00D4F0 0%, #066666 100%, #11DED7 100%);
+ opacity: 0.9;
+}
+
+.main-content{
+    width:80%;
+    height:250px;
+    margin: 0 auto;
+    /*border-radius: 10px 10px 10px 10px;
+    -moz-border-radius: 10px 10px 10px 10px;
+    -webkit-border-radius: 10px 10px 10px 10px;
+    border: 1px solid #696969;*/
+    /*background-url: http://api.thumbr.it/whitenoise-361x370.png?background=edededff&noise=626262&density=6&opacity=26*/ 
+
+}
+
+.div-Container{
+text-align:center;
+margin:0 auto;
+color:black ;
+
+}
+.div-Container span{
+    font-size:50px;
+}
+.div-Container p{
+    font-size:20px;
+}
+.div-Container-Menu{
+   background-color:rgb(10,139,148);
+    border-radius: 5px;
+    margin-right: 10px;
+    width: 20%;
+    color:white;
+}
+.div-Container-Menu:hover{
+     -webkit-box-shadow: -1px 12px 50px -14px rgba(0,0,0,0.67);
+-moz-box-shadow: -1px 12px 50px -14px rgba(0,0,0,0.67);
+box-shadow: -1px 12px 50px -14px rgba(0,0,0,0.67);
+
+}
+.pnCalendar{
+    -webkit-box-shadow: 2px 10px 52px -21px rgba(0,0,0,0.75);
+    -moz-box-shadow: 2px 10px 52px -21px rgba(0,0,0,0.75);
+    box-shadow: 2px 10px 52px -21px rgba(0,0,0,0.75);
+}
+/*************************************************************/
+/*********Propiedades Inicializacion**************************/
+.sec-Ini{
+    margin:50px auto;
+    text-align:center;
+}
+/*************************************************************/
+/***********Proppiedades de registro Marca********************/
+.sec-RegistroButtons{
+    width:80%;
+    margin:0 auto;
+}
+.sec-Registro{
+    width:70%;
+    margin:0 auto;   
+      border-radius: 0px 0px 10px 10px;
+    -moz-border-radius: 0px 0px 10px 10px;
+    -webkit-border-radius: 0px 0px 10px 10px;
+    border: 0px solid #b5b5b5;
+}
+.Div-Registro{
+     border-radius: 0px 0px 10px 10px;
+    -moz-border-radius: 0px 0px 10px 10px;
+    -webkit-border-radius: 0px 0px 10px 10px;
+    border: 0px solid #b5b5b5;
+}
+.dv-RegistroForm p{
+    font-family:"Segoe UI Light";
+    margin-bottom:5px;    
+}
+.dv-ImagenMarca{
+    width:100%;
+    height:200px;
+    background:rgb(169, 169, 169);
+}
+.dv-ImagenMarcaDetalle{
+    padding:80px;
+    font-size:24px;
+}
+.dv-GridClisficacion{
+    height:200px;
+}
+.btn-RegistroMarca{
+ background-color:rgb(10,139,148);
+}
+.btn-RegistroMarca:hover{
+     background-color:rgb(7,177,197);
+}
+.li-NavMenu{
+    color:white;
+}
+.ul-Menu li{
+    color:white;
+}
+/*******************************************************************/
+/**************Propiedades de Mantenimiento*************************/
+.panel-Mantenimiento{
+    width:70%;
+    margin:20px auto;
+}
+/*******************************************************************/
+.panel-patente{
+    width:80%;
+    margin:20px auto;
+}
+
+.register{
+    font-size:15px;
+    color:#f4f4f4;
+}
+/*****************Propiedades de Calendario*************************/
+.dv-Filtro{
+    border-left:1px solid #656565;
+    height:100%;
+}
+/*******************************************************************/
+
+/***************Propiedades para Marca Solicitada*******************/
+.dv-FormBuscarMarca{
+    width:80%;
+    margin:10px auto;
+}
+.dv-MarcaSolicitadas{
+    border :1px solid rgb(39, 39, 39);
+    height:100%;
+    border-radius: 10px 10px 104px 10px;
+    -moz-border-radius: 10px 10px 104px 10px;
+    -webkit-border-radius: 10px 10px 104px 10px;
+    border: 1px solid #969696;
+    -webkit-box-shadow: 10px 10px 5px -7px rgba(0,0,0,0.31);
+    -moz-box-shadow: 10px 10px 5px -7px rgba(0,0,0,0.31);
+    box-shadow: 10px 10px 5px -7px rgba(0,0,0,0.31);
+}
+/*******************************************************************/
+
+/************Propiedades Responsive*********************************/
+@media only screen and (max-width: 800px) {
+    .div-Container-Menu{
+   background-color:rgb(10,139,148);
+    border-radius: 20px;
+    margin-right: 10px;
+    width: 100%;
+    color:white;
+}
+}
+@media only screen and (max-width: 790px){
+     .div-Container-Menu{
+   background-color:rgb(10,139,148);
+    border-radius: 20px;
+    margin-right: 10px;
+    width: 100%;
+    color:white;
+}
+}
+  
+@media screen and (max-device-width: 1224px) {
+   .div-Container-Menu{
+   background-color:rgb(10,139,148);
+    border-radius: 20px;
+    margin-right: 10px;
+    width: 100%;
+    color:white;
+    
+}
+}
+@media screen and (max-device-width: 1300px) {
+   .div-Container-Menu{
+   background-color:rgb(10,139,148);
+    border-radius: 20px;
+    margin-right: 10px;
+    width: 100%;
+    color:white;
+}
+}
+
+ @media screen and (max-device-width: 570px){
+ .div-Container-Menu{
+   background-color:rgb(10,139,148);
+    border-radius: 20px;
+    margin-right: 10px;
+    width: 100%;
+    color:white;
+}
+}
+  @media screen and (max-device-width: 400px){
+  .div-Container-Menu{
+   background-color:rgb(10,139,148);
+    border-radius: 20px;
+    margin-right: 10px;
+    width: 100%;
+    color:white;
+}
+}
+/****************************************************/
+.dv-ContainerForm{
+    border:2px solid;
+    border-color:rgba(166, 166, 166,0.4);
+    border-radius:20px;
+    margin:0 auto;
+}
+/*******Busqueda****************/
+.dv-Busqueda {
+    border-radius: 43px 43px 43px 43px;
+    -moz-border-radius: 43px 43px 43px 43px;
+    -webkit-border-radius: 43px 43px 43px 43px;
+    border: 1px solid #b3b3b3;
+}
+
+
+/**********Ver Estado*************/
+.fondoSec{
+    /*background:rgb(229, 229, 229);*/
+}
+.sec-VerEstado{
+    background:rgb(255, 255, 255);
+    width:90%;
+    margin:50px auto;
+    border-radius: 10px 10px 10px 10px;
+    -moz-border-radius: 10px 10px 10px 10px;
+    -webkit-border-radius: 10px 10px 10px 10px;
+    border: 1px solid #dbdbdb;
+    -webkit-box-shadow: inset -1px -1px 9px -3px rgba(204,204,204,1);
+-moz-box-shadow: inset -1px -1px 9px -3px rgba(204,204,204,1);
+box-shadow: inset -1px -1px 9px -3px rgba(204,204,204,1);
+}
+.sec-VerEstado h1{
+    margin-left:10px;
+}
+.dv-EstadoContent{
+    width:85%;
+    margin:10px auto;
+}
+.dv-EstadoContent p{
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+/*********************************/
+
+.dvSombreadoMnt{
+    -webkit-box-shadow: 2px 3px 5px 0px rgba(0,0,0,0.44);
+-moz-box-shadow: 2px 3px 5px 0px rgba(0,0,0,0.44);
+box-shadow: 2px 3px 5px 0px rgba(0,0,0,0.44);
+}
+
+.successDiv{    
+    position:fixed;
+    float:right;
+    z-index: 99999;
+    width: 300px;
+    height: 100px;
+    text-align:center;
+    font-size:20px;
+    margin-left:15px;
+}
+
+/*********************/
+.th-detalle th{
+    text-align:center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size:12px;
+}
+/*********************/
+.dv-Formato p{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size:15px;
+}
+.dv-Formato span{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size:10px;
+}
+/***********************/
+.errorDiv{
+     position:fixed;    
+    z-index: 99999;
+   
+}

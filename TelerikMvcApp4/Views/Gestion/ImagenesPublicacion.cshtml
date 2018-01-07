@@ -1,0 +1,380 @@
+﻿@model TelerikMvcApp4.Models.PublicacionImagenModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Imágenes de Publicación</title>
+    <link href="@Url.Content("~/Content/kendo/2016.3.1028/kendo.common.min.css")" rel="stylesheet" type="text/css" />
+    <link href="~/Content/kendo/2016.3.914/kendo.default.min.css" rel="stylesheet" />
+    <link href="~/Content/kendo/2016.3.914/kendo.default.mobile.min.css" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/kendo/2016.3.1028/kendo.mobile.all.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2016.3.1028/kendo.dataviz.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2016.3.1028/kendo.bootstrap.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2016.3.1028/kendo.dataviz.bootstrap.min.css")" rel="stylesheet" type="text/css" />
+    @*<link href="@Url.Content("~/Content/bootstrap.css")" rel="stylesheet" type="text/css" />
+        <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" type="text/css" />*@
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script src="@Url.Content("~/Scripts/kendo/2016.3.1028/jquery.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2016.3.1028/jszip.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2016.3.1028/kendo.all.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2016.3.1028/kendo.aspnetmvc.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo.modernizr.custom.js")"></script>
+    <link href="@Url.Content("~/Content/site.css")" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Century | Next</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav ul-Menu">
+                    <li>@Html.ActionLink("Inicio", "Index", "Gestion")</li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Movimientos<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="~/Gestion/RegistroMarca">Solicitudes</a></li>
+                            @*<li><a href="~/Gestion/Renovacion">Renovación </a></li>*@
+                            <li><a href="~/Gestion/PatenteInvencion">Patente de Invención</a></li>
+                            <li><a href="~/Gestion/MovimientoExpediente">Movimiento de Expediente</a></li>
+                            <li><a href="~/Gestion/DibujoIndustriales">Dibujos Modelos Industriales</a></li>
+                            <li class="divider"></li>
+                            <li><a href="~/Gestion/ImagenesPublicacion">Imagenes de publicación</a></li>
+                            <li><a href="~/Gestion/RegistroOposicion">Registro de Intención de Oposición</a></li>
+                            @*<li><a href="~/Gestion/VerEstado">Modificación de Estados</a></li>*@
+                        </ul>
+                    </li>
+                    @*<li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true">Mantenimientos<span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="~/Mantenimiento/MantenimientoPoderes">Mantenimiento de Poderes</a></li>
+                                <li class="divider"></li>
+                                <li><a href="~/Mantenimiento/MantenimientoGeneral">Otros Mantenimientos</a></li>
+                                <li class="divider"></li>
+                            </ul>
+                        </li>*@
+                    <li><a href="~/Mantenimiento/MantenimientoGeneral">Mantenimientos</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Consultas<span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            @*<li><a href="~/Busqueda/BusquedaMarca">Busqueda  de Marcas</a></li>*@
+                            <li><a href="~/Busqueda/BusquedasParecidos">Busqueda de parecidos fonéticos</a></li>
+                            @*<li class="divider"></li>*@
+                            @*<li><a href="~/Busqueda/DibujoIndustriales">Dibujos Modelos Industriales</a></li>*@
+                            @*<li class="divider"></li>
+                            <li><a href="~/Busqueda/BusquedaMarca">Vigilancia de Marcas</a></li>*@
+                        </ul>
+                    </li>
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </nav>
+    <div class="col-lg-7" style="width:50%;"> 
+        @using (Html.BeginForm("ConfirmarPublicacion", "Gestion", FormMethod.Post, new { @id = "Frm-login", role = "form", @class = "form-horizontal" }))
+        {
+            <div class="panel panel-default" style="width:100%;margin:0 auto;">
+                <div class="panel-heading">Confirmación de Publicación</div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="form-group-sm">
+                            <div class="col-lg-6">
+                                <p><strong>Nº Expediente:</strong></p>
+                                <input class="form-control" id="ExpedienteNro" name="ExpedienteNro" type="number" value="@ViewBag.Id" placeholder="Nº Expediente" required autocomplete="off" onkeypress="return pulsarPoder(event)">
+                                @*@Html.TextBoxFor(m => m.PubExpediente, new {
+                               @class = "form-control",
+                               @type = "number",
+                               placeholder = "Nº Expediente",
+                               autocomplete = "off",
+                               @id = "ExpedienteNro"
+                           })*@
+                            </div>
+                            <div class="col-lg-6">
+                                <p><strong>Fecha de Publicación:</strong></p>
+                                @(Html.Kendo().DatePicker()
+                                                      .Name("fechaPub")
+                                                      //.Value(DateTime.Now)
+                                                      .HtmlAttributes(new { style = "width: 100%", required = "required",
+                                                          value = @ViewBag.Fecha
+                                                      })
+                                )
+                            </div>
+                        </div>
+
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="form-group-sm">
+                            <div class="col-lg-6">
+                                <p><strong>Fue publicado:</strong></p>
+                                @(Html.Kendo().ComboBox()
+                                              .Name("fuePublicado")
+                                              .Filter("contains")
+                                              .Placeholder("Seleccionar opción...")
+                                              .DataTextField("Text")
+                                              .DataValueField("Value")
+                                              .BindTo(new List<SelectListItem>() {
+                                                        new SelectListItem() {
+                    Text = "NO", Value = "0"
+                                                        },
+                                                        new SelectListItem() {
+                    Text = "SI", Value = "1"
+                                                        }
+            })
+                                            .Suggest(true)
+                                            .HtmlAttributes(new { style = "width:100%;", required = "required" })
+                                )
+                            </div>
+                        </div>
+                        <div class="form-group-sm">
+                            <div class="col-lg-6">
+                                <p><strong>Imagen:</strong></p>
+                                @(Html.Kendo().Upload()
+                                           .Name("files")
+                                           //.HtmlAttributes(new { style = "width:100%;", required = "required" })
+                                )
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group-sm">
+                            <div class="col-lg-12">
+                                <p><strong>Observación:</strong></p>
+                                <textarea class="form-control" rows="3" id="observacionPub" name="observacionPub" placeholder="Observación..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4" style="margin-left:30px; margin-top:30px">
+                            <button class="btn btn-success" type="submit" id="btnRegistrar">Registrar</button>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+        }
+    </div>
+    <div class="col-lg-3" style="width:40%;">
+        <div class="panel panel-default" style="margin-right:10px;">
+            <div class="panel-heading">Imágenes de las publicaciones del expediente</div>
+            <div class="panel-body">
+                @(Html.Kendo().Grid<TelerikMvcApp4.Models.PublicacionImagenModel>()
+                    .Name("grid")
+                    .HtmlAttributes(new { style = "height:335px;" })
+                    .Columns(columns =>
+                    {
+            columns.Template(e => { }).ClientTemplate(" ").Width(120).Title("Imagen").HtmlAttributes(new { style = "height:10px" });
+            columns.Bound(e => e.PeriodicoDesc).Width(100).Title("Periódico").HtmlAttributes(new { style = "height:40px" });
+            columns.Command(command => command.Destroy()).Width(110);
+        })
+                    .AutoBind(false)
+                    .ToolBar(toolbar =>
+                    {
+            toolbar.Template(@<text>
+                    <div class="toolbar">
+                        <label class="category-label" for="category">Mostrar imágenes por código del expediente:</label>
+                        @(Html.Kendo().DropDownList()
+                            .Name("categories")
+                            .OptionLabel("Todos")
+                            .DataTextField("DescMarca")
+                            .DataValueField("DescMarca")
+                            .Filter("contains")
+                            .AutoBind(false)
+                            .Events(e => e.Change("categoriesChange"))
+                            .HtmlAttributes(new { style = "width: 150px;" })
+                            .DataSource(ds =>
+                            {
+                                ds.Read("GetExpediente", "Gestion");
+                            })
+                        )
+                    </div>
+                    </text>);
+                    })
+                    .ClientRowTemplate(
+                        "<tr id='a' data-uid='#: uid #'>" +
+                            "<td class='photo'>" +
+                            "<img src='data:image/png;base64,#: imagen64 #' alt='#: data.Puim_clave_pub #' style='width: 180px; height:100px;'/>" +
+                            "</td>" +
+                         "<td class='details'>" +
+                             "<span class='title'>#: PeriodicoDesc #</span>" +
+                         "</td>" +
+                         "<td style='width:80px'>" +
+                             "<a class='k-button k-button-icontext k-grid-delete'" +
+                         "<span class='k-icon k-delete'></span>Eliminar</a>" +
+                         "</td>" +
+                         "</tr>"
+                    )
+                    //.ClientAltRowTemplate(
+                    //  "<tr class='k-alt' data-uid='#: uid #'>" +
+                    //   "<td class='photo'>" +
+                    //      "<img src='" + Url.Content("~/Content/Imagenes/loading.gif") + "#:data.ImagenPub#.png' alt='#: data.ImagenPub #' />" +
+                    //   "</td>" +
+                    //   "<td class='details'>" +
+                    //      "<span class='title'>alt #: Puim_clave_pub #</span>" +
+                    //"<span class='description'>alt Name : #: FirstName# #: LastName#</span>" +
+                    //"<span class='description'>alt Country : #: Country# </span>" +
+                    //    "</td>" +
+                    //"<td class='country'>#: Country #" +
+                    //    "</td>" +
+                    //"<td class='employeeID'>" +
+                    //    "#: EmployeeID #" +
+                    //"</td>" +
+                    //"</tr>"
+                    // )
+                    .DataSource(dataSource => dataSource
+                        .Ajax()
+                        .Batch(true)
+                        .PageSize(10)
+                        .ServerOperation(false)
+
+                        .Model(model =>
+                        {
+                            model.Id(p => p.Puim_clave);
+                        })
+                        .Read(read => read.Action("RowTemplate_Read", "Gestion"))
+                        .Destroy(destroy => destroy.Action("Editing_Destroy_Img", "Gestion"))
+                        .Events(events => events.RequestEnd("onRequestEnd"))
+
+                    )
+                    .Scrollable()
+                )
+
+
+                @section HeadContent {
+                    <style>
+                        img {
+                            width: 100px;
+                            height: 100px;
+                        }
+
+                        .photo {
+                            width: 140px;
+                            height: 100px;
+                        }
+
+                        .details {
+                            width: 100px;
+                        }
+
+                        .name {
+                            display: block;
+                            font-size: 1.6em;
+                        }
+
+                        .title {
+                            display: block;
+                            padding-top: 1.6em;
+                        }
+
+                        .employeeID,
+                        .country {
+                            font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+                            font-size: 50px;
+                            font-weight: bold;
+                            color: #898989;
+                        }
+
+                        td.photo, .employeeID {
+                            text-align: center;
+                        }
+
+                        .k-grid-header .k-header {
+                            padding: 10px 20px;
+                        }
+
+                        .k-grid td {
+                            background: -moz-linear-gradient(top, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.15) 100%);
+                            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0.05)), color-stop(100%,rgba(0,0,0,0.15)));
+                            background: -webkit-linear-gradient(top, rgba(0,0,0,0.05) 0%,rgba(0,0,0,0.15) 100%);
+                            background: -o-linear-gradient(top, rgba(0,0,0,0.05) 0%,rgba(0,0,0,0.15) 100%);
+                            /*background: -ms-linear-gradient(top, rgba(0,0,0,0.05) 0%,rgba(0,0,0,0.15) 100%);*/
+                            background: linear-gradient(to bottom, rgba(0,0,0,0.05) 0%,rgba(0,0,0,0.15) 100%);
+                            padding: 20px;
+                        }
+
+                        .k-grid .k-alt td {
+                            background: -moz-linear-gradient(top, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.1) 100%);
+                            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0.2)), color-stop(100%,rgba(0,0,0,0.1)));
+                            background: -webkit-linear-gradient(top, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.1) 100%);
+                            background: -o-linear-gradient(top, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.1) 100%);
+                            /*background: -ms-linear-gradient(top, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.1) 100%);*/
+                            background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.1) 100%);
+                        }
+                    </style>
+                }
+            </div>
+        </div>
+        <div class="row">
+            <div class="alert alert-success" id="mostrarAlertSuccess" style="display:none; margin-top:10px">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>¡Eliminación exitosa!</strong> El registro fue eliminado correctamente.
+            </div>
+            <div class="alert alert-danger" id="mostrarAlertDanger" style="display:none; margin-top:10px">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
+            </div>
+        </div>
+    </div>
+    
+    
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#mostrarAlertSuccess").hide();
+            $("#mostrarAlertDanger").hide();
+        });
+
+        function onRequestEnd(e) {
+            if (e.type == "destroy" && !e.response.Errors) {
+                $("#mostrarAlertSuccess").show();
+                $("#mostrarAlertDanger").hide();
+                //var str = data.Message;
+                //$("#mostrarAlertSuccess").html(str);
+                $("#mostrarAlertSuccess").fadeIn(2000).delay(7000).fadeOut(1000);
+            }
+            if (e.type == "destroy" && e.response.Errors) {
+                $("#mostrarAlertSuccess").hide();
+                $("#mostrarAlertDanger").show();
+                //var str = data.Message;
+                //$("#mostrarAlertDanger").html(str);
+                $("#mostrarAlertDanger").fadeIn(2000).delay(7000).fadeOut(1000);
+            }
+        };
+
+
+        function categoriesChange() {
+            var value = this.value(),
+                 grid = $("#grid").data("kendoGrid");
+            $.ajax({
+                url: '@Url.Action("RowTemplate_Read", "Gestion")',
+                data: { codExp: value },
+                type: 'POST',
+                dataType: "json",
+                success: function () {
+                    if (value) {
+                        grid.dataSource.filter({ field: "PubExpediente", operator: "eq", value: parseInt(value) });
+                    } else {
+                        grid.dataSource.filter({});
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

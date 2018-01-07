@@ -1,0 +1,212 @@
+﻿@model TelerikMvcApp4.Models.CalenadarioModel
+@{
+    
+    ViewBag.Title = "Gestión de Marcas";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+</head>
+<body>
+    <div class="container body-content">
+        <section class="container-fluid sectMenu">
+            <h1 class="h3-Busqueda">Gestion de Marcas</h1>
+
+        </section>
+        <hr />
+        <section style="width:100%;margin:0 auto;padding:0px;">
+            <div class="alert alert-dismissible alert-success animated zoomIn">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <a href="~/Gestion/RegistroMarca#publicacion" class="alert-link">¿Desea crear una nueva publicación?</a>.
+            </div>
+            <div class="row CalendarioVist">
+
+            </div>
+            <br />
+            <div class="row email-sin-retorno">
+              
+            </div>
+        </section>
+
+        <section>
+            <div class="modal fade" id="myModal" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Marcas Parecidas</h4>
+                        </div>
+                        <div class="modal-body">
+                            @(Html.Kendo().Grid<TelerikMvcApp4.Models.MarcaParecido>()
+                    .Name("Grid2")
+                    .Columns(columns =>
+                    {
+                        //columns.Bound(c => c.CodMarca).Title("Marca");
+                        columns.Bound(c => c.DescMarca).Title("Denominación").Width(200);
+                        columns.Bound(c => c.DescTitular).Title("Titular").Width(300);
+                    })
+                    .ToolBar(toolbar =>
+                    {
+                        toolbar.Template(@<text>
+                                <div class="toolbar">
+                                    <label class="category-label" for="category">Parecidos de la Marca:</label>
+                                    @(Html.Kendo().DropDownList()
+                                .Name("marcaParecido")
+                                .OptionLabel("Seleccionar marca...")
+                                .DataTextField("DescMarca")
+                                .DataValueField("CodMarca")
+                                .Filter("contains")
+                                .AutoBind(false)
+                                .Popup(p => p.AppendTo("myModal"))
+                                .Events(e => e.Change("categoriesChange"))
+                                .HtmlAttributes(new { style = "width: 150px;" })
+                                .DataSource(ds =>
+                                {
+                                    ds.Read("GetMarcaParecidoEmail", "Gestion");
+                                })
+                                    )
+                                </div>
+                        </text>);
+                    })
+                    .AutoBind(false)
+                    .HtmlAttributes(new { style = "height:405px; width:100%" })
+                    //.Events(events => events.Change("onChange"))
+                    //.Events(events => events.DataBound("onDataBound"))
+                    .Pageable(pageable => pageable
+                             .Input(true)
+                             .Numeric(false)
+                    )
+                    //.Sortable()
+                    .Selectable(selectable => selectable
+                        .Mode(GridSelectionMode.Multiple)
+                        .Type(GridSelectionType.Row))
+                    .Scrollable(scr => scr.Height(250))
+                    .Filterable(ftb => ftb.Mode(GridFilterMode.Row))
+                    .Resizable(resize => resize.Columns(true))
+                    .Reorderable(reorder => reorder.Columns(true))
+                    .ColumnMenu()
+                    .DataSource(dataSource => dataSource
+                        .Ajax()
+                        .Batch(true)
+                        .PageSize(10)
+                        .ServerOperation(false)
+                        .Model(model =>
+                        {
+                            model.Id(p => p.CodMarca);
+                        })
+                        .Read("MarcaParecido_Read", "Gestion")
+                        ))
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+    </div>
+      
+
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+        <script>
+            function form_submit() {
+                document.getElementById("Frm-login").submit();
+            }
+
+            function categoriesChange() {
+                var value = this.value(),
+                     grid = $("#Grid2").data("kendoGrid");
+
+                //alert(value);
+                $.ajax({
+                    url: '@Url.Action("MarcaParecido_Read", "Gestion")',
+                    data: { CodMarca: value },
+                    type: 'POST',
+                    dataType: "json",
+                    success: function () {
+                        if (value) {
+                            grid.dataSource.filter({ field: "CodMarca", operator: "eq", value: parseInt(value) });
+                        } else {
+                            grid.dataSource.filter({});
+                        }
+                    }
+                });
+            }
+            $(document).ready(function () {
+                $.ajax({
+                    type: 'Post',
+                    url: "@Url.Action("GetInfoCalendario", "Gestion")",
+                    dataType: "json",
+                    cache: false,
+                    contentType: "application/json; chartset=utf-8",
+                    success: function (data) {
+                        var c = 0;
+                        $.each(data, function (i, item) {
+                            c = c + 1;
+                            //$('#idCliente').append($('<option />').val(item.CodigoCliente).text(item.NombreCliente));
+                            var stringHtml = '';
+                            stringHtml = '<div class="col-lg-4">';
+                            stringHtml += '<div class="alert alert-dismissible alert-warning animated fadeIn" id="kokoreche"' + c + '><button type="button" class="close" data-dismiss="alert">&times;</button>';
+                            stringHtml += '<span id="FechaPrimera">' + "<strong>Aviso de Publicación. " + "</strong><br /><br /><strong>Fecha de Publicación: </strong>" + item.fecha + '</span> <span id="DiariosId"><br /><strong>Expediente: </strong>' + item.expediente + ' <br /><br /><a href=ImagenesPublicacion?id=' + item.expediente + '&fecha=' + item.fecha + ' class="alert-link">Confirmar Publicación</a>' + '</span>';
+                            stringHtml += '</div>';
+                            stringHtml += '</div>';
+
+                            //var stringHtml = '';
+                            //stringHtml += '<div class="row well>';
+                            //stringHtml = '<div class="col-lg-4" style="border:1px none black; background-color:#f8efc0;">';
+                            
+                            //stringHtml += '<span id="FechaPrimera">' + "<strong style='color:#23527c'>Aviso de Publicación. " + "</strong><br /><br /><strong>Fecha de Publicación: </strong>" + item.fecha + '</span> <span id="DiariosId"><br /><strong>Expediente: </strong>' + item.expediente + ' <br /><br /><a href=ImagenesPublicacion?id=' + item.expediente + '&fecha=' + item.fecha + ' class="alert-link">Publicar imagen</a>' + '</span>';
+                            //stringHtml += '</div>';
+                            //stringHtml += '</div>';
+
+                            $(".CalendarioVist").append(stringHtml);
+                        });
+                    },
+                    error: function (xhr, ajaxOption, throwError) {
+                        alert("Error");
+                    }
+                })
+            });
+
+            $(document).ready(function () {
+                $.ajax({
+                    type: 'Post',
+                    url: "@Url.Action("ObtenerEmailSinRetorno", "Gestion")",
+                    dataType: "json",
+                    cache: false,
+                    contentType: "application/json; chartset=utf-8",
+                    success: function (data) {
+                        var c = 0;
+                        $.each(data, function (i, item) {
+                            c = c + 1;
+                            //$('#idCliente').append($('<option />').val(item.CodigoCliente).text(item.NombreCliente));
+                            //var stringHtml = '';
+                            stringHtml = '<div class="col-lg-4">';
+                            stringHtml += '<div id="alertopo" class="alert alert-dismissible alert-warning animated fadeIn" ' + c + '><button type="button" class="close" data-dismiss="alert">&times;</button>';
+                            stringHtml += '<span>' + "<strong>Alerta de Oposición. " + "</strong></br>Existe un correo sin respuesta.<br /><br />" + "" + '</span> <span><strong>Titular: </strong>' + item.Titular + '<br /><strong>Marca afectada: </strong><a id="valor" class = "alert-link" data-toggle="modal" data-target="#myModal">' + item.DenominacionMarca + '</a><hr/>Decida que hacer con este caso. <br /> <a href="RegistroOposicion" class="alert-link">Registrar respuesta</a><br />' + '</span>';
+                            stringHtml += '</div>';
+                            stringHtml += '</div>';
+                            //var stringHtml = '';
+                            //stringHtml += '<div class="row well>';
+                            //stringHtml = '<div class="col-lg-4" style="border:1px none black; background-color:#f8efc0;">';
+                            //stringHtml += '<span>' + "<strong>Alerta de Oposición. " + "</strong></br>Existe un correo sin respuesta.<br /><br />" + "" + '</span> <span><strong>Titular: </strong>' + item.Titular + '<br /><strong>Marca afectada: </strong><a class= "alert-link" data-toggle="modal" data-target="#myModal">' + item.DenominacionMarca + '</a><hr/>Decida que hacer con este caso. <br /> <a id="funionaaaaa" href="RegistroOposicion" class="alert-link">Registrar respuesta</a><br />' + '</span>';
+                            //stringHtml += '</div>';
+                            //stringHtml += '</div>';
+                            $(".email-sin-retorno").append(stringHtml);
+                        });
+                    },
+                    error: function (xhr, ajaxOption, throwError) {
+                        alert("Error");
+                    }
+                });
+            });
+        </script>
+</body>
+</html>
+
+
+
+
+

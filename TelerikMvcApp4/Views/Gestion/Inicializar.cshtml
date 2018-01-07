@@ -1,0 +1,74 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>RegistroMarca</title>
+    <link href="@Url.Content("~/Content/kendo/2016.1.412/kendo.common.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2016.1.412/kendo.mobile.all.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2016.1.412/kendo.dataviz.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2016.1.412/kendo.fiori.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2016.1.412/kendo.dataviz.fiori.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/bootstrap.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/kendo/2016.1.412/jquery.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2016.1.412/jszip.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2016.1.412/kendo.all.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2016.1.412/kendo.aspnetmvc.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo.modernizr.custom.js")"></script>
+    <link href="@Url.Content("~/Content/site.css")" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <section class="sec-Ini animated fadeIn">
+        <img src="~/Content/Imagenes/loading.gif" />
+        <br />
+        <h2>@Session["Loading"]</h2>
+    </section>
+    <script type="text/javascript">
+        $(document).ready(function () {
+          
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("Temporizador", "Gestion")',
+              dataType: "json",
+                cache: false,
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    if (data.Model.Tmp == 1) {
+                        TempoR();
+                    }
+
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console && console.log("Error al cargar los Datos");
+                },
+                async: false
+            });
+        });
+
+        function TempoR() {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("TemporizadorPasarIndex", "Gestion")',
+                dataType: "json",
+                cache: false,
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    alert("qwerewt");
+
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console && console.log("Error al cargar los Datos");
+                },
+                async: false
+            });
+        }
+    </script>
+   
+</body>
+</html>

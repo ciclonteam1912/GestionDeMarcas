@@ -1,0 +1,70 @@
+﻿@{
+    ViewBag.Title = "Administrar roles de usuarios";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+
+</head>
+<body>
+    <div class="container body-content">
+        <h2>Administrar roles de usuarios</h2>
+        @Html.ActionLink("Crear nuevo rol", "Create") | @Html.ActionLink("Administrar roles de usuarios", "ManageUserRoles")
+        <hr />
+        <h3>Agregar rol a usuario</h3>
+        @using (Html.BeginForm("RoleAddToUser", "Role"))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+
+            <p>
+                Username : @Html.TextBox("UserName")
+                Role Name: @Html.DropDownList("RoleName", (IEnumerable<SelectListItem>)ViewBag.Roles, "Seleccionar ...")
+            </p>
+
+            <input type="submit" value="Guardar" />
+        }
+        <hr />
+        <h3>Obtener roles para un usuario</h3>
+        @using (Html.BeginForm("GetRoles", "Role"))
+        {
+            @Html.AntiForgeryToken()
+            <p>
+                Username : @Html.TextBox("UserName")
+                <input type="submit" value="Obrener roles de este usuario" />
+            </p>
+        }
+        @if (ViewBag.RolesForThisUser != null)
+        {
+            <div style="background-color:yellow;">
+                <h3>Roles de este usuario</h3>
+                <ol>
+                    @foreach (string s in ViewBag.RolesForThisUser)
+                    {
+                        <li>@s</li>
+                    }
+                </ol>
+            </div>
+        }
+        <hr />
+        <h3>Eliminar usuario de un rol</h3>
+        @using (Html.BeginForm("DeleteRoleForUser", "Role"))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+
+            <p>
+                Username : @Html.TextBox("UserName")
+                Role Name: @Html.DropDownList("RoleName", (IEnumerable<SelectListItem>)ViewBag.Roles, "Seleccionar ...")
+            </p>
+
+            <input type="submit" value="Eliminar este usuario de este rol" />
+        }
+
+    </div>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous">
+    </script>
+</body>
+</html>        

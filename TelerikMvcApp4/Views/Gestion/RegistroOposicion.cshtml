@@ -1,0 +1,237 @@
+﻿@{
+    ViewBag.Title = "Intención de Oposición";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+</head>
+<body>   
+    <div class="container body-content">
+        <div class="center-block">
+            @using (Html.BeginForm("ConfirmarOposicion", "Gestion", FormMethod.Post, new { @id = "Frm-login", role = "form", @class = "form-horizontal" }))
+            {
+                <div id="grillaParecido" class="row well" style="margin:0 auto; width:100%">
+                    <div class="row">
+                        <div class="col-lg-4" style="margin-bottom:20px; margin-right:150px">
+                            <label class="category-label" for="category">Titular:</label>
+                            @(Html.Kendo().DropDownList()
+                                .Name("marcaParecido")
+                                .OptionLabel("Todos")
+                                .DataTextField("DescMarca")
+                                .DataValueField("CodMarca")
+                                .Filter("contains")
+                                .AutoBind(false)
+                                .Events(e => e.Change("categoriesChange"))
+                                .HtmlAttributes(new { style = "width: 100%;" })
+                                .DataSource(ds =>
+                                {
+                                    ds.Read("GetMarcaParecidoEmail", "Gestion");
+                                })
+                            )
+                        </div>                       
+                        <div class="col-lg-6">
+                            <div class="col-lg-6">
+                                <label >Imagen:</label>
+                                <input name="files" id="files" type="file" />
+                                @*@(Html.Kendo().Upload()
+                                    .Name("files")
+                                )*@
+                            </div>
+                        </div>
+                        
+                </div>
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <input class="form-control" id="numMarca" name="numMarca" type="text">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="alert alert-success" id="mostrarAlertSuccess" style="display:none; margin-top:10px">
+                            @*<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>*@
+                            <strong>Success!</strong> Indicates a successful or positive action.
+                        </div>
+                        <div class="alert alert-danger" id="mostrarAlertDanger" style="display:none; margin-top:10px">
+                            @*<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>*@
+                            <strong>¡Error!</strong> Ya fue registrada la oposición de esa marca..
+                        </div>
+                    </div>
+
+                @*<button class="k-button k-primary" id="btnPdfExport">Exportar a PDF</button>*@
+
+                @(Html.Kendo().Grid<TelerikMvcApp4.Models.MarcaParecido>()
+                    .Name("Grid2")
+                    .Columns(columns =>
+                    {
+                        //columns.Bound(c => c.CodMarca).Title("Marca");
+                        columns.Bound(c => c.DescMarca).Title("Denominación").Width(200);
+                        columns.Bound(c => c.DescTitular).Title("Titular").Width(300);
+                        columns.Bound(c => c.PorcentajeSimilitud).Title("Porc. Similitud").Filterable(false).HtmlAttributes(new { style = "text-align:center" }).Width(130);
+                        columns.Bound(c => c.PorcentajeError).Title("Porc. Error").Filterable(false).HtmlAttributes(new { style = "text-align:center" }).Width(120);
+                        columns.Bound(p => p.IntencionOposicion)
+                        .ClientTemplate("<input type='checkbox' #= IntencionOposicion ? checked='checked' :'0' #  class='checkbox' />").Title("¿Oponerse?").Filterable(false).Width(120).HtmlAttributes(new { @onclick = "click" }); ;
+                    })
+                    .AutoBind(false)
+                    .HtmlAttributes(new { style = "height:405px; width:100%" })
+                    .Pageable(pageable => pageable
+                             .Input(true)
+                             .Numeric(false)
+                    )
+                    .Sortable()
+                    .Selectable(selectable => selectable
+                        .Mode(GridSelectionMode.Multiple)
+                        .Type(GridSelectionType.Row))
+                    .Scrollable(scr => scr.Height(250))
+                    .Filterable(ftb => ftb.Mode(GridFilterMode.Row))
+                    .Resizable(resize => resize.Columns(true))
+                    .Reorderable(reorder => reorder.Columns(true))
+                    .ColumnMenu()
+                    .DataSource(dataSource => dataSource
+                        .Ajax()
+                        .Batch(true)
+                        .PageSize(10)
+                        .ServerOperation(false)
+                        .Model(model =>
+                        {
+                            model.Id(p => p.CodMarca);
+                        })
+                        .Read("MarcaParecido_Read", "Gestion")
+                        ))
+                @*<div style="margin-top:20px">
+                    <button class="btn btn-success" type="submit" id="confirmarOposicion" >Confirmar</button>
+                </div>*@
+                    
+            </div>
+            
+            }
+        </div>
+    </div>
+    
+    
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#numMarca").hide();
+            $("#mostrarAlertSuccess").hide();
+            $("#mostrarAlertDanger").hide();
+            $("#mostrarSuccess").hide();
+            $("#mostrarDanger").hide();
+            $(".k-clear-selected").html("Limpiar");
+        });
+
+        $(".k-button").find(".k-upload-selected").click(function () {
+            $("#confirmarOposicion").prop("disabled", false);
+        });
+
+        $("#files").kendoUpload({
+
+            async: {
+                saveUrl: '@Url.Action("Save", "Gestion")',
+                autoUpload: false
+            },
+            upload: function (e) {
+                var idsToSend = [];
+                var grid = $("#Grid2").data("kendoGrid")
+                var ds = grid.dataSource.view();
+                for (var i = 0; i < ds.length; i++) {
+                    var row = grid.table.find("tr[data-uid='" + ds[i].uid + "']");
+                    var checkbox = $(row).find(".checkbox");
+                    if (checkbox.is(":checked")) {
+                        idsToSend.push(ds[i].DescMarca);
+                        idsToSend.push(ds[i].IntencionOposicion = 1);
+                    } else {
+                        idsToSend.push(ds[i].DescMarca);
+                        idsToSend.push(ds[i].IntencionOposicion = 0);
+                    }
+                }
+                e.data = {
+                    numMarca: $("#numMarca").val(),
+                    ids: idsToSend
+                };
+            },
+            localization: {
+                select: 'Subir imagen...'
+            },
+            error: function (e) {
+                    $("#mostrarAlertSuccess").hide();
+                    $("#mostrarAlertDanger").show();
+                    $("#mostrarAlertDanger").html("¡Error! Ya fue registrada la oposición de esa marca...");
+                    $("#mostrarAlertDanger").fadeIn(2000).delay(7000).fadeOut(1000);
+            }
+        });
+
+        
+        @*$("#confirmarOposicion").click(function () {
+
+            var formData = new FormData();
+            var file_data = $('#files')[0].files; // for multiple files if only single file use $('#files')[0].files[0] and skip the loop.
+            for (var i = 0; i < file_data.length; i++) {
+                formData.append("file_" + i, file_data[i]);
+            }
+            
+            var numMarca = $("#numMarca").val()
+            var idsToSend = [];
+            var grid = $("#Grid2").data("kendoGrid")
+            var ds = grid.dataSource.view();
+            for (var i = 0; i < ds.length; i++) {
+                var row = grid.table.find("tr[data-uid='" + ds[i].uid + "']");
+                var checkbox = $(row).find(".checkbox");
+                if (checkbox.is(":checked")) {
+                    idsToSend.push(ds[i].DescMarca);
+                    idsToSend.push(ds[i].IntencionOposicion = 1);
+                } else {
+                    idsToSend.push(ds[i].DescMarca);
+                }
+            }
+
+            alert(idsToSend)
+            formData.append('ids', JSON.stringify(idsToSend));
+            formData.append('marca', numMarca);
+            $.ajax({
+                url: '@Url.Action("ConfirmarOposicion", "Gestion")',
+                data: formData ,
+                type: 'POST',
+                processData: false,
+                contentType: false,
+                dataType: "json",
+                success: function (data) {
+                    $("#mostrarAlertSuccess").hide();
+                    $("#mostrarAlertDanger").show();
+                    $("#mostrarAlertDanger").html("¡Error! Ya fue registrada la oposición de esa marca...");
+                    $("#mostrarAlertDanger").fadeIn(2000).delay(7000).fadeOut(1000);
+                }
+            });
+        });*@
+
+        $(".k-button .k-upload-selected").on('click', function () {
+            alert("click")
+        })
+
+        function categoriesChange() {
+            var value = this.value(),
+                 grid = $("#Grid2").data("kendoGrid");
+
+            var marca = document.getElementById('numMarca');
+            //var marca = document.GetElementById('numMarca');
+            marca.value = value;
+            $.ajax({
+                url: '@Url.Action("MarcaParecido_Read", "Gestion")',
+                data: { CodMarca: value },
+                type: 'POST',
+                dataType: "json",
+                success: function () {
+                    if (value) {
+                        //grid.dataSource.filter({ field: "CodMarca", operator: "eq", value: parseInt(value) });
+                        grid.dataSource.filter({ field: "CodTitular", operator: "eq", value: parseInt(value) });
+                    } else {
+                        grid.dataSource.filter({});
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+﻿@{
+    Layout = null;
+}
+@using TelerikMvcApp4.Models
+@model LoginViewModel
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Gestión de Marcas</title>
+    <link href="@Url.Content("~/Content/kendo/2016.1.412/kendo.common.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2016.1.412/kendo.mobile.all.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2016.1.412/kendo.dataviz.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2016.1.412/kendo.metro.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2016.1.412/kendo.dataviz.metro.min.css")" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <script src="@Url.Content("~/Scripts/kendo/2016.1.412/jquery.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2016.1.412/jszip.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2016.1.412/kendo.all.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2016.1.412/kendo.aspnetmvc.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo.modernizr.custom.js")"></script>
+    <link href="@Url.Content("~/Content/site.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/Animated.css")" rel="stylesheet" type="text/css" />
+</head>
+<body class="Bd-Fondo">
+
+
+    <section class="section-Login animated fadeInDown">
+        <p>Gestión de Marcas</p>
+        <br />
+        <div class="container-fluid">
+            <div class="row">
+                @*@using (Html.BeginForm("GetLogin", "Login", FormMethod.Post, new { @id = "Frm-login", role = "form", @class = "form-horizontal" }))
+                    {
+                        <fieldset class="field-Form">
+                            <div class="inner-addon left-addon ">
+                                <i class="glyphicon glyphicon-user i-Icon"></i>
+                                <input type="text" class="form-control input-Text" name="txtUsuario" id="txtUsuario" placeholder="Usuario" required title="Intrdoduzca su Usuario" />
+                            </div>
+                            <br />
+                            <div class="inner-addon left-addon">
+                                <i class="glyphicon glyphicon-lock i-Icon"></i>
+                                <input type="password" class="form-control input-Text" name="txtContraseña" id="txtContraseña" placeholder="Contraseña" required title="Intrdoduzca su Contraseña" />
+                            </div>
+                            <br />
+                            <div class="inner-addon left-addon">
+                                <i class="glyphicon glyphicon-list-alt i-Icon"></i>
+                                <input type="search" class="form-control input-Text" name="txtBaseDato" id="txtBaseDato" placeholder="Base de Datos" required title="Intrdoduzca la Base de Datos" />
+                            </div>
+                            <br />
+
+                            <div class="Btn-Cont">
+                                <button class="btn btn-default btn-lg" type="submit">Ingresar</button>
+                            </div>
+                        </fieldset>
+                    }*@
+                @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                    @Html.AntiForgeryToken()
+                    <fieldset class="field-Form">
+                        @*<div class="dv-title">
+                                <img src="~/Content/Images/LogoCentury.png" />
+                            </div>*@
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="inner-addon left-addon">
+                            @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+                            <div class="inner-addon left-addon">
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <br />
+                        <div class="inner-addon left-addon">
+                            @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+                            <div class="inner-addon left-addon">
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <br />
+                        <div class="inner-addon left-addon">
+                            <div class="col-md-offset-2 col-md-10">
+                                <div class="checkbox">
+                                    @Html.CheckBoxFor(m => m.RememberMe)
+                                    @Html.LabelFor(m => m.RememberMe)
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+
+                        <div class="inner-addon left-addon">
+                            <button class="btn btn-default" type="submit" style="background-color: rgba(12,32,59,0.55); width:100%">Ingresar</button>
+                        </div>
+                        @*<div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Log in" class="btn btn-default" />
+                            </div>*@
+
+                        <p>
+                            @Html.ActionLink("Registrarse como nuevo usuario", "Register", "Account", new { @class = "register" })
+                        </p>
+                        <p>
+                            @Html.ActionLink("Olvidó su contraseña?", "ForgotPassword", "Account", new { @class = "register" })
+                        </p>
+                    </fieldset>
+                }
+
+
+            </div>
+        </div>
+    </section>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+</body>
+
+</html>
+

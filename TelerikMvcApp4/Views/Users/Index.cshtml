@@ -1,0 +1,44 @@
+﻿@model IEnumerable<Microsoft.AspNet.Identity.EntityFramework.IdentityUser>
+@{
+    ViewBag.Title = "Administrar Roles";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+
+</head>
+<body>
+    <div class="container body-content">
+        @if (ViewBag.displayMenu == "Yes")
+        {
+            <h1>Bienvenido Administrador. Ahora puede crear roles.</h1>
+            <td>
+                <table id="tbrole" style="width:100%; border:dotted 1px; background-color:gainsboro; padding-left:10px;">
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td style="width:100%; border:dotted 1px;">
+                                @item.Email
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </td>
+            <h3>
+                <li>@Html.ActionLink("Administrar Rol", "Index", "Role")</li>
+            </h3>
+        }
+        else
+        {
+            <h2>  Welcome <strong>@ViewBag.Name</strong> :) .We will add user module soon </h2>
+        }
+    </div>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous">
+    </script>
+</body>
+</html>
+       
